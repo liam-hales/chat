@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "chat",
+  "description": "Chat with multiple LLM's, all in one place.",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.11",
+    "npm": ">=10.9"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liam-hales/chat.git"
+  },
+  "packageManager": "yarn@4.7.0",
+  "scripts": {
+    "start:dev": "next dev",
+    "start:prod": "next start",
+    "build": "next build",
+    "build:analyse": "ANALYSE_BUNDLE=true next build",
+    "build:icons": "ts-node ./scripts/buildIcons.script.ts",
+    "lint": "next lint",
+    "deps": "ncu --packageManager yarn",
+    "cleanup": "rm -rf .next/"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.0.15",
+    "@vercel/analytics": "^1.5.0",
+    "next": "15.2.3",
+    "postcss": "^8.5.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tailwindcss": "^4.0.15"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^15.2.3",
+    "@stylistic/eslint-plugin": "^3.0.1",
+    "@types/eslint-plugin-jsx-a11y": "^6.10.0",
+    "@types/node": "^22.13.13",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "^15.2.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "npm-check-updates": "^17.1.16",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
