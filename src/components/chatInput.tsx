@@ -1,4 +1,4 @@
-import { FunctionComponent, KeyboardEvent, ReactElement } from 'react';
+import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import { AIModel, BaseProps } from '../types';
 import { aiModels } from '../constants';
 
@@ -11,7 +11,7 @@ interface Props extends BaseProps<HTMLInputElement> {
   readonly isDisabled?: boolean;
   readonly onChange: (value: string) => void;
   readonly onModelChange: (value: AIModel) => void;
-  readonly onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
+  readonly onSend: () => void;
 }
 
 /**
@@ -28,8 +28,28 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     isDisabled = false,
     onChange,
     onModelChange,
-    onKeyDown,
+    onSend,
   } = props;
+
+  const _onChange = (event: ChangeEvent<HTMLInputElement>): void => {
+
+    // Destructure the event and the event target
+    // and pass its value to `onChange`
+    const { target } = event;
+    const { value } = target;
+
+    onChange(value);
+  };
+
+  const _onKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+    const { key } = event;
+
+    // If the "Enter" key has been pressed
+    // then call the `onSend` function
+    if (key === 'Enter') {
+      onSend();
+    }
+  };
 
   return (
     <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
@@ -39,16 +59,8 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
           placeholder="Chat with AI, ask anything you like"
           value={value}
           disabled={isDisabled}
-          onKeyDown={(event) => onKeyDown(event)}
-          onChange={(event) => {
-
-            // Destructure the event and the event target
-            // and pass its value to `onChange`
-            const { target } = event;
-            const { value } = target;
-
-            onChange(value);
-          }}
+          onChange={_onChange}
+          onKeyDown={_onKeyDown}
         />
         <div className="flex flex-col pt-8">
           <div className="flex flex-row items-center gap-x-3">
