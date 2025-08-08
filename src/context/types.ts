@@ -50,6 +50,14 @@ export interface AppActions {
   readonly createChat: () => void;
 
   /**
+   * Used to set the current
+   * selected chat
+   *
+   * @param chatId The chat ID
+   */
+  readonly setSelectedChat: (chatId: string) => void;
+
+  /**
    * Used to send a message for
    * a specific chat via it's `id`
    *

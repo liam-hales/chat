@@ -185,6 +185,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         setInputValue: setInputValue,
         setModel: setModel,
         createChat: createChat,
+        setSelectedChat: setSelectedChatId,
         sendMessage: sendMessage,
       }
     }
