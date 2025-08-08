@@ -1,8 +1,9 @@
 'use client';
 
-import { FunctionComponent, ReactElement, useState, KeyboardEvent } from 'react';
+import { FunctionComponent, ReactElement } from 'react';
 import { Typewriter } from '../components/common';
 import { ChatInput } from '../components';
+import { useApp } from '../hooks';
 
 /**
  * The entry point for the `/` app route,
@@ -12,17 +13,8 @@ import { ChatInput } from '../components';
  */
 const AppPage: FunctionComponent = (): ReactElement => {
 
-  const [inputValue, setInputValue] = useState<string>('');
-
-  /**
-   * Used to handle keyboard events from the `ChatInput`
-   * component underlying `input` HTML element
-   *
-   * @param event The keyboard event
-   */
-  const onKeyDown = async (event: KeyboardEvent<HTMLInputElement>): Promise<void> => {
-    const { key } = event;
-  };
+  const { tabs, setInputValue, setModel, sendMessage } = useApp();
+  const { id, model, inputValue } = tabs[0];
 
   return (
     <div className="h-full flex flex-col items-center pt-36 pb-28 pl-10 pr-10">
@@ -48,8 +40,10 @@ const AppPage: FunctionComponent = (): ReactElement => {
         </div>
         <ChatInput
           value={inputValue}
-          onChange={setInputValue}
-          onKeyDown={onKeyDown}
+          model={model}
+          onChange={(value) => setInputValue(id, value)}
+          onModelChange={(value) => setModel(id, value)}
+          onSend={() => sendMessage(id)}
         />
       </div>
     </div>

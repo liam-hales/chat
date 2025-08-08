@@ -21,18 +21,8 @@ interface Props extends BaseProps {
  */
 const AppTab: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
 
-  const { getTab, setInputValue, setModel } = useApp();
+  const { getTab, setInputValue, setModel, sendMessage } = useApp();
   const { model, inputValue } = useMemo(() => getTab(id), [id, getTab]);
-
-  /**
-   * Used to handle keyboard events from the `ChatInput`
-   * component underlying `input` HTML element
-   *
-   * @param event The keyboard event
-   */
-  const onKeyDown = async (event: KeyboardEvent<HTMLInputElement>): Promise<void> => {
-    const { key } = event;
-  };
 
   return (
     <ChatInput
@@ -40,7 +30,7 @@ const AppTab: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
       model={model}
       onChange={(value) => setInputValue(id, value)}
       onModelChange={(value) => setModel(id, value)}
-      onKeyDown={onKeyDown}
+      onSend={() => sendMessage(id)}
     />
   );
 };
