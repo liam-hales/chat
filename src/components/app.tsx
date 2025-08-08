@@ -20,7 +20,7 @@ interface Props extends BaseProps {
  */
 const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
-  const { selectedTabId, messages } = useApp();
+  const { selectedChatId, messages } = useApp();
 
   // If there are no messages in the app state then
   // render the children to render the page
@@ -34,7 +34,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
   return (
     <div className="w-full h-full flex flex-col items-center">
-      <AppTab id={selectedTabId}/>
+      <AppTab chatId={selectedChatId}/>
     </div>
   );
 }

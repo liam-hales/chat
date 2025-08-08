@@ -13,8 +13,8 @@ import { useApp } from '../hooks';
  */
 const AppPage: FunctionComponent = (): ReactElement => {
 
-  const { tabs, setInputValue, setModel, sendMessage } = useApp();
-  const { id, model, inputValue } = tabs[0];
+  const { chats, setInputValue, setModel, sendMessage } = useApp();
+  const { id, model, inputValue } = chats[0];
 
   return (
     <div className="h-full flex flex-col items-center pt-36 pb-28 pl-10 pr-10">

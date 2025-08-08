@@ -1,12 +1,12 @@
-import { AIModel, AppTab, ChatMessage } from '../types';
+import { AIModel, AppChat, ChatMessage } from '../types';
 
 /**
  * Describes the app state which consists of all
  * the app data which is stored in the `AppProvider`
  */
 export interface AppState {
-  readonly selectedTabId: string;
-  readonly tabs: AppTab[];
+  readonly selectedChatId: string;
+  readonly chats: AppChat[];
   readonly messages: ChatMessage[];
 }
 
@@ -18,44 +18,44 @@ export interface AppActions {
 
   /**
    * Used to get a specific
-   * tab via it's `id`
+   * chat via it's `id`
    *
-   * @param id The tab ID
-   * @returns The found tab
+   * @param id The chat ID
+   * @returns The found chat
    */
-  readonly getTab: (id: string) => AppTab;
+  readonly getChat: (id: string) => AppChat;
 
   /**
    * Used to set the input value for a
-   * specific tab via it's `id`
+   * specific chat via it's `id`
    *
-   * @param tabId The tab ID
+   * @param chatId The chat ID
    * @param value The new input value
    */
-  readonly setInputValue: (tabId: string, value: string) => void;
+  readonly setInputValue: (chatId: string, value: string) => void;
 
   /**
    * Used to set the model for a
-   * specific tab via it's `id`
+   * specific chat via it's `id`
    *
-   * @param tabId The tab ID
+   * @param chatId The chat ID
    * @param value The new model
    */
-  readonly setModel: (tabId: string, value: AIModel) => void;
+  readonly setModel: (chatId: string, value: AIModel) => void;
 
   /**
-   * Used to create a new tab
+   * Used to create a new chat
    * with given `data`
    *
-   * @param data The data used to create the tab
+   * @param data The data used to create the chat
    */
-  readonly createTab: (data: Omit<AppTab, 'id'>) => AppTab;
+  readonly createChat: (data: Omit<AppChat, 'id'>) => AppChat;
 
   /**
    * Used to send a message for
-   * a specific tab via it's `id`
+   * a specific chat via it's `id`
    *
-   * @param tabId The tab ID
+   * @param chatId The chat ID
    */
-  readonly sendMessage: (tabId: string) => void;
+  readonly sendMessage: (chatId: string) => void;
 }

@@ -24,10 +24,10 @@ export interface BaseProps<T extends HTMLElement = HTMLElement> {
 }
 
 /**
- * Describes the app tab data which
+ * Describes the app chat data which
  * will be sorted in the app state
  */
-export interface AppTab {
+export interface AppChat {
   readonly id: string;
   readonly title: string;
   readonly model: AIModel;
@@ -39,7 +39,7 @@ export interface AppTab {
  * will be stored in the app state
  */
 export interface ChatMessage {
-  readonly tabId: string;
+  readonly chatId: string;
   readonly role: 'user' | 'ai';
   readonly content: string;
 }

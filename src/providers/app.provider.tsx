@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
 import { AppContext } from '../context';
-import { BaseProps, AppTab, ChatMessage, AIModel } from '../types';
+import { BaseProps, AppChat, ChatMessage, AIModel } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModels } from '../constants';
 
@@ -29,100 +29,100 @@ interface Props extends BaseProps {
  */
 const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
-  // Define the default tab that is initially
+  // Define the default chat that is initially
   // created when the app is first rendered
-  const defaultTabId = nanoid(8);
-  const defaultTab: AppTab = {
-    id: defaultTabId,
+  const defaultChatId = nanoid(8);
+  const defaultChat: AppChat = {
+    id: defaultChatId,
     title: 'New chat',
     model: aiModels[0],
     inputValue: '',
   };
 
-  const [selectedTabId, setSelectedTabId] = useState<string>(defaultTabId);
-  const [tabs, setTabs] = useState<AppTab[]>([defaultTab]);
+  const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
+  const [chats, setChats] = useState<AppChat[]>([defaultChat]);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   /**
    * Used to get a specific
-   * tab via it's `id`
+   * chat via it's `id`
    *
-   * @param id The tab ID
-   * @returns The found tab
+   * @param id The chat ID
+   * @returns The found chat
    */
-  const getTab = useCallback(
-    (id: string): AppTab => {
-      const tab = tabs.find((tab) => tab.id === id);
+  const getChat = useCallback(
+    (id: string): AppChat => {
+      const chat = chats.find((chat) => chat.id === id);
 
-      // If the tab does not exist
+      // If the chat does not exist
       // then throw an error
-      if (tab == null) {
-        throw new Error(`No tab with ID "${id}" found`);
+      if (chat == null) {
+        throw new Error(`No chat with ID "${id}" found`);
       }
 
-      return tab;
+      return chat;
     },
-    [tabs],
+    [chats],
   );
 
   /**
    * Used to set the input value for a
-   * specific tab via it's `id`
+   * specific chat via it's `id`
    *
-   * @param tabId The tab ID
+   * @param chatId The chat ID
    * @param value The new input value
    */
-  const setInputValue = (tabId: string, value: string): void => {
-    _updateTab(tabId, {
+  const setInputValue = (chatId: string, value: string): void => {
+    _updateChat(chatId, {
       inputValue: value,
     });
   };
 
   /**
    * Used to set the model for a
-   * specific tab via it's `id`
+   * specific chat via it's `id`
    *
-   * @param tabId The tab ID
+   * @param chatId The chat ID
    * @param value The new model
    */
-  const setModel = (tabId: string, value: AIModel): void => {
-    _updateTab(tabId, {
+  const setModel = (chatId: string, value: AIModel): void => {
+    _updateChat(chatId, {
       model: value,
     });
   };
 
   /**
-   * Used to create a new tab
+   * Used to create a new chat
    * with given `data`
    *
-   * @param data The data used to create the tab
+   * @param data The data used to create the chat
    */
-  const createTab = (data: Omit<AppTab, 'id'>): AppTab => {
-    const newTab: AppTab = {
+  const createChat = (data: Omit<AppChat, 'id'>): AppChat => {
+    const newChat: AppChat = {
       ...data,
       id: nanoid(8),
     };
 
-    // Add the new created tab
-    // to the tab state
-    setTabs((previous) => {
+    // Add the new created chat
+    // to the chat state
+    setChats((previous) => {
       return [
         ...previous,
-        newTab,
+        newChat,
       ];
     });
 
-    return newTab;
+    return newChat;
   };
 
   /**
    * Used to send a message for
-   * a specific tab via it's `id`
+   * a specific chat via it's `id`
    *
-   * @param tabId The tab ID
+   * @param chatId The chat ID
    */
-  const sendMessage = (tabId: string): void => {
-    const { model, inputValue } = getTab(tabId);
+  const sendMessage = (chatId: string): void => {
+    const { model, inputValue } = getChat(chatId);
 
     // Add the users message to
     // the messages state
@@ -130,7 +130,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       return [
         ...previous,
         {
-          tabId: tabId,
+          chatId: chatId,
           role: 'user',
           content: inputValue,
         },
@@ -139,31 +139,31 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
-   * Used to update a specific tab via
+   * Used to update a specific chat via
    * it's `id` with the provided `data`
    *
-   * @param tabId The tab ID
-   * @param data The new tab data
+   * @param chatId The chat ID
+   * @param data The new chat data
    */
-  const _updateTab = (tabId: string, data: Partial<Omit<AppTab, 'id'>>): void => {
-    setTabs((previous) => {
-      const existingTab = tabs.find((tab) => tab.id === tabId);
+  const _updateChat = (chatId: string, data: Partial<Omit<AppChat, 'id'>>): void => {
+    setChats((previous) => {
+      const existingChat = chats.find((chat) => chat.id === chatId);
 
-      // If the tab does not exist
+      // If the chat does not exist
       // then throw an error
-      if (existingTab == null) {
-        throw new Error(`No tab with ID "${tabId}" found`);
+      if (existingChat == null) {
+        throw new Error(`No chat with ID "${chatId}" found`);
       }
 
-      // Map the previous tabs into an array of new ones,
-      // updating the existing tab with the new input value
-      return previous.map((tab) => {
-        return (tab.id === tabId)
+      // Map the previous chats into an array of new ones,
+      // updating the existing chat with the new input value
+      return previous.map((chat) => {
+        return (chat.id === chatId)
           ? {
-              ...tab,
+              ...chat,
               ...data,
             }
-          : tab;
+          : chat;
       });
     });
   };
@@ -171,13 +171,13 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   return (
     <AppContext.Provider value={
       {
-        selectedTabId: selectedTabId,
-        tabs: tabs,
+        selectedChatId: selectedChatId,
+        chats: chats,
         messages: messages,
-        getTab: getTab,
+        getChat: getChat,
         setInputValue: setInputValue,
         setModel: setModel,
-        createTab: createTab,
+        createChat: createChat,
         sendMessage: sendMessage,
       }
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement, KeyboardEvent, useMemo } from 'react';
+import { FunctionComponent, ReactElement, useMemo } from 'react';
 import { ChatInput } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
@@ -9,7 +9,7 @@ import { BaseProps } from '../types';
  * The `AppTab` component props
  */
 interface Props extends BaseProps {
-  readonly id: string;
+  readonly chatId: string;
 }
 
 /**
@@ -19,10 +19,10 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `AppTab` component
  */
-const AppTab: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
+const AppTab: FunctionComponent<Props> = ({ chatId }): ReactElement<Props> => {
 
-  const { getTab, setInputValue, setModel, sendMessage } = useApp();
-  const { model, inputValue } = useMemo(() => getTab(id), [id, getTab]);
+  const { getChat, setInputValue, setModel, sendMessage } = useApp();
+  const { model, inputValue } = useMemo(() => getChat(chatId), [chatId, getChat]);
 
   return (
     <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between pb-10">
@@ -31,9 +31,9 @@ const AppTab: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
         value={inputValue}
         model={model}
         allowModelSelect={false}
-        onChange={(value) => setInputValue(id, value)}
-        onModelChange={(value) => setModel(id, value)}
-        onSend={() => sendMessage(id)}
+        onChange={(value) => setInputValue(chatId, value)}
+        onModelChange={(value) => setModel(chatId, value)}
+        onSend={() => sendMessage(chatId)}
       />
     </div>
   );
