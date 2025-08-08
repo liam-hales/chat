@@ -1,4 +1,4 @@
-import { AppTab, ChatMessage } from '../types';
+import { AIModel, AppTab, ChatMessage } from '../types';
 
 /**
  * Describes the app state which consists of all
@@ -32,4 +32,29 @@ export interface AppActions {
    * @param value The new input value
    */
   readonly setInputValue: (tabId: string, value: string) => void;
+
+  /**
+   * Used to set the model for a
+   * specific tab via it's `id`
+   *
+   * @param tabId The tab ID
+   * @param value The new model
+   */
+  readonly setModel: (tabId: string, value: AIModel) => void;
+
+  /**
+   * Used to create a new tab
+   * with given `data`
+   *
+   * @param data The data used to create the tab
+   */
+  readonly createTab: (data: Omit<AppTab, 'id'>) => AppTab;
+
+  /**
+   * Used to send a message for
+   * a specific tab via it's `id`
+   *
+   * @param tabId The tab ID
+   */
+  readonly sendMessage: (tabId: string) => void;
 }
