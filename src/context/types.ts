@@ -23,7 +23,7 @@ export interface AppActions {
    * @param id The chat ID
    * @returns The found chat
    */
-  readonly getChat: (id: string) => AppChat;
+  readonly getChat: (id: string) => AppChat & { readonly messages: ChatMessage[]; };
 
   /**
    * Used to set the input value for a
@@ -44,12 +44,10 @@ export interface AppActions {
   readonly setModel: (chatId: string, value: AIModel) => void;
 
   /**
-   * Used to create a new chat
-   * with given `data`
-   *
-   * @param data The data used to create the chat
+   * Used to create a new chat and set
+   * it as the currently selected one
    */
-  readonly createChat: (data: Omit<AppChat, 'id'>) => AppChat;
+  readonly createChat: () => void;
 
   /**
    * Used to send a message for

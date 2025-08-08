@@ -51,7 +51,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    * @returns The found chat
    */
   const getChat = useCallback(
-    (id: string): AppChat => {
+    (id: string): AppChat & { readonly messages: ChatMessage[]; } => {
       const chat = chats.find((chat) => chat.id === id);
 
       // If the chat does not exist
@@ -60,9 +60,15 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         throw new Error(`No chat with ID "${id}" found`);
       }
 
-      return chat;
+      // Return the chat data with
+      // the messages from state
+      return {
+        ...chat,
+        messages: messages
+          .filter((message) => message.chatId === chat.id),
+      };
     },
-    [chats],
+    [chats, messages],
   );
 
   /**
@@ -92,15 +98,16 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
-   * Used to create a new chat
-   * with given `data`
-   *
-   * @param data The data used to create the chat
+   * Used to create a new chat and set
+   * it as the currently selected one
    */
-  const createChat = (data: Omit<AppChat, 'id'>): AppChat => {
+  const createChat = (): void => {
+    // Define a new chat with the same details as
+    // the default chat but with a new ID
+    const id = nanoid(8);
     const newChat: AppChat = {
-      ...data,
-      id: nanoid(8),
+      ...defaultChat,
+      id: id,
     };
 
     // Add the new created chat
@@ -112,7 +119,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       ];
     });
 
-    return newChat;
+    setSelectedChatId(id);
   };
 
   /**
