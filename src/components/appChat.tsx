@@ -6,20 +6,20 @@ import { useApp } from '../hooks';
 import { BaseProps } from '../types';
 
 /**
- * The `AppTab` component props
+ * The `AppChat` component props
  */
 interface Props extends BaseProps {
   readonly chatId: string;
 }
 
 /**
- * Used to render a single app tab which consists
+ * Used to render a single app chat which consists
  * of the chat input and message thread
  *
  * @param props The component props
- * @returns The `AppTab` component
+ * @returns The `AppChat` component
  */
-const AppTab: FunctionComponent<Props> = ({ chatId }): ReactElement<Props> => {
+const AppChat: FunctionComponent<Props> = ({ chatId }): ReactElement<Props> => {
 
   const { getChat, setInputValue, setModel, sendMessage } = useApp();
   const { model, inputValue, messages } = useMemo(() => getChat(chatId), [chatId, getChat]);
@@ -39,4 +39,4 @@ const AppTab: FunctionComponent<Props> = ({ chatId }): ReactElement<Props> => {
   );
 };
 
-export default AppTab;
+export default AppChat;
