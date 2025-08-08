@@ -8,7 +8,7 @@ import { aiModels } from '../constants';
 interface Props extends BaseProps<HTMLInputElement> {
   readonly value: string;
   readonly model: AIModel;
-  readonly allowModelSelect: boolean;
+  readonly allowModelSelect?: boolean;
   readonly isDisabled?: boolean;
   readonly onChange: (value: string) => void;
   readonly onModelChange: (value: AIModel) => void;
