@@ -3,6 +3,8 @@
  * AI models to chat with
  */
 export const aiModels = [
+  'gpt-5-mini',
+  'gpt-oss-20b',
   'gpt-oss-120b',
   'gpt-4.1',
   'claude-sonnet-4',
