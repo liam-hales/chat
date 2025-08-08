@@ -123,6 +123,26 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
+   * Used to delete a specific
+   * chat via it's `id`
+   *
+   * @param chatId The chat ID
+   */
+  const deleteChat = (chatId: string): void => {
+    const existingChat = chats.find((chat) => chat.id === chatId);
+
+    // If the chat does not exist
+    // then throw an error
+    if (existingChat == null) {
+      throw new Error(`No chat with ID "${chatId}" found`);
+    }
+
+    // Remove the existing chat
+    // from the chats state
+    setChats((previous) => previous.filter((chat) => chat.id !== chatId));
+  };
+
+  /**
    * Used to send a message for
    * a specific chat via it's `id`
    *
@@ -186,6 +206,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         setModel: setModel,
         createChat: createChat,
         setSelectedChat: setSelectedChatId,
+        deleteChat: deleteChat,
         sendMessage: sendMessage,
       }
     }

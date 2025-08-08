@@ -58,6 +58,14 @@ export interface AppActions {
   readonly setSelectedChat: (chatId: string) => void;
 
   /**
+   * Used to delete a specific
+   * chat via it's `id`
+   *
+   * @param chatId The chat ID
+   */
+  readonly deleteChat: (chatId: string) => void;
+
+  /**
    * Used to send a message for
    * a specific chat via it's `id`
    *
