@@ -3,6 +3,8 @@
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
 import { AppContext } from '../context';
 import { BaseProps, AppTab, ChatMessage, AIModel } from '../types';
+import { nanoid } from 'nanoid';
+import { aiModels } from '../constants';
 
 /**
  * The `AppProvider` component props
@@ -26,15 +28,20 @@ interface Props extends BaseProps {
  * );
  */
 const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
+
+  // Define the default tab that is initially
+  // created when the app is first rendered
+  const defaultTabId = nanoid(8);
+  const defaultTab: AppTab = {
+    id: defaultTabId,
+    title: 'New chat',
+    model: aiModels[0],
+    inputValue: '',
+  };
+
+  const [selectedTabId, setSelectedTabId] = useState<string>(defaultTabId);
+  const [tabs, setTabs] = useState<AppTab[]>([defaultTab]);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [tabs, setTabs] = useState<AppTab[]>([
-    {
-      id: '123',
-      title: 'New chat',
-      model: 'gpt-oss-120b',
-      inputValue: '',
-    },
-  ]);
 
   /**
    * Used to get a specific
@@ -93,7 +100,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const createTab = (data: Omit<AppTab, 'id'>): AppTab => {
     const newTab: AppTab = {
       ...data,
-      id: '123',
+      id: nanoid(8),
     };
 
     // Add the new created tab
@@ -164,6 +171,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   return (
     <AppContext.Provider value={
       {
+        selectedTabId: selectedTabId,
         tabs: tabs,
         messages: messages,
         getTab: getTab,

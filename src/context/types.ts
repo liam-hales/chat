@@ -5,6 +5,7 @@ import { AIModel, AppTab, ChatMessage } from '../types';
  * the app data which is stored in the `AppProvider`
  */
 export interface AppState {
+  readonly selectedTabId: string;
   readonly tabs: AppTab[];
   readonly messages: ChatMessage[];
 }
