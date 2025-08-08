@@ -1,6 +1,7 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import { AIModel, BaseProps } from '../types';
 import { aiModels } from '../constants';
+import { ArrowUp } from 'lucide-react';
 
 /**
  * The `ChatInput` component props
@@ -46,18 +47,18 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   const _onKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
     const { key } = event;
 
-    // If the "Enter" key has been pressed
-    // then call the `onSend` function
-    if (key === 'Enter') {
+    // If the "Enter" key has been pressed and the value is
+    // not empty then call the `onSend` function
+    if (key === 'Enter' && value.trim() !== '') {
       onSend();
     }
   };
 
   return (
     <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
-      <div className="flex flex-col pt-5 pb-6 pl-6 pr-5">
+      <div className="flex flex-col pt-5 pb-5 pl-5 pr-5">
         <input
-          className="w-full h-6 text-white placeholder-zinc-600 font-sans text-md bg-transparent outline-none"
+          className="w-full h-6 text-white placeholder-zinc-600 font-sans text-md bg-transparent outline-none pl-1"
           placeholder="Chat with AI, ask anything you like"
           value={value}
           disabled={isDisabled}
@@ -98,10 +99,18 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             )
           }
           <button
-            className="font-sans text-sm text-white cursor-pointer bg-zinc-700 rounded-lg pt-2 pb-2 pl-3 pr-3"
+            className={`
+              text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2
+
+              disabled:cursor-not-allowed
+              disabled:text-zinc-500
+              disabled:bg-zinc-900
+              disabled:border-zinc-800
+            `}
             onClick={() => onSend()}
+            disabled={isDisabled === true || value.trim() === ''}
           >
-            Send
+            <ArrowUp />
           </button>
         </div>
       </div>
