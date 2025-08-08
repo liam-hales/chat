@@ -53,36 +53,37 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
 
   return (
     <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
-      <div className="flex flex-col pt-5 pb-6 pl-6 pr-6">
+      <div className="flex flex-col pt-5 pb-6 pl-6 pr-5">
         <input
-          className="h-6 text-white placeholder-zinc-600 font-sans text-md bg-transparent outline-none"
+          className="w-full h-6 text-white placeholder-zinc-600 font-sans text-md bg-transparent outline-none"
           placeholder="Chat with AI, ask anything you like"
           value={value}
           disabled={isDisabled}
           onChange={_onChange}
           onKeyDown={_onKeyDown}
         />
-        <div className="flex flex-col pt-8">
-          <div className="flex flex-row items-center gap-x-3">
+        <div className="flex row items-end justify-between gap-x-6 pt-8">
+          <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
             {
               aiModels.map((name) => {
                 return (
-                  <div
-                    className={`cursor-pointer bg-zinc-${(model === name) ? 700 : 900} border-solid border-[1px] rounded-lg border-zinc-${(model === name) ? 500 : 800} pt-2 pb-2 pl-3 pr-3`}
+                  <button
+                    className={`font-mono text-[11px] text-white cursor-pointer bg-zinc-${(model === name) ? 700 : 900} border-solid border-[1px] rounded-md border-zinc-${(model === name) ? 500 : 800} pt-[6px] pb-[6px] pl-[10px] pr-[10px]`}
                     key={name}
-                    role="button"
-                    tabIndex={0}
                     onClick={() => onModelChange(name)}
-                    onKeyDown={() => onModelChange(name)}
                   >
-                    <p className="font-mono text-xs text-white">
-                      {name}
-                    </p>
-                  </div>
+                    {name}
+                  </button>
                 );
               })
             }
           </div>
+          <button
+            className="font-sans text-sm text-white cursor-pointer bg-zinc-700 rounded-lg pt-2 pb-2 pl-3 pr-3"
+            onClick={() => onSend()}
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>
