@@ -25,13 +25,17 @@ const AppTab: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   const { model, inputValue } = useMemo(() => getTab(id), [id, getTab]);
 
   return (
-    <ChatInput
-      value={inputValue}
-      model={model}
-      onChange={(value) => setInputValue(id, value)}
-      onModelChange={(value) => setModel(id, value)}
-      onSend={() => sendMessage(id)}
-    />
+    <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between pb-10">
+      <div />
+      <ChatInput
+        value={inputValue}
+        model={model}
+        allowModelSelect={false}
+        onChange={(value) => setInputValue(id, value)}
+        onModelChange={(value) => setModel(id, value)}
+        onSend={() => sendMessage(id)}
+      />
+    </div>
   );
 };
 

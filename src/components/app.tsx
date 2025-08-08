@@ -2,7 +2,8 @@
 
 import { FunctionComponent, ReactElement, ReactNode } from 'react';
 import { BaseProps } from '../types';
-import { useApp } from "../hooks";
+import { useApp } from '../hooks';
+import { AppTab } from './';
 
 /**
  * The `App` component props
@@ -19,7 +20,7 @@ interface Props extends BaseProps {
  */
 const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
-  const { messages } = useApp();
+  const { selectedTabId, messages } = useApp();
 
   // If there are no messages in the app state then
   // render the children to render the page
@@ -32,7 +33,9 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
   }
 
   return (
-    <></>
+    <div className="w-full h-full flex flex-col items-center">
+      <AppTab id={selectedTabId}/>
+    </div>
   );
 }
 
