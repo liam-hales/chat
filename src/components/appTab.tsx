@@ -22,7 +22,7 @@ interface Props extends BaseProps {
 const AppTab: FunctionComponent<Props> = ({ chatId }): ReactElement<Props> => {
 
   const { getChat, setInputValue, setModel, sendMessage } = useApp();
-  const { model, inputValue } = useMemo(() => getChat(chatId), [chatId, getChat]);
+  const { model, inputValue, messages } = useMemo(() => getChat(chatId), [chatId, getChat]);
 
   return (
     <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between pb-10">
@@ -30,7 +30,7 @@ const AppTab: FunctionComponent<Props> = ({ chatId }): ReactElement<Props> => {
       <ChatInput
         value={inputValue}
         model={model}
-        allowModelSelect={false}
+        allowModelSelect={messages.length === 0}
         onChange={(value) => setInputValue(chatId, value)}
         onModelChange={(value) => setModel(chatId, value)}
         onSend={() => sendMessage(chatId)}
