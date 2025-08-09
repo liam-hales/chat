@@ -39,6 +39,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     title: 'New chat',
     model: aiModels[0],
     inputValue: '',
+    isLoading: false,
+    abortController: new AbortController(),
   };
 
   const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
@@ -74,8 +76,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   );
 
   /**
-   * Used to set the input value for a
-   * specific chat via it's `id`
+   * Used to set the input value
+   * for a specific chat
    *
    * @param chatId The chat ID
    * @param value The new input value
@@ -87,8 +89,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
-   * Used to set the model for a
-   * specific chat via it's `id`
+   * Used to set the model for
+   * a specific chat
    *
    * @param chatId The chat ID
    * @param value The new model
@@ -110,6 +112,9 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const newChat: AppChat = {
       ...defaultChat,
       id: id,
+      // Make sure to create a
+      // new abort controller
+      abortController: new AbortController(),
     };
 
     // Add the new created chat
@@ -125,8 +130,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
-   * Used to delete a specific
-   * chat via it's `id`
+   * Used to delete a specific chat
    *
    * @param chatId The chat ID
    */
@@ -168,16 +172,20 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
 
   /**
    * Used to send a message for
-   * a specific chat via it's `id`
+   * a specific chat
    *
    * @param chatId The chat ID
    */
   const sendMessage = async (chatId: string): Promise<void> => {
-    const { model, inputValue, messages } = getChat(chatId);
+    const { model, inputValue, messages, abortController } = getChat(chatId);
 
-    // Reset the input value state and add the
-    // users message to the messages state
+    // Set the input value state to clear the
+    // input and set the chat loading state
     setInputValue(chatId, '');
+    _updateChat(chatId, {
+      isLoading: true,
+    });
+
     setMessages((previous) => {
       return [
         ...previous,
@@ -189,16 +197,19 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       ];
     });
 
-    const streamValue = await streamChat({
-      model: model,
-      messages: [
-        ...messages,
-        {
-          role: 'user',
-          content: inputValue,
-        },
-      ],
-    });
+    const streamValue = await streamChat(
+      {
+        model: model,
+        messages: [
+          ...messages,
+          {
+            role: 'user',
+            content: inputValue,
+          },
+        ],
+      },
+      abortController.signal,
+    );
 
     // process the client stream value
     // and process each part
@@ -210,6 +221,13 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         continue;
       }
 
+      // Reset the chat loading state
+      _updateChat(chatId, {
+        isLoading: false,
+      });
+
+      // Add the text value to the latest
+      // message in the messages state
       setMessages((previous) => {
         const { role, content } = previous[previous.length - 1];
 
@@ -232,6 +250,21 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
             ];
       });
     }
+  };
+
+  /**
+   * Used to abort the request for
+   * a specific chat
+   *
+   * @param chatId The chat ID
+   * @param reason The reason for aborting
+   */
+  const abortRequest = (chatId: string, reason?: string): void => {
+    const { abortController } = getChat(chatId);
+
+    // Abort the chat request using the `AbortController`
+    // with the given reason
+    abortController.abort(reason);
   };
 
   /**
@@ -277,6 +310,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         setSelectedChat: setSelectedChatId,
         deleteChat: deleteChat,
         sendMessage: sendMessage,
+        abortRequest: abortRequest,
       }
     }
     >

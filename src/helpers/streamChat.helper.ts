@@ -12,9 +12,14 @@ import getConfig from 'next/config';
  * using the OpenRouter API and `ai` package under the hood
  *
  * @param options The options
+ * @param abortSignal The abort signal used to abort the request
+ *
  * @returns The client streamable value
  */
-const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<StreamableValue<string>> => {
+const streamChat = async (
+  options: z.infer<typeof streamChatSchema>,
+  abortSignal?: AbortSignal,
+): Promise<StreamableValue<string>> => {
 
   // As this is a server action, we need to
   // validate the options before using them
@@ -44,6 +49,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
       model: provider.chat(model),
       messages: messages,
       maxOutputTokens: 10000,
+      abortSignal: abortSignal,
 
       // eslint-disable-next-line no-console
       onError: (error) => console.error(error),

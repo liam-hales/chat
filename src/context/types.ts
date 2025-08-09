@@ -26,8 +26,8 @@ export interface AppActions {
   readonly getChat: (id: string) => AppChat & { readonly messages: ChatMessage[]; };
 
   /**
-   * Used to set the input value for a
-   * specific chat via it's `id`
+   * Used to set the input value
+   * for a specific chat
    *
    * @param chatId The chat ID
    * @param value The new input value
@@ -35,8 +35,8 @@ export interface AppActions {
   readonly setInputValue: (chatId: string, value: string) => void;
 
   /**
-   * Used to set the model for a
-   * specific chat via it's `id`
+   * Used to set the model for
+   * a specific chat
    *
    * @param chatId The chat ID
    * @param value The new model
@@ -58,8 +58,7 @@ export interface AppActions {
   readonly setSelectedChat: (chatId: string) => void;
 
   /**
-   * Used to delete a specific
-   * chat via it's `id`
+   * Used to delete a specific chat
    *
    * @param chatId The chat ID
    */
@@ -67,9 +66,18 @@ export interface AppActions {
 
   /**
    * Used to send a message for
-   * a specific chat via it's `id`
+   * a specific chat
    *
    * @param chatId The chat ID
    */
   readonly sendMessage: (chatId: string) => Promise<void>;
+
+  /**
+   * Used to abort the request for
+   * a specific chat
+   *
+   * @param chatId The chat ID
+   * @param reason The reason for aborting
+   */
+  readonly abortRequest: (chatId: string, reason?: string) => void;
 }
