@@ -1,6 +1,7 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import { AIModel, BaseProps } from '../types';
 import { aiModels } from '../constants';
+import { withRef } from '../helpers';
 import { ArrowUp } from 'lucide-react';
 
 /**
@@ -25,6 +26,7 @@ interface Props extends BaseProps<HTMLInputElement> {
  */
 const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   const {
+    internalRef,
     value,
     model,
     allowModelSelect = true,
@@ -58,6 +60,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
       <div className="flex flex-col pt-5 pb-5 pl-5 pr-5">
         <input
+          ref={internalRef}
           className="w-full h-6 text-white placeholder-zinc-600 font-sans text-md bg-transparent outline-none pl-1"
           placeholder="Chat with AI, ask anything you like"
           value={value}
@@ -118,4 +121,4 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   );
 };
 
-export default ChatInput;
+export default withRef(ChatInput);
