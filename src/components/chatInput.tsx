@@ -2,7 +2,7 @@ import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'rea
 import { AIModel, BaseProps } from '../types';
 import { aiModels } from '../constants';
 import { withRef } from '../helpers';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, X } from 'lucide-react';
 
 /**
  * The `ChatInput` component props
@@ -15,6 +15,7 @@ interface Props extends BaseProps<HTMLInputElement> {
   readonly onChange: (value: string) => void;
   readonly onModelChange: (value: AIModel) => void;
   readonly onSend: () => void;
+  readonly onAbort: () => void;
 }
 
 /**
@@ -34,6 +35,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     onChange,
     onModelChange,
     onSend,
+    onAbort,
   } = props;
 
   const _onChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -101,20 +103,33 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               </div>
             )
           }
-          <button
-            className={`
-              text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2
+          {
+            (isDisabled === true)
+              ? (
+                  <button
+                    className="text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2"
+                    onClick={onAbort}
+                  >
+                    <X />
+                  </button>
+                )
+              : (
+                  <button
+                    className={`
+                      text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2
 
-              disabled:cursor-not-allowed
-              disabled:text-zinc-500
-              disabled:bg-zinc-900
-              disabled:border-zinc-800
-            `}
-            onClick={() => onSend()}
-            disabled={isDisabled === true || value.trim() === ''}
-          >
-            <ArrowUp />
-          </button>
+                      disabled:cursor-not-allowed
+                      disabled:text-zinc-500
+                      disabled:bg-zinc-900
+                      disabled:border-zinc-800
+                    `}
+                    onClick={onSend}
+                    disabled={value.trim() === ''}
+                  >
+                    <ArrowUp />
+                  </button>
+                )
+          }
         </div>
       </div>
     </div>
