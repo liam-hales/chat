@@ -28,8 +28,11 @@
     "cleanup": "rm -rf .next/"
   },
   "dependencies": {
+    "@ai-sdk/rsc": "^1.0.8",
+    "@openrouter/ai-sdk-provider": "^1.1.2",
     "@tailwindcss/postcss": "^4.0.15",
     "@vercel/analytics": "^1.5.0",
+    "ai": "^5.0.8",
     "lucide-react": "^0.539.0",
     "nanoid": "^5.1.5",
     "next": "15.2.3",
@@ -37,7 +40,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "tailwindcss": "^4.0.15",
-    "typewriter-effect": "^2.22.0"
+    "typewriter-effect": "^2.22.0",
+    "zod": "^4.0.16"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.2.3",
