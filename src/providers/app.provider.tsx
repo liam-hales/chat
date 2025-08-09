@@ -5,6 +5,8 @@ import { AppContext } from '../context';
 import { BaseProps, AppChat, ChatMessage, AIModel } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModels } from '../constants';
+import { streamChat } from '../helpers';
+import { readStreamableValue } from '@ai-sdk/rsc';
 
 /**
  * The `AppProvider` component props
@@ -170,11 +172,12 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    *
    * @param chatId The chat ID
    */
-  const sendMessage = (chatId: string): void => {
-    const { model, inputValue } = getChat(chatId);
+  const sendMessage = async (chatId: string): Promise<void> => {
+    const { model, inputValue, messages } = getChat(chatId);
 
-    // Add the users message to
-    // the messages state
+    // Reset the input value state and add the
+    // users message to the messages state
+    setInputValue(chatId, '');
     setMessages((previous) => {
       return [
         ...previous,
@@ -185,6 +188,50 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         },
       ];
     });
+
+    const streamValue = await streamChat({
+      model: model,
+      messages: [
+        ...messages,
+        {
+          role: 'user',
+          content: inputValue,
+        },
+      ],
+    });
+
+    // process the client stream value
+    // and process each part
+    for await (const value of readStreamableValue(streamValue)) {
+
+      // If there is no text value
+      // then continue
+      if (value == null) {
+        continue;
+      }
+
+      setMessages((previous) => {
+        const { role, content } = previous[previous.length - 1];
+
+        return (role === 'user')
+          ? [
+              ...previous,
+              {
+                chatId: chatId,
+                role: 'assistant',
+                content: value,
+              },
+            ]
+          : [
+              ...previous.slice(0, -1),
+              {
+                chatId: chatId,
+                role: 'assistant',
+                content: `${content}${value}`,
+              },
+            ];
+      });
+    }
   };
 
   /**
