@@ -20,6 +20,7 @@ const nextConfig = {
   productionBrowserSourceMaps: true,
   serverRuntimeConfig: {
     siteUrl: process.env.SITE_URL,
+    openRouterApiKey: process.env.OPEN_ROUTER_API_KEY,
   },
 };
 
