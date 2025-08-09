@@ -40,7 +40,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     model: aiModels[0],
     inputValue: '',
     isLoading: false,
-    abortController: new AbortController(),
   };
 
   const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
@@ -112,9 +111,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const newChat: AppChat = {
       ...defaultChat,
       id: id,
-      // Make sure to create a
-      // new abort controller
-      abortController: new AbortController(),
     };
 
     // Add the new created chat
@@ -177,13 +173,15 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    * @param chatId The chat ID
    */
   const sendMessage = async (chatId: string): Promise<void> => {
-    const { model, inputValue, messages, abortController } = getChat(chatId);
+    const { model, inputValue, messages } = getChat(chatId);
+    const abortController = new AbortController();
 
     // Set the input value state to clear the
     // input and set the chat loading state
     setInputValue(chatId, '');
     _updateChat(chatId, {
       isLoading: true,
+      abortController: abortController,
     });
 
     setMessages((previous) => {
@@ -197,8 +195,13 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       ];
     });
 
-    const streamValue = await streamChat(
-      {
+    try {
+      // Set the abort controller to throw if aborted throughout this `try` block so the
+      // logic will fall into the `catch` block and the error can be handled
+
+      abortController.signal.throwIfAborted();
+
+      const streamValue = await streamChat({
         model: model,
         messages: [
           ...messages,
@@ -207,48 +210,73 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
             content: inputValue,
           },
         ],
-      },
-      abortController.signal,
-    );
+      });
 
-    // process the client stream value
-    // and process each part
-    for await (const value of readStreamableValue(streamValue)) {
+      abortController.signal.throwIfAborted();
 
-      // If there is no text value
-      // then continue
-      if (value == null) {
-        continue;
+      // process the client stream value
+      // and process each part
+      for await (const value of readStreamableValue(streamValue)) {
+        abortController.signal.throwIfAborted();
+
+        // If there is no text value
+        // then continue
+        if (value == null) {
+          continue;
+        }
+
+        // Reset the chat loading state
+        _updateChat(chatId, {
+          isLoading: false,
+        });
+
+        // Add the text value to the latest
+        // message in the messages state
+        setMessages((previous) => {
+          const { role, content } = previous[previous.length - 1];
+
+          return (role === 'user')
+            ? [
+                ...previous,
+                {
+                  chatId: chatId,
+                  role: 'assistant',
+                  content: value,
+                },
+              ]
+            : [
+                ...previous.slice(0, -1),
+                {
+                  chatId: chatId,
+                  role: 'assistant',
+                  content: `${content}${value}`,
+                },
+              ];
+        });
+      }
+    }
+    catch (error) {
+
+      // If the error is an abort error
+      // then handle it accordingly
+      if (
+        error instanceof Error &&
+        error.name === 'AbortError'
+      ) {
+
+        // eslint-disable-next-line no-console
+        console.error(error);
+
+        // Reset the chat loading state
+        _updateChat(chatId, {
+          isLoading: false,
+        });
+
+        return;
       }
 
-      // Reset the chat loading state
-      _updateChat(chatId, {
-        isLoading: false,
-      });
-
-      // Add the text value to the latest
-      // message in the messages state
-      setMessages((previous) => {
-        const { role, content } = previous[previous.length - 1];
-
-        return (role === 'user')
-          ? [
-              ...previous,
-              {
-                chatId: chatId,
-                role: 'assistant',
-                content: value,
-              },
-            ]
-          : [
-              ...previous.slice(0, -1),
-              {
-                chatId: chatId,
-                role: 'assistant',
-                content: `${content}${value}`,
-              },
-            ];
-      });
+      // Unknown error, re-throw it
+      throw error;
     }
   };
 
@@ -262,9 +290,12 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const abortRequest = (chatId: string, reason?: string): void => {
     const { abortController } = getChat(chatId);
 
-    // Abort the chat request using the `AbortController`
-    // with the given reason
-    abortController.abort(reason);
+    const error = new Error(reason);
+    error.name = 'AbortError';
+
+    // Abort the chat request (if the controller exists)
+    // using the chats `AbortController` with a given reason
+    abortController?.abort(error);
   };
 
   /**
