@@ -41,7 +41,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
   }
 
   return (
-    <div className="w-full h-full flex flex-col items-center overflow-hidden">
+    <div className="w-full h-full flex flex-col items-center">
       <div className="w-full flex flex-col items-start">
         <div className="w-full h-14 flex flex-row items-center gap-3 overflow-x-auto whitespace-nowrap p-2">
             {
@@ -61,10 +61,13 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
               })
             }
             <button
-              className="w-10 h-full shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-900 rounded-lg"
+              className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-900 rounded-lg"
               onClick={createChat}
             >
-              <Plus className="text-white"/>
+              <Plus
+                className="text-white"
+                size={20}
+              />
             </button>
         </div>
       </div>
