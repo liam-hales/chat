@@ -23,8 +23,8 @@ interface Props extends BaseProps {
 const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { getChat, setInputValue, setModel, sendMessage } = useApp();
-  const { model, inputValue, messages } = useMemo(() => getChat(id), [id, getChat]);
+  const { getChat, setInputValue, setModel, sendMessage, abortRequest } = useApp();
+  const { model, inputValue, state, messages } = useMemo(() => getChat(id), [id, getChat]);
 
   /**
    * Used to focus the `ChatInput` whenever the
@@ -60,15 +60,26 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                 );
           })
         }
+        {
+          (state === 'loading') && (
+            <Loader
+              className="self-start"
+              appearance="dark"
+              text="Thinking..."
+            />
+          )
+        }
       </div>
       <ChatInput
         ref={inputRef}
         value={inputValue}
         model={model}
         allowModelSelect={messages.length === 0}
+        isDisabled={state !== 'idle'}
         onChange={(value) => setInputValue(id, value)}
         onModelChange={(value) => setModel(id, value)}
         onSend={() => sendMessage(id)}
+        onAbort={() => abortRequest(id, 'User aborted request')}
       />
     </div>
   );

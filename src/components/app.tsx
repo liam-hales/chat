@@ -46,13 +46,14 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
         <div className="w-full h-14 flex flex-row items-center gap-3 overflow-x-auto whitespace-nowrap p-2">
             {
               chats.map((chat, index) => {
-                const { id, title, model } = chat;
+                const { id, title, model, state } = chat;
 
                 return (
                   <Tab
                     key={`tab-${model}-${index}`}
                     title={title}
                     model={model}
+                    isLoading={state !== 'idle'}
                     isSelected={(selectedChatId === id)}
                     onSelect={() => setSelectedChat(id)}
                     onDelete={() => deleteChat(id)}
@@ -61,7 +62,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
               })
             }
             <button
-              className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-900 rounded-lg"
+              className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-800 hover:border-zinc-600 rounded-lg"
               onClick={createChat}
             >
               <Plus

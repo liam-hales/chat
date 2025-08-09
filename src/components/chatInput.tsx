@@ -89,7 +89,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                         className={`
                           font-mono text-[11px] text-white cursor-pointer border-solid border-[1px] rounded-md pt-[6px] pb-[6px] pl-[10px] pr-[10px]
 
-                          ${(model === name) ? 'bg-zinc-700' : 'bg-zinc-900'}
+                          ${(model === name) ? 'bg-zinc-600' : 'bg-zinc-900'}
                           ${(model === name) ? 'border-zinc-500' : 'border-zinc-800'}
                         `}
                         key={name}
@@ -119,7 +119,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                       text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2
 
                       disabled:cursor-not-allowed
-                      disabled:text-zinc-500
+                      disabled:text-zinc-600
                       disabled:bg-zinc-900
                       disabled:border-zinc-800
                     `}

@@ -3,6 +3,7 @@
 import { FunctionComponent, ReactElement, useState } from 'react';
 import { X } from 'lucide-react';
 import { AIModel, BaseProps } from '../types';
+import { Loader } from './common';
 
 /**
  * The `Tab` component props
@@ -10,6 +11,7 @@ import { AIModel, BaseProps } from '../types';
 interface Props extends BaseProps {
   readonly title: string;
   readonly model: AIModel;
+  readonly isLoading?: boolean;
   readonly isSelected?: boolean;
   readonly onSelect: () => void;
   readonly onDelete: () => void;
@@ -22,18 +24,26 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `Tab` component
  */
-const Tab: FunctionComponent<Props> = ({ title, model, isSelected = false, onSelect, onDelete }): ReactElement<Props> => {
+const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
+  const {
+    title,
+    model,
+    isLoading = false,
+    isSelected = false,
+    onSelect,
+    onDelete,
+  } = props;
+
   const [isHovering, setIsHovering] = useState(false);
 
   return (
     <div
-      className={
-        `h-full flex flex-row items-center gap-x-10 cursor-pointer border-solid border-[1px] rounded-lg pl-5 pr-2
+      className={`
+        h-full flex flex-row items-center cursor-pointer border-solid border-[1px] rounded-lg pl-2 pr-2
 
-        ${(isSelected === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
+        ${(isSelected === true) ? 'bg-zinc-700' : 'bg-zinc-950'}
         ${(isSelected === true) ? 'border-zinc-500' : 'border-zinc-800'}
-      `
-      }
+      `}
       role="button"
       tabIndex={0}
       onClick={onSelect}
@@ -41,12 +51,17 @@ const Tab: FunctionComponent<Props> = ({ title, model, isSelected = false, onSel
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <p className="font-sans text-white text-sm">
+      {
+        (isLoading === true) && (
+          <Loader appearance={(isSelected === true) ? 'light' : 'dark'} />
+        )
+      }
+      <p className="font-sans text-white text-sm pr-12 pl-3">
         {title}
       </p>
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-x-2">
         <p className={`
-          font-sans text-white text-xs border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-2
+          font-mono text-white text-[11px] border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-2
 
           ${(isSelected === true) ? 'bg-zinc-500' : 'bg-zinc-800'}
           ${(isSelected === true) ? 'border-zinc-400' : 'border-zinc-700'}
@@ -57,7 +72,7 @@ const Tab: FunctionComponent<Props> = ({ title, model, isSelected = false, onSel
         {
           (isHovering === true) && (
             <button
-              className="cursor-pointer pl-2"
+              className="cursor-pointer"
               onClick={(event) => {
 
                 // Prevent propagation to stop the
