@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement, useMemo } from 'react';
+import { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from 'react';
 import { ChatInput } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
@@ -20,14 +20,24 @@ interface Props extends BaseProps {
  * @returns The `AppChat` component
  */
 const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { getChat, setInputValue, setModel, sendMessage } = useApp();
   const { model, inputValue, messages } = useMemo(() => getChat(id), [id, getChat]);
+
+  /**
+   * Used to focus the `ChatInput` whenever the
+   * user switches tabs and the `id` prop changes
+   */
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [id]);
 
   return (
     <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between pb-10">
       <div />
       <ChatInput
+        ref={inputRef}
         value={inputValue}
         model={model}
         allowModelSelect={messages.length === 0}

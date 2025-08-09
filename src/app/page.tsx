@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement, useEffect, useRef } from 'react';
 import { Typewriter } from '../components/common';
 import { ChatInput } from '../components';
 import { useApp } from '../hooks';
@@ -12,12 +12,21 @@ import { useApp } from '../hooks';
  * @returns The `AppPage` component
  */
 const AppPage: FunctionComponent = (): ReactElement => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { chats, setInputValue, setModel, sendMessage } = useApp();
   const { id, model, inputValue } = chats[0];
 
+  /**
+   * Used to focus the `ChatInput`
+   * when the component is rendered
+   */
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   return (
-    <div className="h-full flex flex-col items-center pt-36 pb-28 pl-10 pr-10">
+    <div className="h-full flex flex-col items-center pt-24 pb-20 pl-10 pr-10">
       <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between">
         <div className="w-full max-w-[880px]">
           <Typewriter
@@ -39,6 +48,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
           />
         </div>
         <ChatInput
+          ref={inputRef}
           value={inputValue}
           model={model}
           onChange={(value) => setInputValue(id, value)}
