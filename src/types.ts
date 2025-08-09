@@ -32,7 +32,7 @@ export interface AppChat {
   readonly title: string;
   readonly model: AIModel;
   readonly inputValue: string;
-  readonly isLoading: boolean;
+  readonly state: 'idle' | 'loading' | 'streaming';
   readonly abortController?: AbortController;
 }
 

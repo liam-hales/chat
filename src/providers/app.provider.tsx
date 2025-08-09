@@ -39,7 +39,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     title: 'New chat',
     model: aiModels[0],
     inputValue: '',
-    isLoading: false,
+    state: 'idle',
   };
 
   const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
@@ -177,10 +177,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const abortController = new AbortController();
 
     // Set the input value state to clear the
-    // input and set the chat loading state
+    // input and set the chat state to loading
     setInputValue(chatId, '');
     _updateChat(chatId, {
-      isLoading: true,
+      state: 'loading',
       abortController: abortController,
     });
 
@@ -219,16 +219,15 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       for await (const value of readStreamableValue(streamValue)) {
         abortController.signal.throwIfAborted();
 
+        _updateChat(chatId, {
+          state: 'streaming',
+        });
+
         // If there is no text value
         // then continue
         if (value == null) {
           continue;
         }
-
-        // Reset the chat loading state
-        _updateChat(chatId, {
-          isLoading: false,
-        });
 
         // Add the text value to the latest
         // message in the messages state
@@ -256,27 +255,24 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       }
     }
     catch (error) {
+      if (error instanceof Error) {
 
-      // If the error is an abort error
-      // then handle it accordingly
-      if (
-        error instanceof Error &&
-        error.name === 'AbortError'
-      ) {
-
-        // eslint-disable-next-line no-console
-        console.error(error);
-
-        // Reset the chat loading state
-        _updateChat(chatId, {
-          isLoading: false,
-        });
-
-        return;
+        // If the error is an abort error
+        // then handle it accordingly
+        if (error.name === 'AbortError') {
+          // eslint-disable-next-line no-console
+          console.error(error);
+          return;
+        }
       }
 
       // Unknown error, re-throw it
       throw error;
+    }
+    finally {
+      _updateChat(chatId, {
+        state: 'idle',
+      });
     }
   };
 
