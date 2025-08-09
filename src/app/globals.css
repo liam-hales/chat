@@ -14,7 +14,8 @@
   --font-sans: var(--sans-font);
   --font-mono: var(--mono-font);
 
-  --animate-cursor: cursor 800ms infinite;
+  --animate-cursor: cursor 800ms ease infinite;
+  --animate-spinner: spinner 500ms linear infinite;
 
   @keyframes cursor {
     from,
@@ -23,6 +24,12 @@
     }
     50% {
       opacity: 1;
+    }
+  }
+
+  @keyframes spinner {
+    to {
+      transform: rotate(360deg);
     }
   }
 }
