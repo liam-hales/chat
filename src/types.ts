@@ -40,6 +40,6 @@ export interface AppChat {
  */
 export interface ChatMessage {
   readonly chatId: string;
-  readonly role: 'user' | 'ai';
+  readonly role: 'user' | 'assistant';
   readonly content: string;
 }

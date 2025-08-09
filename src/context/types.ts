@@ -71,5 +71,5 @@ export interface AppActions {
    *
    * @param chatId The chat ID
    */
-  readonly sendMessage: (chatId: string) => void;
+  readonly sendMessage: (chatId: string) => Promise<void>;
 }
