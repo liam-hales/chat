@@ -58,7 +58,13 @@ const Tab: FunctionComponent<Props> = ({ title, model, isSelected = false, onSel
           (isHovering === true) && (
             <button
               className="cursor-pointer pl-2"
-              onClick={onDelete}
+              onClick={(event) => {
+
+                // Prevent propagation to stop the
+                // parent div `onClick` being called
+                event.stopPropagation();
+                onDelete();
+              }}
             >
               <X
                 className="text-white"
