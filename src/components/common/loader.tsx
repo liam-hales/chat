@@ -7,6 +7,7 @@ import { BaseProps } from '../../types';
  * The `Loader` component props
  */
 interface Props extends BaseProps {
+  readonly appearance?: 'light' | 'dark';
   readonly text?: string;
 }
 
@@ -17,12 +18,17 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `Loader` component
  */
-const Loader: FunctionComponent<Props> = ({ className, text }): ReactElement<Props> => {
+const Loader: FunctionComponent<Props> = ({ className, appearance = 'dark', text }): ReactElement<Props> => {
   return (
     <div className={`${className ?? ''} flex flex-row items-center`}>
       <div className="relative">
         <div className="w-6 h-6 absolute rounded-full border-transparent border-t-solid border-4 border-t-white animate-spinner" />
-        <div className="w-6 h-6 rounded-full border-t-solid border-4 border-zinc-800" />
+        <div className={`
+          w-6 h-6 rounded-full border-t-solid border-4
+
+          ${(appearance === 'light' ? 'border-zinc-500' : 'border-zinc-800')}
+        `}
+        />
       </div>
       {
         (text != null) && (
