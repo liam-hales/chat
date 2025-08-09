@@ -22,7 +22,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
     .strict()
     .parse(options);
 
-  const { model, messages } = validated;
+  const { modelId, messages } = validated;
 
   const { serverRuntimeConfig } = getConfig();
   const { openRouterApiKey } = serverRuntimeConfig;
@@ -41,7 +41,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
    */
   const executeRequest = async (): Promise<void> => {
     const { textStream } = streamText({
-      model: provider.chat(model),
+      model: provider.chat(modelId),
       messages: messages,
       maxOutputTokens: 10000,
 

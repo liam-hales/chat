@@ -1,14 +1,18 @@
 /**
- * Describes all the available
- * AI models to chat with
+ * Describes the definitions for all the
+ * available AI models to chat with
  */
-export const aiModels = [
-  'gpt-5-mini',
-  'gpt-oss-20b',
-  'gpt-oss-120b',
-  'gpt-4.1',
-  'claude-sonnet-4',
-  'gemini-2.5-flash',
-  'grok-3-mini',
-  'deepseek-r1',
+export const aiModelDefinitions = [
+  {
+    name: 'gpt-oss-20b',
+    openRouterId: 'openai/gpt-oss-20b',
+  },
+  {
+    name: 'gpt-oss-120b',
+    openRouterId: 'openai/gpt-oss-120b',
+  },
+  {
+    name: 'gpt-5-mini',
+    openRouterId: 'openai/gpt-5-mini',
+  },
 ] as const;

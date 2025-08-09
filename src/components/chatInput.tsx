@@ -1,6 +1,6 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import { AIModel, BaseProps } from '../types';
-import { aiModels } from '../constants';
+import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
 import { ArrowUp, X } from 'lucide-react';
 
@@ -83,7 +83,9 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
 
               <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
                 {
-                  aiModels.map((name) => {
+                  aiModelDefinitions.map((def) => {
+                    const { name } = def;
+
                     return (
                       <button
                         className={`
@@ -107,7 +109,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             (isDisabled === true)
               ? (
                   <button
-                    className="text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2"
+                    className="text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2"
                     onClick={onAbort}
                   >
                     <X />
@@ -116,12 +118,13 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               : (
                   <button
                     className={`
-                      text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 rounded-lg p-2
+                      text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2
 
                       disabled:cursor-not-allowed
                       disabled:text-zinc-600
                       disabled:bg-zinc-900
                       disabled:border-zinc-800
+
                     `}
                     onClick={onSend}
                     disabled={value.trim() === ''}

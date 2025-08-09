@@ -1,11 +1,11 @@
 import { Ref } from 'react';
-import { aiModels } from './constants';
+import { aiModelDefinitions } from './constants';
 
 /**
  * Describes all the available
  * AI models to chat with
  */
-export type AIModel = typeof aiModels[number];
+export type AIModel = typeof aiModelDefinitions[number]['name'];
 
 /**
  * The props that all component

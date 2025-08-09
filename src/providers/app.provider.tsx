@@ -4,7 +4,7 @@ import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } fro
 import { AppContext } from '../context';
 import { BaseProps, AppChat, ChatMessage, AIModel } from '../types';
 import { nanoid } from 'nanoid';
-import { aiModels } from '../constants';
+import { aiModelDefinitions } from '../constants';
 import { streamChat } from '../helpers';
 import { readStreamableValue } from '@ai-sdk/rsc';
 
@@ -37,7 +37,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const defaultChat: AppChat = {
     id: defaultChatId,
     title: 'New chat',
-    model: aiModels[0],
+    model: aiModelDefinitions[0].name,
     inputValue: '',
     state: 'idle',
   };
@@ -195,6 +195,16 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       ];
     });
 
+    // Get the open router model ID from
+    // the AI model definitions
+    const def = aiModelDefinitions.find((def) => def.name === model);
+
+    // If the model definition does not
+    // exist then throw an error
+    if (def == null) {
+      throw new Error(`Definition not found for model "${model}"`);
+    }
+
     try {
       // Set the abort controller to throw if aborted throughout this `try` block so the
       // logic will fall into the `catch` block and the error can be handled
@@ -202,7 +212,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       abortController.signal.throwIfAborted();
 
       const streamValue = await streamChat({
-        model: model,
+        modelId: def.openRouterId,
         messages: [
           ...messages,
           {

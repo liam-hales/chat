@@ -1,12 +1,14 @@
 import { z } from 'zod';
-import { aiModels } from '../constants';
+import { aiModelDefinitions } from '../constants';
 
 /**
  * The schema for the `streamChat` helper used
  * for type inference and to validate options
  */
 const streamChatSchema = z.object({
-  model: z.union(aiModels.map((model) => z.literal(model))),
+  modelId: z.union(
+    aiModelDefinitions.map((model) => z.literal(model.openRouterId)),
+  ),
   messages: z
     .array(
       z.object({
