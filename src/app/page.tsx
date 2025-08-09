@@ -14,7 +14,7 @@ import { useApp } from '../hooks';
 const AppPage: FunctionComponent = (): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { chats, setInputValue, setModel, sendMessage } = useApp();
+  const { chats, setInputValue, setModel, sendMessage, abortRequest } = useApp();
   const { id, model, inputValue } = chats[0];
 
   /**
@@ -54,6 +54,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
           onChange={(value) => setInputValue(id, value)}
           onModelChange={(value) => setModel(id, value)}
           onSend={() => sendMessage(id)}
+          onAbort={() => abortRequest(id)}
         />
       </div>
     </div>
