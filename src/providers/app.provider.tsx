@@ -129,17 +129,39 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    * @param chatId The chat ID
    */
   const deleteChat = (chatId: string): void => {
-    const existingChat = chats.find((chat) => chat.id === chatId);
+    const existingIndex = chats.findIndex((chat) => chat.id === chatId);
 
     // If the chat does not exist
     // then throw an error
-    if (existingChat == null) {
+    if (existingIndex < 0) {
       throw new Error(`No chat with ID "${chatId}" found`);
     }
 
-    // Remove the existing chat
-    // from the chats state
-    setChats((previous) => previous.filter((chat) => chat.id !== chatId));
+    // Remove the existing chat and it's
+    // messages from the app state
+    const newMessages = messages.filter((message) => message.chatId !== chatId);
+    const filteredChats = chats.filter((chat) => chat.id !== chatId);
+
+    // If the last chat has been remove, set the
+    // new chats array including the default chat
+    const newChats = (filteredChats.length === 0)
+      ? [defaultChat]
+      : filteredChats;
+
+    setChats(newChats);
+    setMessages(newMessages);
+
+    // If the deleted chat is the one currently
+    // selected then select another chat
+    if (selectedChatId === chatId) {
+
+      // Calculate the index of the new chat to select and use
+      // the ID of said chat to set the selected chat ID state
+      const newIndex = (existingIndex < newChats.length) ? existingIndex : existingIndex - 1;
+      const { id } = newChats[newIndex];
+
+      setSelectedChatId(id);
+    }
   };
 
   /**
