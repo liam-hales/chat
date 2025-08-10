@@ -4,6 +4,7 @@ import { FunctionComponent, ReactElement, useState } from 'react';
 import { X } from 'lucide-react';
 import { AIModelDefinition, BaseProps } from '../types';
 import { Loader } from './common';
+import { Model } from './';
 
 /**
  * The `Tab` component props
@@ -60,15 +61,10 @@ const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
         {title}
       </p>
       <div className="flex flex-row gap-x-2">
-        <p className={`
-          font-mono text-white text-[11px] border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-2
-
-          ${(isSelected === true) ? 'bg-zinc-500' : 'bg-zinc-800'}
-          ${(isSelected === true) ? 'border-zinc-400' : 'border-zinc-700'}
-        `}
-        >
-          {modelDefinition.name}
-        </p>
+        <Model
+          definition={modelDefinition}
+          appearance={(isSelected === true) ? 'light' : 'dark'}
+        />
         {
           (isHovering === true) && (
             <button

@@ -3,6 +3,7 @@ import { AIModelDefinition, BaseProps } from '../types';
 import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
 import { ArrowUp, X } from 'lucide-react';
+import { Model } from './';
 
 /**
  * The `ChatInput` component props
@@ -73,32 +74,24 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         <div className="flex row items-end justify-between gap-x-6 pt-8">
           {
             (allowModelSelect === false) && (
-              <div className="font-mono text-[11px] text-white border-solid border-[1px] border-zinc-500 bg-zinc-700 rounded-md pt-1 pb-1 pl-2 pr-2">
-                {modelDefinition.name}
-              </div>
+              <Model
+                definition={modelDefinition}
+                appearance="light"
+              />
             )
           }
           {
             (allowModelSelect === true) && (
-
               <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
                 {
                   aiModelDefinitions.map((def) => {
-                    const { id, name } = def;
-
                     return (
-                      <button
-                        className={`
-                          font-mono text-[11px] text-white cursor-pointer border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-2
-
-                          ${(modelDefinition.name === name) ? 'bg-zinc-600' : 'bg-zinc-900'}
-                          ${(modelDefinition.name === name) ? 'border-zinc-500' : 'border-zinc-800'}
-                        `}
-                        key={name}
-                        onClick={() => onModelChange(id)}
-                      >
-                        {name}
-                      </button>
+                      <Model
+                        key={`model-${def.name}`}
+                        definition={def}
+                        appearance={(modelDefinition.id === def.id) ? 'light' : 'dark'}
+                        onClick={() => onModelChange(def.id)}
+                      />
                     );
                   })
                 }
