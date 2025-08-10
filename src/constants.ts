@@ -1,18 +1,38 @@
+import { nanoid } from 'nanoid';
+
 /**
  * Describes the definitions for all the
  * available AI models to chat with
  */
 export const aiModelDefinitions = [
   {
+    id: nanoid(8),
     name: 'gpt-oss-20b',
-    openRouterId: 'openai/gpt-oss-20b',
+    openRouterId: 'openai/gpt-oss-20b:free',
   },
   {
+    id: nanoid(8),
     name: 'gpt-oss-120b',
     openRouterId: 'openai/gpt-oss-120b',
   },
   {
+    id: nanoid(8),
     name: 'gpt-5-mini',
     openRouterId: 'openai/gpt-5-mini',
+  },
+  {
+    id: nanoid(8),
+    name: 'deepseek-r1',
+    openRouterId: 'deepseek/deepseek-r1-0528:free',
+  },
+  {
+    id: nanoid(8),
+    name: 'gemma-3-27b',
+    openRouterId: 'google/gemma-3-27b-it:free',
+  },
+  {
+    id: nanoid(8),
+    name: 'gemma-3n-2b',
+    openRouterId: 'google/gemma-3n-e2b-it:free',
   },
 ] as const;
