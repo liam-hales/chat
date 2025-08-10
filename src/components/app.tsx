@@ -19,12 +19,12 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `App` component
  */
-const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
-
+const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | ReactNode => {
   const {
     selectedChatId,
     chats,
     messages,
+    getChat,
     createChat,
     setSelectedChat,
     deleteChat
@@ -46,13 +46,13 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
         <div className="w-full h-14 flex flex-row items-center gap-3 overflow-x-auto whitespace-nowrap p-2">
             {
               chats.map((chat, index) => {
-                const { id, title, model, state } = chat;
+                const { id, title, state, modelDefinition } = getChat(chat.id);
 
                 return (
                   <Tab
-                    key={`tab-${model}-${index}`}
+                    key={`tab-${modelDefinition.name}-${index}`}
                     title={title}
-                    model={model}
+                    modelDefinition={modelDefinition}
                     isLoading={state !== 'idle'}
                     isSelected={(selectedChatId === id)}
                     onSelect={() => setSelectedChat(id)}

@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, useState } from 'react';
 import { X } from 'lucide-react';
-import { AIModel, BaseProps } from '../types';
+import { AIModelDefinition, BaseProps } from '../types';
 import { Loader } from './common';
 
 /**
@@ -10,7 +10,7 @@ import { Loader } from './common';
  */
 interface Props extends BaseProps {
   readonly title: string;
-  readonly model: AIModel;
+  readonly modelDefinition: AIModelDefinition;
   readonly isLoading?: boolean;
   readonly isSelected?: boolean;
   readonly onSelect: () => void;
@@ -27,7 +27,7 @@ interface Props extends BaseProps {
 const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
   const {
     title,
-    model,
+    modelDefinition,
     isLoading = false,
     isSelected = false,
     onSelect,
@@ -67,7 +67,7 @@ const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
           ${(isSelected === true) ? 'border-zinc-400' : 'border-zinc-700'}
         `}
         >
-          {model}
+          {modelDefinition.name}
         </p>
         {
           (isHovering === true) && (

@@ -14,8 +14,8 @@ import { useApp } from '../hooks';
 const AppPage: FunctionComponent = (): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { chats, setInputValue, setModel, sendMessage, abortRequest } = useApp();
-  const { id, model, inputValue } = chats[0];
+  const { chats, getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
+  const { id, inputValue, modelDefinition } = getChat(chats[0].id);
 
   /**
    * Used to focus the `ChatInput`
@@ -50,9 +50,9 @@ const AppPage: FunctionComponent = (): ReactElement => {
         <ChatInput
           ref={inputRef}
           value={inputValue}
-          model={model}
+          modelDefinition={modelDefinition}
           onChange={(value) => setInputValue(id, value)}
-          onModelChange={(value) => setModel(id, value)}
+          onModelChange={(onModelChange) => setModelDefinition(id, onModelChange)}
           onSend={() => sendMessage(id)}
           onAbort={() => abortRequest(id)}
         />

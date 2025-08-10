@@ -23,8 +23,8 @@ interface Props extends BaseProps {
 const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { getChat, setInputValue, setModel, sendMessage, abortRequest } = useApp();
-  const { model, inputValue, state, messages } = useMemo(() => getChat(id), [id, getChat]);
+  const { getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
+  const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
 
   /**
    * Used to focus the `ChatInput` whenever the
@@ -44,7 +44,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
             return (role === 'user')
               ? (
                   <div
-                    className="self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4"
+                    className="max-w-[600px] self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4"
                     key={index}
                   >
                     <p className="text-white">{content}</p>
@@ -73,11 +73,11 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
       <ChatInput
         ref={inputRef}
         value={inputValue}
-        model={model}
+        modelDefinition={modelDefinition}
         allowModelSelect={messages.length === 0}
         isDisabled={state !== 'idle'}
         onChange={(value) => setInputValue(id, value)}
-        onModelChange={(value) => setModel(id, value)}
+        onModelChange={(definitionId) => setModelDefinition(id, definitionId)}
         onSend={() => sendMessage(id)}
         onAbort={() => abortRequest(id, 'User aborted request')}
       />

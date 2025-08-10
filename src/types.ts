@@ -2,10 +2,10 @@ import { Ref } from 'react';
 import { aiModelDefinitions } from './constants';
 
 /**
- * Describes all the available
+ * Describes the definitions for all available
  * AI models to chat with
  */
-export type AIModel = typeof aiModelDefinitions[number]['name'];
+export type AIModelDefinition = typeof aiModelDefinitions[number];
 
 /**
  * The props that all component
@@ -24,13 +24,22 @@ export interface BaseProps<T extends HTMLElement = HTMLElement> {
 }
 
 /**
+ * Used to describe the full
+ * chat with all of it's data
+ */
+export interface FullAppChat extends AppChat {
+  readonly messages: ChatMessage[];
+  readonly modelDefinition: AIModelDefinition;
+}
+
+/**
  * Describes the app chat data which
  * will be sorted in the app state
  */
 export interface AppChat {
   readonly id: string;
   readonly title: string;
-  readonly model: AIModel;
+  readonly modelDefinitionId: string;
   readonly inputValue: string;
   readonly state: 'idle' | 'loading' | 'streaming';
   readonly abortController?: AbortController;

@@ -1,4 +1,4 @@
-import { AIModel, AppChat, ChatMessage } from '../types';
+import { AppChat, ChatMessage, FullAppChat } from '../types';
 
 /**
  * Describes the app state which consists of all
@@ -17,13 +17,13 @@ export interface AppState {
 export interface AppActions {
 
   /**
-   * Used to get a specific
-   * chat via it's `id`
+   * Used to get a specific chat via it's
+   * `id` with its full data from other state
    *
    * @param id The chat ID
-   * @returns The found chat
+   * @returns The full chat
    */
-  readonly getChat: (id: string) => AppChat & { readonly messages: ChatMessage[]; };
+  readonly getChat: (id: string) => FullAppChat;
 
   /**
    * Used to set the input value
@@ -35,13 +35,13 @@ export interface AppActions {
   readonly setInputValue: (chatId: string, value: string) => void;
 
   /**
-   * Used to set the model for
-   * a specific chat
+   * Used to set the model definition
+   * for a specific chat
    *
    * @param chatId The chat ID
-   * @param value The new model
+   * @param modelDefinitionId The model definition ID
    */
-  readonly setModel: (chatId: string, value: AIModel) => void;
+  readonly setModelDefinition: (chatId: string, modelDefinitionId: string) => void;
 
   /**
    * Used to create a new chat and set

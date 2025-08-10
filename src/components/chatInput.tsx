@@ -1,5 +1,5 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
-import { AIModel, BaseProps } from '../types';
+import { AIModelDefinition, BaseProps } from '../types';
 import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
 import { ArrowUp, X } from 'lucide-react';
@@ -9,11 +9,11 @@ import { ArrowUp, X } from 'lucide-react';
  */
 interface Props extends BaseProps<HTMLInputElement> {
   readonly value: string;
-  readonly model: AIModel;
+  readonly modelDefinition: AIModelDefinition;
   readonly allowModelSelect?: boolean;
   readonly isDisabled?: boolean;
   readonly onChange: (value: string) => void;
-  readonly onModelChange: (value: AIModel) => void;
+  readonly onModelChange: (definitionId: string) => void;
   readonly onSend: () => void;
   readonly onAbort: () => void;
 }
@@ -29,7 +29,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   const {
     internalRef,
     value,
-    model,
+    modelDefinition,
     allowModelSelect = true,
     isDisabled = false,
     onChange,
@@ -73,8 +73,8 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         <div className="flex row items-end justify-between gap-x-6 pt-8">
           {
             (allowModelSelect === false) && (
-              <div className="font-mono text-[11px] text-white border-solid border-[1px] border-zinc-500 bg-zinc-700 rounded-md pt-[6px] pb-[6px] pl-[10px] pr-[10px]">
-                {model}
+              <div className="font-mono text-[11px] text-white border-solid border-[1px] border-zinc-500 bg-zinc-700 rounded-md pt-1 pb-1 pl-2 pr-2">
+                {modelDefinition.name}
               </div>
             )
           }
@@ -84,18 +84,18 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
                 {
                   aiModelDefinitions.map((def) => {
-                    const { name } = def;
+                    const { id, name } = def;
 
                     return (
                       <button
                         className={`
-                          font-mono text-[11px] text-white cursor-pointer border-solid border-[1px] rounded-md pt-[6px] pb-[6px] pl-[10px] pr-[10px]
+                          font-mono text-[11px] text-white cursor-pointer border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-2
 
-                          ${(model === name) ? 'bg-zinc-600' : 'bg-zinc-900'}
-                          ${(model === name) ? 'border-zinc-500' : 'border-zinc-800'}
+                          ${(modelDefinition.name === name) ? 'bg-zinc-600' : 'bg-zinc-900'}
+                          ${(modelDefinition.name === name) ? 'border-zinc-500' : 'border-zinc-800'}
                         `}
                         key={name}
-                        onClick={() => onModelChange(name)}
+                        onClick={() => onModelChange(id)}
                       >
                         {name}
                       </button>

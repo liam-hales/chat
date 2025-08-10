@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
 import { AppContext } from '../context';
-import { BaseProps, AppChat, ChatMessage, AIModel } from '../types';
+import { BaseProps, AppChat, ChatMessage, FullAppChat } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
 import { streamChat } from '../helpers';
@@ -37,7 +37,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const defaultChat: AppChat = {
     id: defaultChatId,
     title: 'New chat',
-    model: aiModelDefinitions[0].name,
+    modelDefinitionId: aiModelDefinitions[0].id,
     inputValue: '',
     state: 'idle',
   };
@@ -47,15 +47,16 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   /**
-   * Used to get a specific
-   * chat via it's `id`
+   * Used to get a specific chat via it's
+   * `id` with its full data from other state
    *
    * @param id The chat ID
-   * @returns The found chat
+   * @returns The full chat
    */
   const getChat = useCallback(
-    (id: string): AppChat & { readonly messages: ChatMessage[]; } => {
+    (id: string): FullAppChat => {
       const chat = chats.find((chat) => chat.id === id);
+      const modelDefinition = aiModelDefinitions.find((def) => def.id === chat?.modelDefinitionId);
 
       // If the chat does not exist
       // then throw an error
@@ -63,12 +64,18 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         throw new Error(`No chat with ID "${id}" found`);
       }
 
+      // If the model definition does not
+      // exist then throw an error
+      if (modelDefinition == null) {
+        throw new Error(`No model definition with ID "${chat.modelDefinitionId}" found`);
+      }
+
       // Return the chat data with
       // the messages from state
       return {
         ...chat,
-        messages: messages
-          .filter((message) => message.chatId === chat.id),
+        messages: messages.filter((message) => message.chatId === chat.id),
+        modelDefinition: modelDefinition,
       };
     },
     [chats, messages],
@@ -88,15 +95,15 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
-   * Used to set the model for
-   * a specific chat
+   * Used to set the model definition
+   * for a specific chat
    *
    * @param chatId The chat ID
-   * @param value The new model
+   * @param modelDefinitionId The model definition ID
    */
-  const setModel = (chatId: string, value: AIModel): void => {
+  const setModelDefinition = (chatId: string, modelDefinitionId: string): void => {
     _updateChat(chatId, {
-      model: value,
+      modelDefinitionId: modelDefinitionId,
     });
   };
 
@@ -173,7 +180,9 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    * @param chatId The chat ID
    */
   const sendMessage = async (chatId: string): Promise<void> => {
-    const { model, inputValue, messages } = getChat(chatId);
+    const { inputValue, messages, modelDefinition } = getChat(chatId);
+    const { openRouterId } = modelDefinition;
+
     const abortController = new AbortController();
 
     // Set the input value state to clear the
@@ -195,16 +204,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       ];
     });
 
-    // Get the open router model ID from
-    // the AI model definitions
-    const def = aiModelDefinitions.find((def) => def.name === model);
-
-    // If the model definition does not
-    // exist then throw an error
-    if (def == null) {
-      throw new Error(`Definition not found for model "${model}"`);
-    }
-
     try {
       // Set the abort controller to throw if aborted throughout this `try` block so the
       // logic will fall into the `catch` block and the error can be handled
@@ -212,7 +211,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       abortController.signal.throwIfAborted();
 
       const streamValue = await streamChat({
-        modelId: def.openRouterId,
+        modelId: openRouterId,
         messages: [
           ...messages,
           {
@@ -342,7 +341,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         messages: messages,
         getChat: getChat,
         setInputValue: setInputValue,
-        setModel: setModel,
+        setModelDefinition: setModelDefinition,
         createChat: createChat,
         setSelectedChat: setSelectedChatId,
         deleteChat: deleteChat,
