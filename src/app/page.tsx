@@ -14,7 +14,7 @@ import { useApp } from '../hooks';
 const AppPage: FunctionComponent = (): ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { chats, getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
+  const { chats, getChat, setInputValue, setModelDefinition, sendMessage } = useApp();
   const { id, inputValue, modelDefinition } = getChat(chats[0].id);
 
   /**
@@ -52,9 +52,8 @@ const AppPage: FunctionComponent = (): ReactElement => {
           value={inputValue}
           modelDefinition={modelDefinition}
           onChange={(value) => setInputValue(id, value)}
-          onModelChange={(onModelChange) => setModelDefinition(id, onModelChange)}
+          onModelChange={(definitionId) => setModelDefinition(id, definitionId)}
           onSend={() => sendMessage(id)}
-          onAbort={() => abortRequest(id)}
         />
       </div>
     </div>

@@ -2,7 +2,7 @@ import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'rea
 import { AIModelDefinition, BaseProps } from '../types';
 import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
-import { ArrowUp, BadgePoundSterling, X } from 'lucide-react';
+import { ArrowUp, BadgePoundSterling, OctagonAlert, X } from 'lucide-react';
 import { Model } from './';
 
 /**
@@ -11,12 +11,11 @@ import { Model } from './';
 interface Props extends BaseProps<HTMLInputElement> {
   readonly value: string;
   readonly modelDefinition: AIModelDefinition;
-  readonly allowModelSelect?: boolean;
   readonly isDisabled?: boolean;
   readonly onChange: (value: string) => void;
-  readonly onModelChange: (definitionId: string) => void;
-  readonly onSend: () => void;
-  readonly onAbort: () => void;
+  readonly onModelChange?: (definitionId: string) => void;
+  readonly onSend?: () => void;
+  readonly onAbort?: () => void;
 }
 
 /**
@@ -31,13 +30,19 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     internalRef,
     value,
     modelDefinition,
-    allowModelSelect = true,
     isDisabled = false,
     onChange,
     onModelChange,
     onSend,
     onAbort,
   } = props;
+
+  const { limits } = modelDefinition;
+
+  const limitReached = (
+    value.length >
+    (limits?.messageLength ?? Infinity)
+  );
 
   const _onChange = (event: ChangeEvent<HTMLInputElement>): void => {
 
@@ -52,17 +57,33 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   const _onKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
     const { key } = event;
 
-    // If the "Enter" key has been pressed and the value is
-    // not empty then call the `onSend` function
-    if (key === 'Enter' && value.trim() !== '') {
-      onSend();
+    if (key === 'Enter') {
+
+      // If the "Enter" key has been pressed, make sure
+      // the user is allowed to snd the message
+      if (value.trim() !== '' && limitReached === false && onSend != null) {
+        onSend();
+      }
     }
   };
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
-        <div className="flex flex-col pt-5 pb-5 pl-5 pr-5">
+    <div className="w-full flex flex-col items-start">
+      {
+        (limitReached === true) && (
+          <div className="flex flex-row items-center gap-x-3 bg-red-950/50 border-solid border-[1px] rounded-lg border-red-950 mb-4 p-3">
+            <OctagonAlert
+              className="text-white shrink-0"
+              size={18}
+            />
+            <p className="font-sans text-white text-xs">
+              You have reached the message character limit.
+            </p>
+          </div>
+        )
+      }
+      <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
+        <div className="w-full flex flex-col items-center pt-5 pb-5 pl-5 pr-5">
           <input
             ref={internalRef}
             className="w-full h-6 text-white placeholder-zinc-600 font-sans text-md bg-transparent outline-none pl-1"
@@ -72,69 +93,71 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             onChange={_onChange}
             onKeyDown={_onKeyDown}
           />
-          <div>
-            <div className="flex row items-end justify-between gap-x-6 pt-8">
-              {
-                (allowModelSelect === false) && (
-                  <Model
-                    definition={modelDefinition}
-                    appearance="light"
-                  />
-                )
-              }
-              {
-                (allowModelSelect === true) && (
-                  <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
-                    {
-                      aiModelDefinitions.map((def) => {
-                        return (
-                          <Model
-                            key={`model-${def.name}`}
-                            definition={def}
-                            appearance={(modelDefinition.id === def.id) ? 'light' : 'dark'}
-                            onClick={() => onModelChange(def.id)}
-                          />
-                        );
-                      })
-                    }
-                  </div>
-                )
-              }
-              {
-                (isDisabled === true)
-                  ? (
-                      <button
-                        className="text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2"
-                        onClick={onAbort}
-                      >
-                        <X />
-                      </button>
-                    )
-                  : (
-                      <button
-                        className={`
-                          text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2
+          <div className="w-full flex row items-end justify-between gap-x-6 pt-8">
+            {
+              (onModelChange == null) && (
+                <Model
+                  definition={modelDefinition}
+                  appearance="light"
+                />
+              )
+            }
+            {
+              (onModelChange != null) && (
+                <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
+                  {
+                    aiModelDefinitions.map((def) => {
+                      return (
+                        <Model
+                          key={`model-${def.name}`}
+                          definition={def}
+                          appearance={(modelDefinition.id === def.id) ? 'light' : 'dark'}
+                          onClick={() => onModelChange(def.id)}
+                        />
+                      );
+                    })
+                  }
+                </div>
+              )
+            }
+            {
+              (onSend != null) && (
+                <button
+                  className={`
+                    text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2
 
-                          disabled:cursor-not-allowed
-                          disabled:text-zinc-600
-                          disabled:bg-zinc-900
-                          disabled:border-zinc-800
+                    disabled:cursor-not-allowed
+                    disabled:text-zinc-600
+                    disabled:bg-zinc-900
+                    disabled:border-zinc-800
 
-                        `}
-                        onClick={onSend}
-                        disabled={value.trim() === ''}
-                      >
-                        <ArrowUp />
-                      </button>
-                    )
-              }
-            </div>
+                  `}
+                  onClick={onSend}
+                  disabled={
+                    value.trim() === '' ||
+                    limitReached === true
+                  }
+                >
+                  <ArrowUp />
+                </button>
+              )
+            }
+            {
+              (onAbort != null) && (
+                <button
+                  className="text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2"
+                  onClick={onAbort}
+                >
+                  <X />
+                </button>
+              )
+            }
           </div>
         </div>
       </div>
       {
         (modelDefinition.limits != null) && (
-          <div className="flex flex-row items-center border-solid border-[1px] border-zinc-900 rounded-md mt-4 p-4">
+          <div className="w-full flex flex-row items-center border-solid border-[1px] border-zinc-900 rounded-md mt-4 p-4">
             <BadgePoundSterling
               className="text-white shrink-0"
               size={18}

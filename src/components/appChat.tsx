@@ -5,6 +5,7 @@ import { ChatInput } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
 import { Loader } from './common';
+import { OctagonAlert } from 'lucide-react';
 
 /**
  * The `AppChat` component props
@@ -25,6 +26,12 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
 
   const { getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
   const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
+  const { limits } = modelDefinition;
+
+  const chatLimitReached = (
+    messages.length >=
+    (limits?.chatLength ?? Infinity)
+  );
 
   /**
    * Used to focus the `ChatInput` whenever the
@@ -70,17 +77,43 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           )
         }
       </div>
-      <ChatInput
-        ref={inputRef}
-        value={inputValue}
-        modelDefinition={modelDefinition}
-        allowModelSelect={messages.length === 0}
-        isDisabled={state !== 'idle'}
-        onChange={(value) => setInputValue(id, value)}
-        onModelChange={(definitionId) => setModelDefinition(id, definitionId)}
-        onSend={() => sendMessage(id)}
-        onAbort={() => abortRequest(id, 'User aborted request')}
-      />
+      <div className="w-full flex flex-col items-start">
+        {
+          (chatLimitReached === true) && (
+            <div className="flex flex-row items-center gap-x-3 bg-red-950/50 border-solid border-[1px] rounded-lg border-red-950 mb-4 p-3">
+              <OctagonAlert
+                className="text-white shrink-0"
+                size={18}
+              />
+              <p className="font-sans text-white text-xs">
+                You have reached the chat limit for this model, open a new tab to continue.
+              </p>
+            </div>
+          )
+        }
+        <ChatInput
+          ref={inputRef}
+          value={inputValue}
+          modelDefinition={modelDefinition}
+          isDisabled={chatLimitReached}
+          onChange={(value) => setInputValue(id, value)}
+          onModelChange={
+            (messages.length === 0)
+              ? (definitionId) => setModelDefinition(id, definitionId)
+              : undefined
+          }
+          onSend={
+            (state === 'idle')
+              ? () => sendMessage(id)
+              : undefined
+          }
+          onAbort={
+            (state !== 'idle')
+              ? () => abortRequest(id, 'User aborted request')
+              : undefined
+          }
+        />
+      </div>
     </div>
   );
 };
