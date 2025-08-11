@@ -181,7 +181,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    */
   const sendMessage = async (chatId: string): Promise<void> => {
     const { inputValue, messages, modelDefinition } = getChat(chatId);
-    const { openRouterId } = modelDefinition;
+    const { openRouterId, limits } = modelDefinition;
 
     const abortController = new AbortController();
 
@@ -219,6 +219,9 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
             content: inputValue,
           },
         ],
+        ...(limits != null) && {
+          maxOutputTokens: limits.outputTokens,
+        },
       });
 
       abortController.signal.throwIfAborted();
