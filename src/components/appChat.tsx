@@ -28,11 +28,11 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
 
   /**
    * Used to focus the `ChatInput` whenever the
-   * user switches tabs and the `id` prop changes
+   * user chat `id` or `state` changes
    */
   useEffect(() => {
     inputRef.current?.focus();
-  }, [id]);
+  }, [id, state]);
 
   return (
     <div className="w-full h-[calc(100%-56px)] max-w-[910px] flex flex-col items-center justify-between pb-4 pl-4 pr-4">
