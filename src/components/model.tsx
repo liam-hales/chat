@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { AIModelDefinition, BaseProps } from '../types';
+import { BadgePoundSterling } from 'lucide-react';
 
 /**
  * The `Model` component props
@@ -18,7 +19,7 @@ interface Props extends BaseProps {
  * @retruns The `Model` component
  */
 const Model: FunctionComponent<Props> = ({ definition, appearance = 'dark', onClick }): ReactElement<Props> => {
-  const { name } = definition;
+  const { name, limits } = definition;
 
   return (
     <button
@@ -32,9 +33,19 @@ const Model: FunctionComponent<Props> = ({ definition, appearance = 'dark', onCl
       `}
       onClick={onClick}
     >
-      <p className="font-mono text-white text-[11px]">
-        {name}
-      </p>
+      <div className="flex flex-row items-center gap-x-2">
+        <p className="font-mono text-white text-[11px]">
+          {name}
+        </p>
+        {
+          (limits != null) && (
+            <BadgePoundSterling
+              className="text-white"
+              size={14}
+            />
+          )
+        }
+      </div>
     </button>
   );
 };
