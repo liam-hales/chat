@@ -2,8 +2,9 @@ import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'rea
 import { AIModelDefinition, BaseProps } from '../types';
 import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
-import { ArrowUp, BadgePoundSterling, OctagonAlert, X } from 'lucide-react';
+import { ArrowUp, X } from 'lucide-react';
 import { Model } from './';
+import { Error, Info } from './common';
 
 /**
  * The `ChatInput` component props
@@ -71,15 +72,9 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     <div className="w-full flex flex-col items-start">
       {
         (limitReached === true) && (
-          <div className="flex flex-row items-center gap-x-3 bg-red-950/50 border-solid border-[1px] rounded-lg border-red-950 mb-4 p-3">
-            <OctagonAlert
-              className="text-white shrink-0"
-              size={18}
-            />
-            <p className="font-sans text-white text-xs">
-              You have reached the message character limit.
-            </p>
-          </div>
+          <Error className="mb-4">
+            You have reached the message character limit for this model.
+          </Error>
         )
       }
       <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
@@ -157,15 +152,12 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
       </div>
       {
         (modelDefinition.limits != null) && (
-          <div className="w-full flex flex-row items-center border-solid border-[1px] border-zinc-900 rounded-md mt-4 p-4">
-            <BadgePoundSterling
-              className="text-white shrink-0"
-              size={18}
-            />
-            <p className="font-sans text-zinc-500 text-xs pl-3">
-              The AI model you have selected costs and therefore has limits, the models responses and how much you can send will be restricted.
-            </p>
-          </div>
+          <Info
+            className="mt-4"
+            icon="badge-pound-sterling"
+          >
+            The AI model you have selected costs and therefore has limits, the models responses and how much you can send will be restricted.
+          </Info>
         )
       }
     </div>

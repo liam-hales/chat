@@ -4,8 +4,7 @@ import { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from 'rea
 import { ChatInput } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
-import { Loader } from './common';
-import { OctagonAlert } from 'lucide-react';
+import { Error, Loader } from './common';
 
 /**
  * The `AppChat` component props
@@ -80,15 +79,9 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
       <div className="w-full flex flex-col items-start">
         {
           (chatLimitReached === true) && (
-            <div className="flex flex-row items-center gap-x-3 bg-red-950/50 border-solid border-[1px] rounded-lg border-red-950 mb-4 p-3">
-              <OctagonAlert
-                className="text-white shrink-0"
-                size={18}
-              />
-              <p className="font-sans text-white text-xs">
-                You have reached the chat limit for this model, open a new tab to continue.
-              </p>
-            </div>
+            <Error className="mb-4">
+              You have reached the chat limit for this model, open a new tab to continue.
+            </Error>
           )
         }
         <ChatInput
