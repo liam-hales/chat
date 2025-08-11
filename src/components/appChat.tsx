@@ -4,7 +4,7 @@ import { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from 'rea
 import { ChatInput } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
-import { Error, Loader } from './common';
+import { Error, Loader, Markdown } from './common';
 
 /**
  * The `AppChat` component props
@@ -53,7 +53,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                     className="max-w-[600px] self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4"
                     key={index}
                   >
-                    <p className="text-white">{content}</p>
+                    <p className="font-sans text-white text-md">{content}</p>
                   </div>
                 )
               : (
@@ -61,7 +61,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                     className="self-start"
                     key={index}
                   >
-                    <p className="text-white">{content}</p>
+                    <Markdown>{content}</Markdown>
                   </div>
                 );
           })
