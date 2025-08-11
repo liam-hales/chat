@@ -184,6 +184,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const { openRouterId, limits } = modelDefinition;
 
     const abortController = new AbortController();
+    const trimmedValue = inputValue.trim();
 
     // Set the input value state to clear the
     // input and set the chat state to loading
@@ -199,7 +200,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         {
           chatId: chatId,
           role: 'user',
-          content: inputValue,
+          content: trimmedValue,
         },
       ];
     });
@@ -213,10 +214,18 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       const streamValue = await streamChat({
         modelId: openRouterId,
         messages: [
-          ...messages,
+
+          // Remove the `chatId` prop
+          // from each message
+          ...messages.map((message) => {
+            return {
+              ...message,
+              chatId: undefined,
+            };
+          }),
           {
             role: 'user',
-            content: inputValue,
+            content: trimmedValue,
           },
         ],
         ...(limits != null) && {
