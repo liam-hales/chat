@@ -19,7 +19,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
   // As this is a server action, we need to
   // validate the options before using them
   const validated = streamChatSchema.parse(options);
-  const { modelId, messages, maxOutputTokens } = validated;
+  const { modelId, systemMessage, messages, maxOutputTokens } = validated;
 
   const { serverRuntimeConfig } = getConfig();
   const { openRouterApiKey } = serverRuntimeConfig;
@@ -39,6 +39,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
   const executeRequest = async (): Promise<void> => {
     const { textStream } = streamText({
       model: provider.chat(modelId),
+      system: systemMessage,
       messages: messages,
       maxOutputTokens: maxOutputTokens,
 

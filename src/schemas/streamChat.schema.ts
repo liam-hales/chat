@@ -45,6 +45,11 @@ const _buildSchema = (definition: AIModelDefinition) => {
   return z
     .object({
       modelId: z.literal(openRouterId),
+      systemMessage: z
+        .string()
+        .min(1)
+        .max(1024)
+        .optional(),
       messages: messages,
       maxOutputTokens: (limits != null)
         ? z
