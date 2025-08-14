@@ -1,6 +1,7 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { DynamicIcon, IconName } from 'lucide-react/dynamic';
 import { BaseProps } from '../../types';
+import { X } from 'lucide-react';
 
 /**
  * The `Info` component props
@@ -8,6 +9,7 @@ import { BaseProps } from '../../types';
 interface Props extends BaseProps {
   readonly icon?: IconName;
   readonly children: string;
+  readonly onDismiss?: () => void;
 }
 
 /**
@@ -17,7 +19,7 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `Info` component
  */
-const Info: FunctionComponent<Props> = ({ className, icon, children }): ReactElement<Props> => {
+const Info: FunctionComponent<Props> = ({ className, icon, children, onDismiss }): ReactElement<Props> => {
   return (
     <div className={`${className ?? ''} w-full flex flex-row items-center gap-x-3 border-solid border-[1px] border-zinc-900 rounded-md p-4`}>
       {
@@ -29,9 +31,18 @@ const Info: FunctionComponent<Props> = ({ className, icon, children }): ReactEle
           />
         )
       }
-      <p className="font-sans text-zinc-500 text-xs">
+      <p className="w-full font-sans text-zinc-500 text-xs">
         {children}
       </p>
+      {
+        (onDismiss != null) && (
+          <X
+            className="text-white shrink-0 cursor-pointer"
+            size={18}
+            onClick={onDismiss}
+          />
+        )
+      }
     </div>
   );
 };
