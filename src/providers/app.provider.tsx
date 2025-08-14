@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
 import { AppContext } from '../context';
-import { BaseProps, AppChat, ChatMessage, FullAppChat } from '../types';
+import { BaseProps, AppChat, FullAppChat, UpdateChatPayload } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
 import { streamChat } from '../helpers';
@@ -37,14 +37,14 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const defaultChat: AppChat = {
     id: defaultChatId,
     title: 'New chat',
+    state: 'idle',
     modelDefinitionId: aiModelDefinitions[0].id,
     inputValue: '',
-    state: 'idle',
+    messages: [],
   };
 
   const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
   const [chats, setChats] = useState<AppChat[]>([defaultChat]);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   /**
    * Used to get a specific chat via it's
@@ -74,11 +74,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       // the messages from state
       return {
         ...chat,
-        messages: messages.filter((message) => message.chatId === chat.id),
         modelDefinition: modelDefinition,
       };
     },
-    [chats, messages],
+    [chats],
   );
 
   /**
@@ -146,31 +145,28 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       throw new Error(`No chat with ID "${chatId}" found`);
     }
 
-    // Remove the existing chat and it's
-    // messages from the app state
-    const newMessages = messages.filter((message) => message.chatId !== chatId);
-    const filteredChats = chats.filter((chat) => chat.id !== chatId);
+    setChats((previous) => {
+      // Remove the chat from state and if it was the last chat,
+      // set the new chats array including the default chat
+      const filteredChats = previous.filter((chat) => chat.id !== chatId);
+      const newChats = (filteredChats.length === 0)
+        ? [defaultChat]
+        : filteredChats;
 
-    // If the last chat has been remove, set the
-    // new chats array including the default chat
-    const newChats = (filteredChats.length === 0)
-      ? [defaultChat]
-      : filteredChats;
+      // If the deleted chat is the one currently
+      // selected then select another chat
+      if (selectedChatId === chatId) {
 
-    setChats(newChats);
-    setMessages(newMessages);
+        // Calculate the index of the new chat to select and use
+        // the ID of said chat to set the selected chat ID state
+        const newIndex = (existingIndex < newChats.length) ? existingIndex : existingIndex - 1;
+        const { id } = newChats[newIndex];
 
-    // If the deleted chat is the one currently
-    // selected then select another chat
-    if (selectedChatId === chatId) {
+        setSelectedChatId(id);
+      }
 
-      // Calculate the index of the new chat to select and use
-      // the ID of said chat to set the selected chat ID state
-      const newIndex = (existingIndex < newChats.length) ? existingIndex : existingIndex - 1;
-      const { id } = newChats[newIndex];
-
-      setSelectedChatId(id);
-    }
+      return newChats;
+    });
   };
 
   /**
@@ -192,18 +188,17 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     _updateChat(chatId, {
       state: 'loading',
       abortController: abortController,
-    });
-
-    setMessages((previous) => {
-      return [
-        ...previous,
-        {
-          id: nanoid(8),
-          chatId: chatId,
-          role: 'user',
-          content: trimmedValue,
-        },
-      ];
+      messages: (previous) => {
+        return [
+          ...previous,
+          {
+            id: nanoid(8),
+            chatId: chatId,
+            role: 'user',
+            content: trimmedValue,
+          },
+        ];
+      },
     });
 
     try {
@@ -241,41 +236,42 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       for await (const value of readStreamableValue(streamValue)) {
         abortController.signal.throwIfAborted();
 
-        _updateChat(chatId, {
-          state: 'streaming',
-        });
-
         // If there is no text value
         // then continue
         if (value == null) {
           continue;
         }
 
-        // Add the text value to the latest
-        // message in the messages state
-        setMessages((previous) => {
-          const { role, content } = previous[previous.length - 1];
-          const messageId = nanoid(8);
+        // Update the chat state and set the text
+        // value to the message content
+        _updateChat(chatId, {
+          state: 'streaming',
+          messages: (previous) => {
+            const { role, content } = previous[previous.length - 1];
+            const messageId = nanoid(8);
 
-          return (role === 'user')
-            ? [
-                ...previous,
-                {
-                  id: messageId,
-                  chatId: chatId,
-                  role: 'assistant',
-                  content: value,
-                },
-              ]
-            : [
-                ...previous.slice(0, -1),
-                {
-                  id: messageId,
-                  chatId: chatId,
-                  role: 'assistant',
-                  content: `${content}${value}`,
-                },
-              ];
+            // If the last message is a user message then we can just append the new message,
+            // however if it's an assistant message then we need to replace the message content
+            return (role === 'user')
+              ? [
+                  ...previous,
+                  {
+                    id: messageId,
+                    chatId: chatId,
+                    role: 'assistant',
+                    content: value,
+                  },
+                ]
+              : [
+                  ...previous.slice(0, -1),
+                  {
+                    id: messageId,
+                    chatId: chatId,
+                    role: 'assistant',
+                    content: `${content}${value}`,
+                  },
+                ];
+          },
         });
       }
     }
@@ -324,9 +320,9 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    * it's `id` with the provided `data`
    *
    * @param chatId The chat ID
-   * @param data The new chat data
+   * @param payload The payload containing the data or mutation functions
    */
-  const _updateChat = (chatId: string, data: Partial<Omit<AppChat, 'id'>>): void => {
+  const _updateChat = (chatId: string, payload: UpdateChatPayload): void => {
     setChats((previous) => {
       const existingChat = previous.find((chat) => chat.id === chatId);
 
@@ -336,13 +332,31 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         throw new Error(`No chat with ID "${chatId}" found`);
       }
 
+      const keys = Object.keys(payload) as (keyof UpdateChatPayload)[];
+
       // Map the previous chats into an array of new ones,
       // updating the existing chat with the new input value
       return previous.map((chat) => {
         return (chat.id === chatId)
           ? {
               ...chat,
-              ...data,
+              ...keys.reduce<Partial<AppChat>>((map, key) => {
+                const previousValue = chat[key];
+                const updater = payload[key] as ((previous: typeof previousValue) => typeof previousValue) | undefined;
+
+                // If the updater does not exist then there
+                // is nothing to update for this key
+                if (updater == null) {
+                  return map;
+                }
+
+                // If the updater is a function then call
+                // this function with the previous value
+                return {
+                  ...map,
+                  [key]: (typeof updater === 'function') ? updater(previousValue) : updater,
+                };
+              }, {}),
             }
           : chat;
       });
@@ -354,7 +368,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       {
         selectedChatId: selectedChatId,
         chats: chats,
-        messages: messages,
         getChat: getChat,
         setInputValue: setInputValue,
         setModelDefinition: setModelDefinition,
