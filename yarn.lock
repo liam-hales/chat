@@ -1733,6 +1733,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.31.0"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
     lucide-react: "npm:^0.539.0"
+    marked: "npm:^16.1.2"
     nanoid: "npm:^5.1.5"
     next: "npm:15.4.6"
     npm-check-updates: "npm:^18.0.2"
@@ -3522,6 +3523,15 @@ __metadata:
   version: 3.0.4
   resolution: "markdown-table@npm:3.0.4"
   checksum: 10/bc699819e6a15607e5def0f21aa862aa061cf1f49877baa93b0185574f6ab143591afe0e18b94d9b15ea80c6a693894150dbccfacf4f6767160dc32ae393dfe0
+  languageName: node
+  linkType: hard
+
+"marked@npm:^16.1.2":
+  version: 16.1.2
+  resolution: "marked@npm:16.1.2"
+  bin:
+    marked: bin/marked.js
+  checksum: 10/190d9b206f05d87a7acac3b50ab19505878297971a0c5652a9d4fa2b022407f22d2b79e1aa1e9f23a32c0158b1f5852ad33da2e83cc12100116a8fc0afc2b17e
   languageName: node
   linkType: hard
 
