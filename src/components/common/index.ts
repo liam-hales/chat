@@ -3,6 +3,7 @@ import Loader from './loader';
 import Info from './info';
 import Error from './error';
 import Markdown from './markdown';
+import MarkdownBlock from './markdownBlock';
 
 export {
   Typewriter,
@@ -10,4 +11,5 @@ export {
   Info,
   Error,
   Markdown,
+  MarkdownBlock,
 };
