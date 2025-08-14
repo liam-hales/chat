@@ -23,16 +23,20 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
   const {
     selectedChatId,
     chats,
-    messages,
     getChat,
     createChat,
     setSelectedChat,
     deleteChat
   } = useApp();
 
+  // Calculate if any of the
+  // chats have messages
+  const hasMessages = chats
+    .some((chat) => chat.messages.length > 0);
+
   // If there are no messages in the app state then
   // render the children to render the page
-  if (messages.length === 0) {
+  if (hasMessages === false) {
     return (
       <>
         {children}
