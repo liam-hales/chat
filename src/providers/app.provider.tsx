@@ -182,6 +182,12 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const abortController = new AbortController();
     const trimmedValue = inputValue.trim();
 
+    // If there are no messages in the chat then generate
+    // a new chat title for the users first message
+    if (messages.length === 0) {
+      void _generateChatTitle(chatId, trimmedValue);
+    }
+
     // Set the input value state to clear the
     // input and set the chat state to loading
     setInputValue(chatId, '');
@@ -361,6 +367,40 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
           : chat;
       });
     });
+  };
+
+  /**
+   * Used to generate a chat title from a
+   * given input using a low latency LLM
+   *
+   * @param chatId The chat ID
+   * @param inputValue The input value
+   */
+  const _generateChatTitle = async (chatId: string, inputValue: string): Promise<void> => {
+    const streamValue = await streamChat({
+      modelId: 'openai/gpt-oss-20b:free',
+      systemMessage: 'Generate a chat title no longer than 25 characters which describes the chat based off the suers first message',
+      messages: [
+        {
+          role: 'user',
+          content: inputValue,
+        },
+      ],
+    });
+
+    // process the client stream value
+    // and process each part
+    for await (const value of readStreamableValue(streamValue)) {
+      if (value == null) {
+        continue;
+      }
+
+      // Update the chat title with the
+      // value from the stream
+      _updateChat(chatId, {
+        title: (title) => `${title ?? ''}${value}`,
+      });
+    }
   };
 
   return (
