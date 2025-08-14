@@ -1,4 +1,6 @@
-import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
+'use client';
+
+import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState } from 'react';
 import { AIModelDefinition, BaseProps } from '../types';
 import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
@@ -37,6 +39,8 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     onSend,
     onAbort,
   } = props;
+
+  const [isLimitVisible, setIsLimitVisible] = useState<boolean>(true);
 
   const { limits } = modelDefinition;
 
@@ -107,7 +111,10 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                           key={`model-${def.name}`}
                           definition={def}
                           appearance={(modelDefinition.id === def.id) ? 'light' : 'dark'}
-                          onClick={() => onModelChange(def.id)}
+                          onClick={() => {
+                            onModelChange(def.id);
+                            setIsLimitVisible(true);
+                          }}
                         />
                       );
                     })
@@ -151,10 +158,11 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         </div>
       </div>
       {
-        (modelDefinition.limits != null) && (
+        (modelDefinition.limits != null && isLimitVisible === true) && (
           <Info
             className="mt-4"
             icon="badge-pound-sterling"
+            onDismiss={() => setIsLimitVisible(false)}
           >
             The AI model you have selected costs and therefore has limits, the models responses and how much you can send will be restricted.
           </Info>
