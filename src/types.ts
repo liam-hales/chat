@@ -28,7 +28,6 @@ export interface BaseProps<T extends HTMLElement = HTMLElement> {
  * chat with all of it's data
  */
 export interface FullAppChat extends AppChat {
-  readonly messages: ChatMessage[];
   readonly modelDefinition: AIModelDefinition;
 }
 
@@ -39,9 +38,10 @@ export interface FullAppChat extends AppChat {
 export interface AppChat {
   readonly id: string;
   readonly title: string;
+  readonly state: 'idle' | 'loading' | 'streaming';
   readonly modelDefinitionId: string;
   readonly inputValue: string;
-  readonly state: 'idle' | 'loading' | 'streaming';
+  readonly messages: ChatMessage[];
   readonly abortController?: AbortController;
 }
 
@@ -55,3 +55,9 @@ export interface ChatMessage {
   readonly role: 'user' | 'assistant';
   readonly content: string;
 }
+
+export type UpdateChatPayload = UpdatePayload<Omit<AppChat, 'id'>>;
+
+export type UpdatePayload<T extends object> = {
+  [K in keyof T]?: T[K] | ((previous: T[K]) => T[K]);
+};

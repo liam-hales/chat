@@ -1,4 +1,4 @@
-import { AppChat, ChatMessage, FullAppChat } from '../types';
+import { AppChat, FullAppChat } from '../types';
 
 /**
  * Describes the app state which consists of all
@@ -7,7 +7,6 @@ import { AppChat, ChatMessage, FullAppChat } from '../types';
 export interface AppState {
   readonly selectedChatId: string;
   readonly chats: AppChat[];
-  readonly messages: ChatMessage[];
 }
 
 /**
