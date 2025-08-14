@@ -36,7 +36,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const defaultChatId = nanoid(8);
   const defaultChat: AppChat = {
     id: defaultChatId,
-    title: 'New chat',
     state: 'idle',
     modelDefinitionId: aiModelDefinitions[0].id,
     inputValue: '',

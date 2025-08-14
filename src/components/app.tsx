@@ -55,7 +55,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
                 return (
                   <Tab
                     key={`tab-${modelDefinition.name}-${index}`}
-                    title={title}
+                    title={title ?? 'New chat'}
                     modelDefinition={modelDefinition}
                     isLoading={state !== 'idle'}
                     isSelected={(selectedChatId === id)}

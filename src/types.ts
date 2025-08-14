@@ -37,7 +37,7 @@ export interface FullAppChat extends AppChat {
  */
 export interface AppChat {
   readonly id: string;
-  readonly title: string;
+  readonly title?: string;
   readonly state: 'idle' | 'loading' | 'streaming';
   readonly modelDefinitionId: string;
   readonly inputValue: string;
