@@ -50,6 +50,7 @@ export interface AppChat {
  * will be stored in the app state
  */
 export interface ChatMessage {
+  readonly id: string;
   readonly chatId: string;
   readonly role: 'user' | 'assistant';
   readonly content: string;

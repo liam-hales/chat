@@ -198,6 +198,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       return [
         ...previous,
         {
+          id: nanoid(8),
           chatId: chatId,
           role: 'user',
           content: trimmedValue,
@@ -215,12 +216,12 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         modelId: openRouterId,
         messages: [
 
-          // Remove the `chatId` prop
+          // Remove the unknown props
           // from each message
           ...messages.map((message) => {
             return {
-              ...message,
-              chatId: undefined,
+              role: message.role,
+              content: message.content,
             };
           }),
           {
@@ -254,11 +255,13 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         // message in the messages state
         setMessages((previous) => {
           const { role, content } = previous[previous.length - 1];
+          const messageId = nanoid(8);
 
           return (role === 'user')
             ? [
                 ...previous,
                 {
+                  id: messageId,
                   chatId: chatId,
                   role: 'assistant',
                   content: value,
@@ -267,6 +270,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
             : [
                 ...previous.slice(0, -1),
                 {
+                  id: messageId,
                   chatId: chatId,
                   role: 'assistant',
                   content: `${content}${value}`,
@@ -324,7 +328,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    */
   const _updateChat = (chatId: string, data: Partial<Omit<AppChat, 'id'>>): void => {
     setChats((previous) => {
-      const existingChat = chats.find((chat) => chat.id === chatId);
+      const existingChat = previous.find((chat) => chat.id === chatId);
 
       // If the chat does not exist
       // then throw an error
