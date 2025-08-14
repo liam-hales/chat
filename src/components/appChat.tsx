@@ -27,8 +27,10 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
+  // When calculating if the chat limit has been reached, +1 onto the messages length so as soon as the
+  // user sends the last message, the error UI is shown and the input is disabled before the LLM replies
   const chatLimitReached = (
-    messages.length >=
+    (messages.length + 1) >=
     (limits?.chatLength ?? Infinity)
   );
 
@@ -41,11 +43,12 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   }, [id, state]);
 
   return (
-    <div className="w-full h-[calc(100%-56px)] max-w-[910px] flex flex-col items-center justify-between pb-4 pl-4 pr-4">
-      <div className="w-full flex flex-col items-center gap-y-5 overflow-y-auto pt-10 pb-10 pl-3 pr-3">
+    <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between pb-4 pl-4 pr-4">
+      <div className="absolute w-full h-10 bg-gradient-to-b from-black to-transparent" />
+      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto pt-10 pb-10 pl-3 pr-3">
         {
           messages.map((message, index) => {
-            const { role, content } = message;
+            const { id, role, content } = message;
 
             return (role === 'user')
               ? (
@@ -61,7 +64,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                     className="self-start"
                     key={index}
                   >
-                    <Markdown>{content}</Markdown>
+                    <Markdown id={id}>{content}</Markdown>
                   </div>
                 );
           })
