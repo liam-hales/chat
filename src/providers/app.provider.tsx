@@ -252,8 +252,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         _updateChat(chatId, {
           state: 'streaming',
           messages: (previous) => {
-            const { role, content } = previous[previous.length - 1];
-            const messageId = nanoid(8);
+            const { id, role, content } = previous[previous.length - 1];
 
             // If the last message is a user message then we can just append the new message,
             // however if it's an assistant message then we need to replace the message content
@@ -261,7 +260,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
               ? [
                   ...previous,
                   {
-                    id: messageId,
+                    id: nanoid(8),
                     chatId: chatId,
                     role: 'assistant',
                     content: value,
@@ -270,7 +269,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
               : [
                   ...previous.slice(0, -1),
                   {
-                    id: messageId,
+                    id: id,
                     chatId: chatId,
                     role: 'assistant',
                     content: `${content}${value}`,
@@ -378,7 +377,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const _generateChatTitle = async (chatId: string, inputValue: string): Promise<void> => {
     const streamValue = await streamChat({
       modelId: 'openai/gpt-oss-20b:free',
-      systemMessage: 'Generate a chat title no longer than 25 characters which describes the chat based off the suers first message',
+      systemMessage: 'Generate a chat title no longer than 25 characters which describes the chat based off the suers first message. Do not use any LLM names or punctuation',
       messages: [
         {
           role: 'user',
