@@ -1,10 +1,10 @@
 'use client';
 
 import { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from 'react';
-import { ChatInput } from '.';
+import { ChatInput, ChatMessage } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
-import { Error, Loader, Markdown } from './common';
+import { Error, Loader } from './common';
 
 /**
  * The `AppChat` component props
@@ -47,26 +47,17 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
       <div className="absolute w-full h-10 bg-gradient-to-b from-black to-transparent" />
       <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto pt-10 pb-10 pl-3 pr-3">
         {
-          messages.map((message, index) => {
+          messages.map((message) => {
             const { id, role, content } = message;
-
-            return (role === 'user')
-              ? (
-                  <div
-                    className="max-w-[600px] self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4"
-                    key={index}
-                  >
-                    <p className="font-sans text-white text-md">{content}</p>
-                  </div>
-                )
-              : (
-                  <div
-                    className="self-start"
-                    key={index}
-                  >
-                    <Markdown id={id}>{content}</Markdown>
-                  </div>
-                );
+            return (
+              <ChatMessage
+                key={`${role}-message-${id}`}
+                id={id}
+                role={role}
+              >
+                {content}
+              </ChatMessage>
+            );
           })
         }
         {
