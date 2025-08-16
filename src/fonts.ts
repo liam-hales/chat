@@ -1,16 +1,16 @@
-import { Urbanist, Fira_Code } from 'next/font/google';
+import { Crimson_Text, Fira_Code } from 'next/font/google';
 
 /**
- * The Urbanist font from Google Fonts
+ * The Crimson Text font from Google Fonts
  * self-hosted by `next/font`
  *
- * @url https://fonts.google.com/specimen/Urbanist
+ * @url https://fonts.google.com/specimen/Crimson+Text
  */
-export const urbanist = Urbanist({
+export const crimsonText = Crimson_Text({
   variable: '--sans-font',
   subsets: ['latin'],
   style: ['normal'],
-  weight: ['600', '900'],
+  weight: ['400', '700'],
 });
 
 /**
