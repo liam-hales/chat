@@ -144,6 +144,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       throw new Error(`No chat with ID "${chatId}" found`);
     }
 
+    // Abort the request if there is one running
+    // for the chat about to be deleted
+    abortRequest(chatId, 'User deleted chat');
+
     setChats((previous) => {
       // Remove the chat from state and if it was the last chat,
       // set the new chats array including the default chat
@@ -278,6 +282,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
           },
         });
       }
+
+      _updateChat(chatId, {
+        state: 'idle',
+      });
     }
     catch (error) {
       if (error instanceof Error) {
@@ -293,11 +301,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
 
       // Unknown error, re-throw it
       throw error;
-    }
-    finally {
-      _updateChat(chatId, {
-        state: 'idle',
-      });
     }
   };
 
