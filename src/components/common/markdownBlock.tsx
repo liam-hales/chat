@@ -47,6 +47,27 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
             </h3>
           );
         },
+        h4: ({ children }) => {
+          return (
+            <h4 className="font-sans font-bold text-white text-lg pt-2 pb-2">
+              {children}
+            </h4>
+          );
+        },
+        h5: ({ children }) => {
+          return (
+            <h5 className="font-sans font-bold text-white text-md pt-2 pb-2">
+              {children}
+            </h5>
+          );
+        },
+        h6: ({ children }) => {
+          return (
+            <h6 className="font-sans font-bold text-white text-sm pt-2 pb-2">
+              {children}
+            </h6>
+          );
+        },
         p: ({ children }) => {
           return (
             <p className="font-sans text-white text-md pt-2 pb-2">
@@ -133,20 +154,20 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           </thead>
         ),
         tr: ({ children }) => (
-          <tr className="">
+          <tr>
             {children}
           </tr>
         ),
         th: ({ children }) => (
-          <th className="text-start p-4">
-            <span className="font-sans text-lg font-bold text-white">
+          <th className="text-start pt-3 pb-3 pl-4 pr-4">
+            <span className="font-sans text-md font-bold text-white">
               {children}
             </span>
           </th>
         ),
         td: ({ children }) => (
-          <td className="border-solid border-t-4 border-black text-start p-4">
-            <span className="font-sans text-md text-white">
+          <td className="border-solid border-t-4 border-black text-start pt-3 pb-3 pl-4 pr-4">
+            <span className="font-sans text-sm text-white">
               {children}
             </span>
           </td>
