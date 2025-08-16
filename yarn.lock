@@ -1010,6 +1010,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:*":
+  version: 24.3.0
+  resolution: "@types/node@npm:24.3.0"
+  dependencies:
+    undici-types: "npm:~7.10.0"
+  checksum: 10/1331c2d0e9a512ac27a016b4df3eff92317e4603dbbbab31731275dff14d3a04847a50c5776cbf94f99ff4dedac0ba5f721dce8cea020d8eea5e21711fd964b0
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^24.2.1":
   version: 24.2.1
   resolution: "@types/node@npm:24.2.1"
@@ -1066,6 +1075,15 @@ __metadata:
   version: 2.0.11
   resolution: "@types/unist@npm:2.0.11"
   checksum: 10/6d436e832bc35c6dde9f056ac515ebf2b3384a1d7f63679d12358766f9b313368077402e9c1126a14d827f10370a5485e628bf61aa91117cf4fc882423191a4e
+  languageName: node
+  linkType: hard
+
+"@types/xml2js@npm:^0.4.14":
+  version: 0.4.14
+  resolution: "@types/xml2js@npm:0.4.14"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/d76338b8d6ce8540c7af6a32aacf96c38f6de48254568f58f6e5ac2af3f88e6bd1490e5346d3bb336990f91267d23c5cc09e8bf7e80840a63c7855dbf174ecbb
   languageName: node
   linkType: hard
 
@@ -1780,6 +1798,7 @@ __metadata:
     "@types/react": "npm:^19.1.9"
     "@types/react-dom": "npm:^19.1.7"
     "@types/react-syntax-highlighter": "npm:^15"
+    "@types/xml2js": "npm:^0.4.14"
     "@typescript-eslint/eslint-plugin": "npm:^8.28.0"
     "@typescript-eslint/parser": "npm:^8.28.0"
     "@vercel/analytics": "npm:^1.5.0"
@@ -1803,6 +1822,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.9.2"
     typewriter-effect: "npm:^2.22.0"
+    xml2js: "npm:^0.6.2"
     zod: "npm:^4.0.17"
   languageName: unknown
   linkType: soft
@@ -5011,6 +5031,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sax@npm:>=0.6.0":
+  version: 1.4.1
+  resolution: "sax@npm:1.4.1"
+  checksum: 10/b1c784b545019187b53a0c28edb4f6314951c971e2963a69739c6ce222bfbc767e54d320e689352daba79b7d5e06d22b5d7113b99336219d6e93718e2f99d335
+  languageName: node
+  linkType: hard
+
 "scheduler@npm:^0.26.0":
   version: 0.26.0
   resolution: "scheduler@npm:0.26.0"
@@ -5955,6 +5982,23 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10/9c796b84ba80ffc2c2adcdfc9c8e9a219ba99caa435c9a8d45f9ac593bba325563b3f83edc5eb067cc6d21b9a6bf2c930adf76dd40af5f58a5ca6859e81858f0
+  languageName: node
+  linkType: hard
+
+"xml2js@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "xml2js@npm:0.6.2"
+  dependencies:
+    sax: "npm:>=0.6.0"
+    xmlbuilder: "npm:~11.0.0"
+  checksum: 10/df29de8eeedb762c367d87945c39bcf54db19a2c522607491c266ed6184b5a749e37ff29cfaed0ac149da9ba332ac3dcf8e5ff2bd0a206be3343eca95faa941d
+  languageName: node
+  linkType: hard
+
+"xmlbuilder@npm:~11.0.0":
+  version: 11.0.1
+  resolution: "xmlbuilder@npm:11.0.1"
+  checksum: 10/c8c3d208783718db5b285101a736cd8e6b69a5c265199a0739abaa93d1a1b7de5489fd16df4e776e18b2c98cb91f421a7349e99fd8c1ebeb44ecfed72a25091a
   languageName: node
   linkType: hard
 
