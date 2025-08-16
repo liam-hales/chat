@@ -110,6 +110,7 @@ v4.5.3
 
 ```sh
 SITE_URL = 'https://chat.liamhales.dev'
+OPEN_ROUTER_API_KEY = '******'
 ```
 
 <br/>

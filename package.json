@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package",
   "name": "chat",
-  "description": "Chat with multiple LLM's, all in one place.",
+  "description": "Chat with AI, all in one place.",
   "version": "1.0.0",
   "private": true,
   "engines": {
