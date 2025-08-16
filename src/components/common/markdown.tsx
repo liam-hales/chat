@@ -22,7 +22,6 @@ interface Props extends BaseProps {
  * @returns The `Markdown` component
  */
 const Markdown: FunctionComponent<Props> = ({ id, children }): ReactElement<Props> => {
-
   const blocks = useMemo(() => {
 
     // Parse the markdown string into blocks

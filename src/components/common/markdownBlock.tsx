@@ -1,5 +1,6 @@
 import { FunctionComponent, memo, ReactElement } from 'react';
 import { BaseProps } from '../../types';
+import { CodeHighlighter } from './';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -70,7 +71,19 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
         code: ({ className, children }) => {
           const language = className?.replace('language-', '');
 
-          // If the language cannot be found from the class name then render the
+          // If the children is empty
+          // then render nothing
+          if (children == null) {
+            return <></>;
+          }
+
+          // If the children is not a string then it is
+          // unsupported and cannot be rendered
+          if (typeof children !== 'string') {
+            throw new Error(`Unsupported children type "${typeof children}" for "code" markdown`);
+          }
+
+          // If there was no language detected then the code is inline then render the
           // code inline, otherwise render the code with full syntax highlighting
           return (language == null)
             ? (
@@ -79,7 +92,13 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
                 </code>
               )
             : (
-                <p>{children}</p>
+                <CodeHighlighter
+                  className="
+                  mt-6 mb-6"
+                  language={language}
+                >
+                  {children}
+                </CodeHighlighter>
               );
         },
         ol: ({ children }) => {
