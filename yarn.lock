@@ -1818,6 +1818,7 @@ __metadata:
     react-markdown: "npm:^10.1.0"
     react-syntax-highlighter: "npm:^15.6.1"
     remark-gfm: "npm:^4.0.1"
+    sharp: "npm:^0.34.3"
     tailwindcss: "npm:^4.1.11"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.9.2"
