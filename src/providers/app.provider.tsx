@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
 import { streamChat } from '../helpers';
 import { readStreamableValue } from '@ai-sdk/rsc';
+import dedent from 'dedent';
 
 /**
  * The `AppProvider` component props
@@ -380,7 +381,12 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   const _generateChatTitle = async (chatId: string, inputValue: string): Promise<void> => {
     const streamValue = await streamChat({
       modelId: 'openai/gpt-oss-20b:free',
-      systemMessage: 'Generate a chat title no longer than 25 characters which describes the chat based off the suers first message. Do not use any LLM names or punctuation',
+      systemMessage: dedent`
+        Generate a chat title which describes the chat based off the users first message.
+
+        - Never use any LLM names or punctuation.
+        - Never generate a response more than 25 characters.
+      `,
       messages: [
         {
           role: 'user',
