@@ -1,8 +1,10 @@
-import { FunctionComponent, ReactElement } from 'react';
+'use client';
+
+import { FunctionComponent, ReactElement, useState } from 'react';
 import { BaseProps } from '../../types';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Copy } from 'lucide-react';
+import { Check, Copy } from 'lucide-react';
 
 /**
  * The `CodeHighlighter` component props
@@ -20,6 +22,17 @@ interface Props extends BaseProps {
  * @returns The `CodeHighlighter` component
  */
 const CodeHighlighter: FunctionComponent<Props> = ({ className, language, children }): ReactElement<Props> => {
+  const [hasCopied, setHasCopied] = useState<boolean>(false);
+
+  const _onCopy = async (): Promise<void> => {
+    await navigator.clipboard.writeText(children);
+
+    // Set the has copied state and
+    // reset it after 5 seconds
+    setHasCopied(true);
+    setTimeout(() => setHasCopied(false), 5000);
+  };
+
   return (
     <div className={`${className ?? ''} flex flex-col items-start gap-y-2 bg-zinc-950 border-solid border-[1px] border-zinc-800 rounded-xl p-4`}>
       <div className="w-full flex flex-row items-center justify-between pr-2">
@@ -27,15 +40,28 @@ const CodeHighlighter: FunctionComponent<Props> = ({ className, language, childr
           {language}
         </p>
         <button
-          className="flex flex-row items-center cursor-pointer gap-x-2"
-          onClick={() => navigator.clipboard.writeText(children)}
+          className="flex flex-row items-center cursor-pointer"
+          onClick={_onCopy}
         >
-          <Copy
-            className="text-white"
-            size={16}
-          />
-          <span className="font-mono text-sm text-white">
-            Copy
+          {
+            (hasCopied === true)
+              ? (
+                  <Check
+                    className="text-white mr-1"
+                    size={16}
+                  />
+                )
+              : (
+                  <Copy
+                    className="text-white mr-2"
+                    size={14}
+                  />
+                )
+          }
+          <span className="font-sans text-sm text-white">
+            {
+              (hasCopied === true) ? 'Copied' : 'Copy'
+            }
           </span>
         </button>
       </div>
