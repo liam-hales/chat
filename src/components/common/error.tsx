@@ -23,7 +23,7 @@ const Error: FunctionComponent<Props> = ({ className, children }): ReactElement<
         className="text-white shrink-0"
         size={18}
       />
-      <p className="font-sans text-white text-xs">
+      <p className="font-sans text-white text-sm">
         { children}
       </p>
     </div>

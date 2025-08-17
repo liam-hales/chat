@@ -26,11 +26,11 @@ const AppPage: FunctionComponent = (): ReactElement => {
   }, []);
 
   return (
-    <div className="h-full flex flex-col items-center pt-24 pb-20 pl-10 pr-10">
+    <div className="h-full flex flex-col items-center pb-4 md:pb-28 pl-4 pr-4">
       <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between">
-        <div className="w-full max-w-[880px]">
+        <div className="w-full h-full flex flex-col items-start justify-center pl-4 pr-4">
           <Typewriter
-            className="font-sans font-bold text-[clamp(40px,11vw,110px)] leading-[clamp(110%,11vw,60%)] text-white"
+            className="font-sans font-bold text-[clamp(40px,11.6vw,110px)] leading-[clamp(110%,11.6vw,60%)] text-white"
             onInit={(typewriter) => {
               typewriter
                 .pauseFor(400)

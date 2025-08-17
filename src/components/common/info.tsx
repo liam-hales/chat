@@ -31,7 +31,7 @@ const Info: FunctionComponent<Props> = ({ className, icon, children, onDismiss }
           />
         )
       }
-      <p className="w-full font-sans text-zinc-500 text-xs">
+      <p className="w-full font-sans text-zinc-500 text-sm">
         {children}
       </p>
       {

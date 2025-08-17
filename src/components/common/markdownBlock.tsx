@@ -114,8 +114,7 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
               )
             : (
                 <CodeHighlighter
-                  className="
-                  mt-6 mb-6"
+                  className="w-full mt-6 mb-6"
                   language={language}
                 >
                   {children}

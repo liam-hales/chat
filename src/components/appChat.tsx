@@ -43,9 +43,9 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   }, [id, state]);
 
   return (
-    <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between pb-4 pl-4 pr-4">
+    <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between pb-4 pl-2 pr-2">
       <div className="absolute w-full h-10 bg-gradient-to-b from-black to-transparent" />
-      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto pt-10 pb-10 pl-3 pr-3">
+      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto pt-10 pb-10 pl-2 pr-2">
         {
           messages.map((message) => {
             const { id, role, content } = message;

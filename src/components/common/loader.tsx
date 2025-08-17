@@ -32,7 +32,7 @@ const Loader: FunctionComponent<Props> = ({ className, appearance = 'dark', text
       </div>
       {
         (text != null) && (
-          <p className="font-sans text-sm text-white pl-3">{text}</p>
+          <p className="font-sans text-md text-white pl-3">{text}</p>
         )
       }
     </div>

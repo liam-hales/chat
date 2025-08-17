@@ -57,7 +57,7 @@ const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
           <Loader appearance={(isSelected === true) ? 'light' : 'dark'} />
         )
       }
-      <p className="font-sans text-white text-sm pr-12 pl-3">
+      <p className="font-sans text-white text-sm pr-6 pl-3">
         {title}
       </p>
       <div className="flex flex-row gap-x-2">
