@@ -33,6 +33,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
     "ai": "^5.0.8",
+    "dedent": "^1.6.0",
     "lucide-react": "^0.539.0",
     "marked": "^16.1.2",
     "nanoid": "^5.1.5",
