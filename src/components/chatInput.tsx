@@ -70,10 +70,18 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
 
       // If the "Enter" key has been pressed, make sure
       // the user is allowed to snd the message
-      if (value.trim() !== '' && limitReached === false && onSend != null) {
-        onSend();
+      if (value.trim() !== '' && limitReached === false) {
+        _onSend();
       }
     }
+  };
+
+  const _onSend = (): void => {
+    onSend?.();
+
+    // Call `.blur` on the input ref to dismiss the
+    // keyboard for devices that have on screen keyboards
+    setTimeout(() => internalRef?.current?.blur(), 0);
   };
 
   return (
@@ -137,7 +145,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                     disabled:bg-zinc-900
                     disabled:border-zinc-800
                   `}
-                  onClick={onSend}
+                  onClick={_onSend}
                   disabled={
                     value.trim() === '' ||
                     limitReached === true
