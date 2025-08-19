@@ -97,7 +97,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         <div className="w-full flex flex-col items-center pt-5 pb-5 pl-5 pr-5">
           <TextArea
             ref={internalRef}
-            className="w-full h-6 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 resize-none"
+            className="w-full h-6 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none"
             placeholder="Chat with AI, ask anything you like"
             value={value}
             disabled={isDisabled}
