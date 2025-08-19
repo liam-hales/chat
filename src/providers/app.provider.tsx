@@ -323,6 +323,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     // Abort the chat request (if the controller exists)
     // using the chats `AbortController` with a given reason
     abortController?.abort(error);
+
+    _updateChat(chatId, {
+      state: 'idle',
+    });
   };
 
   /**
