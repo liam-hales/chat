@@ -1,6 +1,7 @@
 'use client';
 
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState } from 'react';
+import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps } from '../types';
 import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
@@ -11,7 +12,7 @@ import { Error, Info } from './common';
 /**
  * The `ChatInput` component props
  */
-interface Props extends BaseProps<HTMLInputElement> {
+interface Props extends BaseProps<HTMLTextAreaElement> {
   readonly value: string;
   readonly modelDefinition: AIModelDefinition;
   readonly isDisabled?: boolean;
@@ -49,7 +50,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     (limits?.messageLength ?? Infinity)
   );
 
-  const _onChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const _onChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
 
     // Destructure the event and the event target
     // and pass its value to `onChange`
@@ -59,10 +60,13 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     onChange(value);
   };
 
-  const _onKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
-    const { key } = event;
+  const _onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
+    const { key, shiftKey } = event;
 
-    if (key === 'Enter') {
+    // If the user has pressed the enter key,
+    // make sure they were not also holding shift
+    if (key === 'Enter' && shiftKey === false) {
+      event.preventDefault();
 
       // If the "Enter" key has been pressed, make sure
       // the user is allowed to snd the message
@@ -81,11 +85,11 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
           </Error>
         )
       }
-      <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-800">
+      <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
         <div className="w-full flex flex-col items-center pt-5 pb-5 pl-5 pr-5">
-          <input
+          <TextArea
             ref={internalRef}
-            className="w-full h-6 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1"
+            className="w-full h-6 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 resize-none"
             placeholder="Chat with AI, ask anything you like"
             value={value}
             disabled={isDisabled}
