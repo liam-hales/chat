@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { Ref, RefObject } from 'react';
 import { aiModelDefinitions } from './constants';
 
 /**
@@ -19,7 +19,7 @@ export type AIModelDefinition = typeof aiModelDefinitions[number];
  * @see [React - Forwarding Refs](https://reactjs.org/docs/forwarding-refs.html)
  */
 export interface BaseProps<T extends HTMLElement = HTMLElement> {
-  readonly internalRef?: Ref<T>;
+  readonly internalRef?: RefObject<T | null>;
   readonly className?: string;
 }
 
