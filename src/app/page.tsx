@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement, useEffect, useRef } from 'react';
+import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { Typewriter } from '../components/common';
 import { ChatInput } from '../components';
 import { useApp } from '../hooks';
@@ -12,9 +12,8 @@ import { useApp } from '../hooks';
  * @returns The `AppPage` component
  */
 const AppPage: FunctionComponent = (): ReactElement => {
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const { chats, getChat, setInputValue, setModelDefinition, sendMessage } = useApp();
+  const { inputRef, chats, getChat, setInputValue, setModelDefinition, sendMessage } = useApp();
   const { id, inputValue, modelDefinition } = getChat(chats[0].id);
 
   /**
@@ -23,7 +22,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
    */
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+  }, [inputRef]);
 
   return (
     <div className="h-full flex flex-col items-center pb-4 md:pb-28 pl-4 pr-4">

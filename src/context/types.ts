@@ -1,10 +1,12 @@
 import { AppChat, FullAppChat } from '../types';
+import { RefObject } from 'react';
 
 /**
  * Describes the app state which consists of all
  * the app data which is stored in the `AppProvider`
  */
 export interface AppState {
+  readonly inputRef: RefObject<HTMLTextAreaElement | null>;
   readonly selectedChatId: string;
   readonly chats: AppChat[];
 }

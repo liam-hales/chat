@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
+import { FunctionComponent, ReactElement, ReactNode, useCallback, useRef, useState } from 'react';
 import { AppContext } from '../context';
 import { BaseProps, AppChat, FullAppChat, UpdateChatPayload } from '../types';
 import { nanoid } from 'nanoid';
@@ -45,6 +45,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
 
   const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
   const [chats, setChats] = useState<AppChat[]>([defaultChat]);
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   /**
    * Used to get a specific chat via it's
@@ -413,6 +415,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   return (
     <AppContext.Provider value={
       {
+        inputRef: inputRef,
         selectedChatId: selectedChatId,
         chats: chats,
         getChat: getChat,

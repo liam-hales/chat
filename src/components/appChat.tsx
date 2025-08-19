@@ -21,9 +21,8 @@ interface Props extends BaseProps {
  * @returns The `AppChat` component
  */
 const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const { getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
+  const { inputRef, getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
   const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
@@ -40,7 +39,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
    */
   useEffect(() => {
     inputRef.current?.focus();
-  }, [id, state]);
+  }, [inputRef, id, state]);
 
   return (
     <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between pb-4 pl-2 pr-2">
