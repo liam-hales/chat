@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@ai-sdk/rsc": "^1.0.8",
+    "@headlessui/react": "^2.2.7",
     "@openrouter/ai-sdk-provider": "^1.1.2",
     "@tailwindcss/postcss": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
