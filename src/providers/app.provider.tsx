@@ -32,13 +32,16 @@ interface Props extends BaseProps {
  */
 const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
+  const defaultModel = aiModelDefinitions
+    .find((definition) => definition.isDefault === true);
+
   // Define the default chat that is initially
   // created when the app is first rendered
   const defaultChatId = nanoid(8);
   const defaultChat: AppChat = {
     id: defaultChatId,
     state: 'idle',
-    modelDefinitionId: aiModelDefinitions[0].id,
+    modelDefinitionId: defaultModel?.id ?? '',
     inputValue: '',
     messages: [],
   };
