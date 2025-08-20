@@ -3,11 +3,10 @@
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState } from 'react';
 import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps } from '../types';
-import { aiModelDefinitions } from '../constants';
 import { withRef } from '../helpers';
 import { ArrowUp, X } from 'lucide-react';
 import { Model } from './';
-import { Error, Info } from './common';
+import { Error, Info, ModelMenu } from './common';
 
 /**
  * The `ChatInput` component props
@@ -109,29 +108,17 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               (onModelChange == null) && (
                 <Model
                   definition={modelDefinition}
-                  appearance="light"
+                  appearance="dark"
+                  size="large"
                 />
               )
             }
             {
               (onModelChange != null) && (
-                <div className="max-w-[620px] flex flex-row flex-wrap items-center gap-3">
-                  {
-                    aiModelDefinitions.map((def) => {
-                      return (
-                        <Model
-                          key={`model-${def.name}`}
-                          definition={def}
-                          appearance={(modelDefinition.id === def.id) ? 'light' : 'dark'}
-                          onClick={() => {
-                            onModelChange(def.id);
-                            setIsLimitVisible(true);
-                          }}
-                        />
-                      );
-                    })
-                  }
-                </div>
+                <ModelMenu
+                  modelDefinition={modelDefinition}
+                  onModelChange={onModelChange}
+                />
               )
             }
             {
