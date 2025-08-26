@@ -23,12 +23,10 @@ interface Props extends BaseProps {
 const ModelMenu: FunctionComponent<Props> = ({ modelDefinition, onModelChange }): ReactElement<Props> => {
   return (
     <Menu>
-      <MenuButton>
+      <MenuButton className="cursor-pointer outline-none">
         <Model
-          className="cursor-pointer"
           definition={modelDefinition}
           appearance="dark"
-          size="large"
           showDefaultLabel={true}
         />
       </MenuButton>
