@@ -6,6 +6,7 @@ import { streamText } from 'ai';
 import { z } from 'zod';
 import { streamChatSchema } from '../schemas';
 import getConfig from 'next/config';
+import dedent from 'dedent';
 
 /**
  * Used to stream the chat response from the LLM to the client
@@ -32,6 +33,16 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
     compatibility: 'strict',
   });
 
+  // If the `maxOutputTokens` has been set then append a max token
+  // usage prompt to the system message for the LLM to comply with
+  const system = (maxOutputTokens != null)
+    ? dedent`
+      ${systemMessage ?? ''}
+      You must never consume more than ${maxOutputTokens} tokens per response.
+      If you need to use more tokens then tell the user that you are limited due to costs.
+    `
+    : systemMessage;
+
   /**
    * Executes the request to the LLM and updates
    * the stream with data as the LLM responds
@@ -39,9 +50,8 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
   const executeRequest = async (): Promise<void> => {
     const { textStream } = streamText({
       model: provider.chat(modelId),
-      system: systemMessage,
+      system: system,
       messages: messages,
-      maxOutputTokens: maxOutputTokens,
 
       // eslint-disable-next-line no-console
       onError: (error) => console.error(error),
