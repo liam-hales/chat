@@ -109,7 +109,6 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                 <Model
                   definition={modelDefinition}
                   appearance="dark"
-                  size="large"
                 />
               )
             }
@@ -138,17 +137,20 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                     limitReached === true
                   }
                 >
-                  <ArrowUp />
+                  <ArrowUp size={20} />
                 </button>
               )
             }
             {
               (onAbort != null) && (
                 <button
-                  className="text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2"
+                  className="cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2"
                   onClick={onAbort}
                 >
-                  <X />
+                  <X
+                    className="text-white"
+                    size={20}
+                  />
                 </button>
               )
             }
@@ -162,7 +164,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             icon="badge-pound-sterling"
             onDismiss={() => setIsLimitVisible(false)}
           >
-            The AI model you have selected costs and therefore has limits, the models responses and how much you can send will be restricted.
+            The AI model you have selected incurs costs and therefore has usage limits, the models responses and how much you can send will be restricted.
           </Info>
         )
       }
