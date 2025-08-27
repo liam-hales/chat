@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import "tailwindcss-safe-area";
 
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
