@@ -28,7 +28,7 @@ const AppLayout: FunctionComponent<Props> = ({ children }): ReactElement<Props> 
       lang="en"
       className={`h-full ${crimsonText.variable} ${firaCode.variable} overscroll-none`}
     >
-      <body className="h-full bg-black">
+      <body className="h-full bg-black p-safe">
         <Analytics />
         <AppProvider>
           <App>
