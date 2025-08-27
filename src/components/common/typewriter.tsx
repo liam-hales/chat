@@ -25,8 +25,7 @@ const Typewriter: FunctionComponent<Props> = ({ className, onInit }): ReactEleme
         onInit={onInit}
         options={{
           cursor: '_',
-          deleteSpeed: 30,
-          delay: 65,
+          delay: 'natural',
           wrapperClassName: 'TypewriterWrapper',
           cursorClassName: 'TypewriterCursor',
         }}
