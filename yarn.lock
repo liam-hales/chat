@@ -2008,6 +2008,7 @@ __metadata:
     remark-gfm: "npm:^4.0.1"
     sharp: "npm:^0.34.3"
     tailwindcss: "npm:^4.1.11"
+    tailwindcss-safe-area: "npm:^1.1.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.9.2"
     typewriter-effect: "npm:^2.22.0"
@@ -5679,6 +5680,15 @@ __metadata:
   version: 6.2.0
   resolution: "tabbable@npm:6.2.0"
   checksum: 10/980fa73476026e99dcacfc0d6e000d41d42c8e670faf4682496d30c625495e412c4369694f2a15cf1e5252d22de3c396f2b62edbe8d60b5dadc40d09e3f2dde3
+  languageName: node
+  linkType: hard
+
+"tailwindcss-safe-area@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "tailwindcss-safe-area@npm:1.1.0"
+  peerDependencies:
+    tailwindcss: ^4.0.0
+  checksum: 10/eedd23610eadacd105f066e0b7fd6d82be20f9260cc22947bda7534b9250c31349656241bb27817702bec6a1ddf8bf1e5748b9c75c61b7bbe3e0d858a740b584
   languageName: node
   linkType: hard
 
