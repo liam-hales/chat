@@ -30,7 +30,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   // user sends the last message, the error UI is shown and the input is disabled before the LLM replies
   const chatLimitReached = (
     (messages.length + 1) >=
-    (limits?.chatLength ?? Infinity)
+    (limits?.maxChatLength ?? Infinity)
   );
 
   /**

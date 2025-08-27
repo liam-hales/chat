@@ -18,9 +18,8 @@ export const aiModelDefinitions = [
     openRouterId: 'openai/gpt-oss-120b',
     isDefault: false,
     limits: {
-      outputTokens: 1024,
-      messageLength: 4096,
-      chatLength: 10,
+      maxMessageLength: 4096,
+      maxChatLength: 10,
     },
   },
   {
@@ -29,9 +28,8 @@ export const aiModelDefinitions = [
     openRouterId: 'openai/gpt-5-mini',
     isDefault: false,
     limits: {
-      outputTokens: 1024,
-      messageLength: 4096,
-      chatLength: 10,
+      maxMessageLength: 4096,
+      maxChatLength: 10,
     },
   },
   {

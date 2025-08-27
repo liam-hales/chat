@@ -46,7 +46,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
 
   const limitReached = (
     value.length >
-    (limits?.messageLength ?? Infinity)
+    (limits?.maxMessageLength ?? Infinity)
   );
 
   const _onChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {

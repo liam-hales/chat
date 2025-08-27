@@ -19,7 +19,7 @@ const _buildSchema = (definition: AIModelDefinition) => {
   // If the model has limits then set a
   // maximum character length for the content
   if (limits != null) {
-    content.max(limits.messageLength);
+    content.max(limits.maxMessageLength);
   }
 
   const messages = z
@@ -39,7 +39,7 @@ const _buildSchema = (definition: AIModelDefinition) => {
   // If the model has limits then set a
   // maximum length for the messages array
   if (limits != null) {
-    messages.max(limits.chatLength);
+    messages.max(limits.maxChatLength);
   }
 
   return z
@@ -51,12 +51,12 @@ const _buildSchema = (definition: AIModelDefinition) => {
         .max(1024)
         .optional(),
       messages: messages,
-      maxOutputTokens: (limits != null)
+      maxOutputLength: (limits != null)
         ? z
             .number()
             .min(1)
-            .max(limits.outputTokens)
-            .default(limits.outputTokens)
+            .max(limits.maxMessageLength)
+            .default(limits.maxMessageLength)
             .optional()
         : z
             .number()
