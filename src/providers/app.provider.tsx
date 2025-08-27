@@ -186,7 +186,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    */
   const sendMessage = async (chatId: string): Promise<void> => {
     const { inputValue, messages, modelDefinition } = getChat(chatId);
-    const { openRouterId, limits } = modelDefinition;
+    const { openRouterId } = modelDefinition;
 
     const abortController = new AbortController();
     const trimmedValue = inputValue.trim();
@@ -239,9 +239,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
             content: trimmedValue,
           },
         ],
-        ...(limits != null) && {
-          maxOutputTokens: limits.outputTokens,
-        },
       });
 
       abortController.signal.throwIfAborted();
@@ -391,10 +388,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const streamValue = await streamChat({
       modelId: 'openai/gpt-oss-20b:free',
       systemMessage: dedent`
-        Generate a chat title which describes the chat based off the users first message.
+        Generate a short chat title which describes the chat based off the users first message.
 
-        - Never use any LLM names or punctuation.
-        - Never generate a response more than 25 characters.
+        - Never use any LLM names.
+        - Never use punctuation.
       `,
       messages: [
         {
@@ -402,6 +399,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
           content: inputValue,
         },
       ],
+      maxOutputLength: 25,
     });
 
     // process the client stream value
