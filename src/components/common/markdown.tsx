@@ -21,7 +21,7 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `Markdown` component
  */
-const Markdown: FunctionComponent<Props> = ({ id, children }): ReactElement<Props> => {
+const Markdown: FunctionComponent<Props> = ({ className, id, children }): ReactElement<Props> => {
   const blocks = useMemo(() => {
 
     // Parse the markdown string into blocks
@@ -36,7 +36,10 @@ const Markdown: FunctionComponent<Props> = ({ id, children }): ReactElement<Prop
       {
         blocks.map((block, index) => {
           return (
-            <MarkdownBlock key={`markdown-${id}-block-${index}`}>
+            <MarkdownBlock
+              className={className}
+              key={`markdown-${id}-block-${index}`}
+            >
               {block}
             </MarkdownBlock>
           );

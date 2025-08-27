@@ -21,56 +21,56 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `MarkdownBlock` component
  */
-const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
+const MarkdownBlock: FunctionComponent<Props> = ({ className, children }): ReactElement<Props> => {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
         h1: ({ children }) => {
           return (
-            <h1 className="font-sans font-bold text-white text-3xl pt-2 pb-2">
+            <h1 className={`${className ?? ''} font-sans font-bold text-white text-3xl pt-2 pb-2`}>
               {children}
             </h1>
           );
         },
         h2: ({ children }) => {
           return (
-            <h2 className="font-sans font-bold text-white text-2xl pt-2 pb-2">
+            <h2 className={`${className ?? ''} font-sans font-bold text-white text-2xl pt-2 pb-2`}>
               {children}
             </h2>
           );
         },
         h3: ({ children }) => {
           return (
-            <h3 className="font-sans font-bold text-white text-xl pt-2 pb-2">
+            <h3 className={`${className ?? ''} font-sans font-bold text-white text-xl pt-2 pb-2`}>
               {children}
             </h3>
           );
         },
         h4: ({ children }) => {
           return (
-            <h4 className="font-sans font-bold text-white text-lg pt-2 pb-2">
+            <h4 className={`${className ?? ''} font-sans font-bold text-white text-lg pt-2 pb-2`}>
               {children}
             </h4>
           );
         },
         h5: ({ children }) => {
           return (
-            <h5 className="font-sans font-bold text-white text-md pt-2 pb-2">
+            <h5 className={`${className ?? ''} font-sans font-bold text-white text-md pt-2 pb-2`}>
               {children}
             </h5>
           );
         },
         h6: ({ children }) => {
           return (
-            <h6 className="font-sans font-bold text-white text-sm pt-2 pb-2">
+            <h6 className={`${className ?? ''} font-sans font-bold text-white text-sm pt-2 pb-2`}>
               {children}
             </h6>
           );
         },
         p: ({ children }) => {
           return (
-            <p className="font-sans text-white text-md pt-2 pb-2">
+            <p className={`${className ?? ''} font-sans text-white text-md pt-2 pb-2`}>
               {children}
             </p>
           );
@@ -89,8 +89,8 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
             </em>
           );
         },
-        code: ({ className, children }) => {
-          const language = className?.replace('language-', '');
+        code: ({ className: internalClass, children }) => {
+          const language = internalClass?.replace('language-', '');
 
           // If the children is empty
           // then render nothing
@@ -114,7 +114,7 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
               )
             : (
                 <CodeHighlighter
-                  className="w-full mt-6 mb-6"
+                  className={`${className ?? ''} mt-6 mb-6`}
                   language={language}
                 >
                   {children}
@@ -123,14 +123,14 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
         },
         ol: ({ children }) => {
           return (
-            <ol className="list-decimal pt-4 pb-4 pl-10">
+            <ol className={`${className ?? ''} list-decimal pt-4 pb-4 pl-10`}>
               {children}
             </ol>
           );
         },
         ul: ({ children }) => {
           return (
-            <ul className="list-disc pt-4 pb-4 pl-10">
+            <ul className={`${className ?? ''} list-disc pt-4 pb-4 pl-10`}>
               {children}
             </ul>
           );
@@ -143,12 +143,14 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           );
         },
         table: ({ children }) => (
-          <table className="w-full table table-auto bg-zinc-900/80 rounded-lg overflow-hidden mt-6 mb-6">
-            {children}
-          </table>
+          <div className="w-full no-scrollbar overflow-x-auto mt-6 mb-6">
+            <table className={`${className ?? ''} table table-auto`}>
+              {children}
+            </table>
+          </div>
         ),
         thead: ({ children }) => (
-          <thead className="bg-zinc-800">
+          <thead>
             {children}
           </thead>
         ),
@@ -158,14 +160,14 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           </tr>
         ),
         th: ({ children }) => (
-          <th className="text-start pt-3 pb-3 pl-4 pr-4">
+          <th className="border-solid border-1 border-zinc-800 text-start pt-3 pb-3 pl-4 pr-4">
             <span className="font-sans text-md font-bold text-white">
               {children}
             </span>
           </th>
         ),
         td: ({ children }) => (
-          <td className="border-solid border-t-4 border-black text-start pt-3 pb-3 pl-4 pr-4">
+          <td className="border-solid border-1 border-zinc-800 text-start pt-3 pb-3 pl-4 pr-4">
             <span className="font-sans text-sm text-white">
               {children}
             </span>

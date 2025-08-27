@@ -34,8 +34,8 @@ const CodeHighlighter: FunctionComponent<Props> = ({ className, language, childr
   };
 
   return (
-    <div className={`${className ?? ''} flex flex-col items-start gap-y-2 bg-zinc-950 border-solid border-[1px] border-zinc-800 rounded-xl p-4`}>
-      <div className="w-full flex flex-row items-center justify-between pr-2">
+    <div className={`${className ?? ''} flex flex-col items-start gap-y-2 bg-zinc-950 border-solid border-[1px] border-zinc-800 rounded-xl`}>
+      <div className="w-full flex flex-row items-center justify-between pt-4 pl-4 pr-5">
         <p className="font-mono text-xs text-white">
           {language}
         </p>
@@ -66,7 +66,7 @@ const CodeHighlighter: FunctionComponent<Props> = ({ className, language, childr
         </button>
       </div>
       <SyntaxHighlighter
-        className="w-full font-mono text-xs !bg-transparent !m-0 !p-2"
+        className="w-full font-mono text-xs !bg-transparent !m-0 !pt-2 !pb-4 !pl-4 !pr-4 no-scrollbar"
         language={language}
         style={darcula}
       >

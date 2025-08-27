@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from 'react';
+import { FunctionComponent, ReactElement, useEffect, useMemo } from 'react';
 import { ChatInput, ChatMessage } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
@@ -42,14 +42,15 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   }, [inputRef, id, state]);
 
   return (
-    <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between pb-4 pl-2 pr-2">
+    <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between pb-4">
       <div className="absolute w-full h-10 bg-gradient-to-b from-black to-transparent" />
-      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto pt-10 pb-10 pl-2 pr-2">
+      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto overflow-x-hidden pt-10 pb-10">
         {
           messages.map((message) => {
             const { id, role, content } = message;
             return (
               <ChatMessage
+                className="ml-4 mr-4"
                 key={`${role}-message-${id}`}
                 id={id}
                 role={role}
@@ -62,14 +63,14 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
         {
           (state === 'loading') && (
             <Loader
-              className="self-start"
+              className="self-start pl-4 pr-4"
               appearance="dark"
               text="Thinking..."
             />
           )
         }
       </div>
-      <div className="w-full flex flex-col items-start">
+      <div className="w-full flex flex-col items-start pl-2 pr-2">
         {
           (chatLimitReached === true) && (
             <Error className="mb-4">

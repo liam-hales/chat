@@ -25,9 +25,9 @@ const AppPage: FunctionComponent = (): ReactElement => {
   }, [inputRef]);
 
   return (
-    <div className="h-full flex flex-col items-center pb-4 md:pb-28 pl-4 pr-4">
+    <div className="h-full flex flex-col items-center pb-4 md:pb-28 pl-2 pr-2">
       <div className="w-full h-full max-w-[910px] flex flex-col items-center justify-between">
-        <div className="w-full h-full flex flex-col items-start justify-center pl-4 pr-4">
+        <div className="w-full h-full flex flex-col items-start justify-center pl-5 pr-5">
           <Typewriter
             className="font-sans font-bold text-[clamp(40px,11.6vw,110px)] leading-[clamp(110%,11.6vw,60%)] text-white"
             onInit={(typewriter) => {
