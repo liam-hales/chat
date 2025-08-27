@@ -7,6 +7,7 @@ import getConfig from 'next/config';
  */
 export const viewport: Viewport = {
   width: 'device-width',
+  viewportFit: 'cover',
   initialScale: 1,
   themeColor: '#000000',
 };
