@@ -20,7 +20,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
   // As this is a server action, we need to
   // validate the options before using them
   const validated = streamChatSchema.parse(options);
-  const { modelId, systemMessage, messages, maxOutputTokens } = validated;
+  const { modelId, systemMessage, messages, maxOutputLength } = validated;
 
   const { serverRuntimeConfig } = getConfig();
   const { openRouterApiKey } = serverRuntimeConfig;
@@ -33,13 +33,13 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
     compatibility: 'strict',
   });
 
-  // If the `maxOutputTokens` has been set then append a max token
+  // If the `maxOutputLength` has been set then append a max character
   // usage prompt to the system message for the LLM to comply with
-  const system = (maxOutputTokens != null)
+  const system = (maxOutputLength != null)
     ? dedent`
       ${systemMessage ?? ''}
-      You must never consume more than ${maxOutputTokens} tokens per response.
-      If you need to use more tokens then tell the user that you are limited due to costs.
+      Your response must never exceed ${maxOutputLength} characters.
+      If you need to use more characters then tell the user that you are limited due to costs.
     `
     : systemMessage;
 
