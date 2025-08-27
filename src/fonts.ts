@@ -9,7 +9,7 @@ import { Crimson_Text, Fira_Code } from 'next/font/google';
 export const crimsonText = Crimson_Text({
   variable: '--sans-font',
   subsets: ['latin'],
-  style: ['normal'],
+  style: ['normal', 'italic'],
   weight: ['400', '700'],
 });
 
