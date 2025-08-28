@@ -64,6 +64,7 @@ const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
         <Model
           definition={modelDefinition}
           appearance={(isSelected === true) ? 'light' : 'dark'}
+          form="compact"
         />
         {
           (isHovering === true) && (
