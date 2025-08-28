@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent, ReactElement, ReactNode } from 'react';
+import { FunctionComponent, ReactElement, ReactNode, useEffect } from 'react';
 import { BaseProps } from '../types';
 import { useApp } from '../hooks';
 import { AppChat, Tab } from './';
@@ -21,6 +21,7 @@ interface Props extends BaseProps {
  */
 const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | ReactNode => {
   const {
+    inputRef,
     selectedChatId,
     chats,
     getChat,
@@ -28,6 +29,39 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
     setSelectedChat,
     deleteChat
   } = useApp();
+
+  /**
+   * Used to handle dismissing the keyboard when a scroll event is triggered
+   * but also allowing enough time for the keyboard to focus correctly
+   */
+  useEffect(() => {
+    let allowDismiss = false;
+
+    const handleFocus = (): void => {
+
+      // Do not allow the keyboard to dismiss until a delay of `300` milliseconds
+      // This allows the keyboard to focus without immediately being dismissed
+      allowDismiss = false;
+      setTimeout(() => allowDismiss = true, 300);
+    };
+
+    const handleScroll = (): void => {
+
+      // The keyboard focusing will trigger this scroll
+      // event so only dismiss the keyboard if allowed
+      if (allowDismiss === true) {
+        inputRef?.current?.blur();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('focusin', handleFocus);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('focusin', handleFocus);
+    };
+  }, [inputRef]);
 
   // Calculate if any of the
   // chats have messages
