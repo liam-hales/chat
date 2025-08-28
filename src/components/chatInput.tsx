@@ -75,6 +75,14 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     }
   };
 
+  const _onModelChange = (definitionId: string): void => {
+    onModelChange?.(definitionId);
+
+    // Reset the limit visibility state
+    // when the user changes model
+    setIsLimitVisible(true);
+  };
+
   const _onSend = (): void => {
     onSend?.();
 
@@ -116,7 +124,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               (onModelChange != null) && (
                 <ModelMenu
                   modelDefinition={modelDefinition}
-                  onModelChange={onModelChange}
+                  onModelChange={_onModelChange}
                 />
               )
             }
