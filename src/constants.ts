@@ -8,9 +8,12 @@ export const aiModelDefinitions = [
   {
     id: nanoid(8),
     name: 'gpt-oss-20b',
-    openRouterId: 'openai/gpt-oss-20b:free',
+    openRouterId: 'openai/gpt-oss-20b',
     isDefault: true,
-    limits: null,
+    limits: {
+      maxMessageLength: 8192,
+      maxChatLength: 10,
+    },
   },
   {
     id: nanoid(8),
