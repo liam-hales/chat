@@ -38,9 +38,10 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
   const system = (maxOutputLength != null)
     ? dedent`
       ${systemMessage ?? ''}
+
       Your response must never exceed ${maxOutputLength} characters.
       If you need to use more characters then tell the user that you are limited due to costs.
-    `
+    `.trim()
     : systemMessage;
 
   /**
