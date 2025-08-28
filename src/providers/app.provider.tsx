@@ -386,12 +386,16 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
    */
   const _generateChatTitle = async (chatId: string, inputValue: string): Promise<void> => {
     const streamValue = await streamChat({
-      modelId: 'openai/gpt-oss-20b:free',
+      modelId: 'deepseek/deepseek-chat-v3-0324:free',
       systemMessage: dedent`
         Generate a short chat title which describes the chat based off the users first message.
+        This will be used to easily identify each chat.
 
-        - Never use any LLM names.
-        - Never use punctuation.
+        Rules:
+          - Always use normal sentence casing.
+          - Never include LLM names.
+          - Never include punctuation.
+          - Never include code.
       `,
       messages: [
         {
