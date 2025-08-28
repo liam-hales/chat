@@ -1,6 +1,5 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { AIModelDefinition, BaseProps } from '../types';
-import { BadgePoundSterling } from 'lucide-react';
 
 /**
  * The `Model` component props
@@ -8,8 +7,7 @@ import { BadgePoundSterling } from 'lucide-react';
 interface Props extends BaseProps {
   readonly definition: AIModelDefinition;
   readonly appearance?: 'light' | 'dark';
-  readonly size?: 'small' | 'large';
-  readonly showDefaultLabel?: boolean;
+  readonly form?: 'standard' | 'compact';
   readonly onClick?: () => void;
 }
 
@@ -25,8 +23,7 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
     className,
     definition,
     appearance = 'dark',
-    size = 'small',
-    showDefaultLabel = false,
+    form = 'standard',
     onClick,
   } = props;
   const { name, limits, isDefault } = definition;
@@ -36,9 +33,10 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
       className={`
         ${className ?? ''}
 
-        border-solid border-[1px] rounded-md
+        border-solid border-[1px] pt-1 pb-1 pl-2
 
-        ${(size === 'small') ? 'pt-1 pb-1 pl-2 pr-2' : 'pt-2 pb-2 pl-3 pr-3'}
+        ${(form === 'standard') ? 'rounded-md' : 'rounded-sm'}
+        ${(form === 'standard' && limits != null) ? 'pr-1' : 'pr-2'}
 
         ${(appearance === 'light') ? 'bg-zinc-500' : 'bg-zinc-900'}
         ${(appearance === 'light') ? 'border-zinc-400' : 'border-zinc-800'}
@@ -50,24 +48,21 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
       onClick={onClick}
       onKeyDown={onClick}
     >
-      <div className="flex flex-row items-center gap-x-2">
-        <p className={`
-          font-mono text-white
-          ${(size === 'small') ? 'text-[11px]' : 'text-xs'}
-        `}
-        >
+      <div className="flex flex-row items-center gap-x-3">
+        <p className="font-mono text-white text-[11px]">
           {
-            (isDefault === true && showDefaultLabel === true)
+            (form === 'standard' && isDefault === true)
               ? `${name} (Default)`
               : name
           }
         </p>
         {
-          (limits != null) && (
-            <BadgePoundSterling
-              className="text-white"
-              size={(size === 'small') ? 14 : 16}
-            />
+          (form === 'standard' && limits != null) && (
+            <div className="border-solid border-[1px] bg-zinc-800 border-zinc-700 rounded-sm pt-1 pb-1 pl-2 pr-2">
+              <p className="font-mono text-white text-[8px]">
+                Limited
+              </p>
+            </div>
           )
         }
       </div>
