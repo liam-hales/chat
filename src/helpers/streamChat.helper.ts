@@ -49,24 +49,44 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
    * the stream with data as the LLM responds
    */
   const executeRequest = async (): Promise<void> => {
-    const { textStream } = streamText({
+    const { fullStream } = streamText({
       model: provider.chat(modelId),
       system: system,
       messages: messages,
-
-      // eslint-disable-next-line no-console
-      onError: (error) => console.error(error),
     });
 
     // Loop through the async iterable text stream
     // and update the stream with said text
-    for await (const text of textStream) {
-      stream.update(text);
-    }
+    for await (const part of fullStream) {
+      switch (part.type) {
 
-    // Once done, mark the stream
-    // value as finalized
-    stream.done();
+        case 'text-delta': {
+          // Update the stream with the text
+          // to stream it to the client
+          stream.update(part.text);
+          break;
+        }
+
+        case 'error': {
+          if (part.error instanceof Error) {
+            const error = new Error(part.error.message);
+
+            // Update the stream with the error
+            // to stream it to the client
+            stream.error(error);
+          }
+
+          break;
+        }
+
+        case 'finish':
+        case 'abort': {
+          // Once done, mark the stream
+          // value as finalized
+          stream.done();
+        }
+      }
+    }
   };
 
   // Execute the request to the LLM but do not `await`, instead return the

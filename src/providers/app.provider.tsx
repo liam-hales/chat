@@ -291,6 +291,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       });
     }
     catch (error) {
+      console.error('sendMessage() ->', error);
+
       if (error instanceof Error) {
 
         // If the error is an abort error
@@ -406,18 +408,23 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       maxOutputLength: 25,
     });
 
-    // process the client stream value
-    // and process each part
-    for await (const value of readStreamableValue(streamValue)) {
-      if (value == null) {
-        continue;
-      }
+    try {
+      // process the client stream value
+      // and process each part
+      for await (const value of readStreamableValue(streamValue)) {
+        if (value == null) {
+          continue;
+        }
 
-      // Update the chat title with the
-      // value from the stream
-      _updateChat(chatId, {
-        title: (title) => `${title ?? ''}${value}`,
-      });
+        // Update the chat title with the
+        // value from the stream
+        _updateChat(chatId, {
+          title: (title) => `${title ?? ''}${value}`,
+        });
+      }
+    }
+    catch (error) {
+      console.error('_generateChatTitle() ->', error);
     }
   };
 
