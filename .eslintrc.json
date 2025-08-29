@@ -31,7 +31,14 @@
     "react/display-name": "off",
     "@stylistic/padded-blocks": "off",
 
-    "no-console": ["error"],
+    "no-console": [
+      "error", {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
     "object-shorthand": ["error", "never"],
     "eqeqeq": [
       "error",
