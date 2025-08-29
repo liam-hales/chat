@@ -1,12 +1,12 @@
-import { FunctionComponent, ReactElement } from 'react';
-import { OctagonAlert } from 'lucide-react';
+import { FunctionComponent, ReactElement, ReactNode } from 'react';
+import { OctagonX } from 'lucide-react';
 import { BaseProps } from '../../types';
 
 /**
  * The `Error` component props
  */
 interface Props extends BaseProps {
-  readonly children: string;
+  readonly children: ReactNode;
 }
 
 /**
@@ -18,14 +18,20 @@ interface Props extends BaseProps {
  */
 const Error: FunctionComponent<Props> = ({ className, children }): ReactElement<Props> => {
   return (
-    <div className={`${className ?? ''} flex flex-row items-center gap-x-3 bg-red-950/50 border-solid border-[1px] rounded-lg border-red-950 p-3`}>
-      <OctagonAlert
+    <div className={`${className ?? ''} flex flex-row items-center gap-x-4 bg-red-950/60 border-solid border-[1px] rounded-lg border-red-900/60 p-4`}>
+      <OctagonX
         className="text-white shrink-0"
         size={18}
       />
-      <p className="font-sans text-white text-sm">
-        { children}
-      </p>
+      {
+        (typeof children === 'string')
+          ? (
+              <p className="font-sans text-white text-sm">
+                {children}
+              </p>
+            )
+          : children
+      }
     </div>
   );
 };
