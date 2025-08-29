@@ -1,7 +1,7 @@
 'use client';
 
 import { FunctionComponent, ReactElement, useEffect, useMemo } from 'react';
-import { ChatInput, ChatMessage } from '.';
+import { ChatInput, ChatMessage, ChatError } from '.';
 import { useApp } from '../hooks';
 import { BaseProps } from '../types';
 import { Error, Loader } from './common';
@@ -22,8 +22,8 @@ interface Props extends BaseProps {
  */
 const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
 
-  const { inputRef, getChat, setInputValue, setModelDefinition, sendMessage, abortRequest } = useApp();
-  const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
+  const { inputRef, getChat, setInputValue, setModelDefinition, sendMessage, abortRequest, retryRequest } = useApp();
+  const { inputValue, state, messages, modelDefinition, errorMessage } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
   // When calculating if the chat limit has been reached, +1 onto the messages length so as soon as the
@@ -66,6 +66,15 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
               className="self-start pl-4 pr-4"
               appearance="dark"
               text="Thinking..."
+            />
+          )
+        }
+        {
+          (state === 'error') && (
+            <ChatError
+              message={errorMessage}
+              onRetry={() => retryRequest(id)}
+              onReport={() => console.warn('Error reporting not implemented')}
             />
           )
         }
