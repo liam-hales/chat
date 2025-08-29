@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useRef, useState } from 'react';
 import { AppContext } from '../context';
-import { BaseProps, AppChat, FullAppChat, UpdateChatPayload } from '../types';
+import { BaseProps, AppChat, FullAppChat, UpdateChatPayload, MakeRequestPayload } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
 import { streamChat } from '../helpers';
@@ -188,7 +188,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     const { inputValue, messages, modelDefinition } = getChat(chatId);
     const { openRouterId } = modelDefinition;
 
-    const abortController = new AbortController();
     const trimmedValue = inputValue.trim();
 
     // If there are no messages in the chat then generate
@@ -197,12 +196,11 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       void _generateChatTitle(chatId, trimmedValue);
     }
 
-    // Set the input value state to clear the
-    // input and set the chat state to loading
+    // Set the input value state to clear
+    // the input and set the chat state
     setInputValue(chatId, '');
     _updateChat(chatId, {
       state: 'loading',
-      abortController: abortController,
       messages: (previous) => {
         return [
           ...previous,
@@ -216,6 +214,71 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       },
     });
 
+    // Make the request with the messages from
+    // the chat plus the users new message
+    await _makeRequest({
+      chatId: chatId,
+      modelId: openRouterId,
+      messages: [
+        // Remove the unknown props
+        // from each message
+        ...messages.map((message) => {
+          return {
+            role: message.role,
+            content: message.content,
+          };
+        }),
+        {
+          role: 'user',
+          content: trimmedValue,
+        },
+      ],
+    });
+  };
+
+  /**
+   * Used to abort the request for
+   * a specific chat
+   *
+   * @param chatId The chat ID
+   * @param reason The reason for aborting
+   */
+  const abortRequest = (chatId: string, reason?: string): void => {
+    const { abortController } = getChat(chatId);
+
+    const error = new Error(reason);
+    error.name = 'AbortError';
+
+    // Abort the chat request (if the controller exists)
+    // using the chats `AbortController` with a given reason
+    abortController?.abort(error);
+
+    _updateChat(chatId, {
+      state: 'idle',
+    });
+  };
+
+  /**
+   * Used to make a request to the LLM, handle the stream, handle
+   * any errors and update chat state with the response data
+   *
+   * @param payload The request payload
+   */
+  const _makeRequest = async (payload: MakeRequestPayload): Promise<void> => {
+    const {
+      chatId,
+      modelId,
+      messages,
+    } = payload;
+
+    // Define a new abort controller for each
+    // request and store it in the chat state
+    const abortController = new AbortController();
+
+    _updateChat(chatId, {
+      abortController: abortController,
+    });
+
     try {
       // Set the abort controller to throw if aborted throughout this `try` block so the
       // logic will fall into the `catch` block and the error can be handled
@@ -223,22 +286,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
       abortController.signal.throwIfAborted();
 
       const streamValue = await streamChat({
-        modelId: openRouterId,
-        messages: [
-
-          // Remove the unknown props
-          // from each message
-          ...messages.map((message) => {
-            return {
-              role: message.role,
-              content: message.content,
-            };
-          }),
-          {
-            role: 'user',
-            content: trimmedValue,
-          },
-        ],
+        modelId: modelId,
+        messages: messages,
       });
 
       abortController.signal.throwIfAborted();
@@ -307,28 +356,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         });
       }
     }
-  };
-
-  /**
-   * Used to abort the request for
-   * a specific chat
-   *
-   * @param chatId The chat ID
-   * @param reason The reason for aborting
-   */
-  const abortRequest = (chatId: string, reason?: string): void => {
-    const { abortController } = getChat(chatId);
-
-    const error = new Error(reason);
-    error.name = 'AbortError';
-
-    // Abort the chat request (if the controller exists)
-    // using the chats `AbortController` with a given reason
-    abortController?.abort(error);
-
-    _updateChat(chatId, {
-      state: 'idle',
-    });
   };
 
   /**

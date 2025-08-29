@@ -1,5 +1,7 @@
 import { RefObject } from 'react';
 import { aiModelDefinitions } from './constants';
+import { streamChatSchema } from './schemas';
+import { z } from 'zod';
 
 /**
  * Describes the definitions for all available
@@ -55,6 +57,16 @@ export interface ChatMessage {
   readonly chatId: string;
   readonly role: 'user' | 'assistant';
   readonly content: string;
+}
+
+/**
+ * Used to describe the payload for the internal
+ * app provider `_makeRequest` function
+ */
+export interface MakeRequestPayload {
+  readonly chatId: string;
+  readonly modelId: z.infer<typeof streamChatSchema>['modelId'];
+  readonly messages: z.infer<typeof streamChatSchema>['messages'];
 }
 
 /**
