@@ -91,7 +91,10 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
                     key={`tab-${modelDefinition.name}-${index}`}
                     title={title ?? 'New chat'}
                     modelDefinition={modelDefinition}
-                    isLoading={state !== 'idle'}
+                    isLoading={
+                      state === 'loading' ||
+                      state === 'streaming'
+                    }
                     isSelected={(selectedChatId === id)}
                     onSelect={() => setSelectedChat(id)}
                     onDelete={() => deleteChat(id)}

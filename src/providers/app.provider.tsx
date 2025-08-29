@@ -296,14 +296,14 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         // If the error is an abort error
         // then handle it accordingly
         if (error.name === 'AbortError') {
-          // eslint-disable-next-line no-console
-          console.error(error);
           return;
         }
-      }
 
-      // Unknown error, re-throw it
-      throw error;
+        _updateChat(chatId, {
+          state: 'error',
+          errorMessage: error.message,
+        });
+      }
     }
   };
 

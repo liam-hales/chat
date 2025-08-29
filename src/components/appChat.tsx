@@ -95,7 +95,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
               : undefined
           }
           onAbort={
-            (state !== 'idle')
+            (state === 'loading' || state === 'streaming')
               ? () => abortRequest(id, 'User aborted request')
               : undefined
           }
