@@ -259,8 +259,42 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   /**
+   * Used to retry the request
+   * for a specific chat
+   *
+   * @param chatId The chat ID
+   */
+  const retryRequest = async (chatId: string): Promise<void> => {
+    const { messages, modelDefinition } = getChat(chatId);
+    const { openRouterId } = modelDefinition;
+
+    _updateChat(chatId, {
+      state: 'loading',
+    });
+
+    // Retry the request with the same
+    // messages from the chat state
+    await _makeRequest({
+      chatId: chatId,
+      modelId: openRouterId,
+      messages: [
+        // Remove the unknown props
+        // from each message
+        ...messages.map((message) => {
+          return {
+            role: message.role,
+            content: message.content,
+          };
+        }),
+      ],
+    });
+  };
+
+  /**
    * Used to make a request to the LLM, handle the stream, handle
    * any errors and update chat state with the response data
+   *
+   * Used for the `sendMessage` and `retryRequest` actions
    *
    * @param payload The request payload
    */
@@ -469,6 +503,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         deleteChat: deleteChat,
         sendMessage: sendMessage,
         abortRequest: abortRequest,
+        retryRequest: retryRequest,
       }
     }
     >

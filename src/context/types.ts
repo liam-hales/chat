@@ -81,4 +81,12 @@ export interface AppActions {
    * @param reason The reason for aborting
    */
   readonly abortRequest: (chatId: string, reason?: string) => void;
+
+  /**
+   * Used to retry the request
+   * for a specific chat
+   *
+   * @param chatId The chat ID
+   */
+  readonly retryRequest: (chatId: string) => Promise<void>;
 }
