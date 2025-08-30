@@ -35,6 +35,7 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
 
         border-solid border-[1px] pt-1 pb-1 pl-2
 
+        ${(form === 'standard') ? 'h-8' : 'h-auto'}
         ${(form === 'standard') ? 'rounded-md' : 'rounded-sm'}
         ${(form === 'standard' && limits != null) ? 'pr-1' : 'pr-2'}
 
@@ -48,7 +49,7 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
       onClick={onClick}
       onKeyDown={onClick}
     >
-      <div className="flex flex-row items-center gap-x-3">
+      <div className="h-full flex flex-row items-center gap-x-3">
         <p className="font-mono text-white text-[11px]">
           {
             (form === 'standard' && isDefault === true)
