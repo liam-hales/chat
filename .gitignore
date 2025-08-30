@@ -21,4 +21,5 @@ next-env.d.ts
 # Public
 public/*
 !public/cover.webp
+!public/cover.gif
 !public/icon.svg
