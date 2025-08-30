@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactElement, memo, useMemo } from 'react';
 import { BaseProps } from '../../types';
 import { MarkdownBlock } from './';
-import { marked } from "marked";
+import { marked } from 'marked';
 
 /**
  * The `Markdown` component props
@@ -28,25 +28,22 @@ const Markdown: FunctionComponent<Props> = ({ className, id, children }): ReactE
     // using the `marked` lexer
     return marked
       .lexer(children)
-      .map(token => token.raw);
+      .map((token) => token.raw);
   }, [children]);
 
   return (
-    <>
+    <div className={`${className ?? ''} flex flex-col items-start gap-y-6`}>
       {
         blocks.map((block, index) => {
           return (
-            <MarkdownBlock
-              className={className}
-              key={`markdown-${id}-block-${index}`}
-            >
+            <MarkdownBlock key={`markdown-${id}-block-${index}`}>
               {block}
             </MarkdownBlock>
           );
         })
       }
-    </>
+    </div>
   );
-}
+};
 
 export default memo(Markdown);

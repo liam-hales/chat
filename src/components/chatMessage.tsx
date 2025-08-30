@@ -18,22 +18,20 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `ChatMessage` component
  */
-const ChatMessage: FunctionComponent<Props> = ({ className, id, role, children }): ReactElement<Props> => {
+const ChatMessage: FunctionComponent<Props> = ({ id, role, children }): ReactElement<Props> => {
   return (role === 'user')
     ? (
-        <div className={`${className ?? ''} max-w-[380px] sm:max-w-[600px] self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4`}>
+        <div className="max-w-[380px] sm:max-w-[600px] self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4 ml-4 mr-4">
           <p className="font-sans text-white text-md">{children}</p>
         </div>
       )
     : (
-        <div className="w-full self-start">
-          <Markdown
-            className={className}
-            id={id}
-          >
-            {children}
-          </Markdown>
-        </div>
+        <Markdown
+          className="w-full self-start [&>*]:ml-4 [&>*]:mr-4"
+          id={id}
+        >
+          {children}
+        </Markdown>
       );
 };
 

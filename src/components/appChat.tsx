@@ -50,7 +50,6 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
             const { id, role, content } = message;
             return (
               <ChatMessage
-                className="ml-4 mr-4"
                 key={`${role}-message-${id}`}
                 id={id}
                 role={role}
