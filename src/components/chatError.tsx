@@ -39,24 +39,24 @@ const ChatError: FunctionComponent<Props> = ({ message, onRetry, onReport }): Re
         }
         <div className="flex flex-row gap-x-2 pl-2">
           <button
-            className="flex flex-row items-center gap-x-2 text-white cursor-pointer bg-transparent hover:bg-white/30 border-solid border-[1px] border-white/60 hover:border-white rounded-md pt-1 pb-1 pl-2 pr-2"
+            className="flex flex-row items-center gap-x-2 text-white cursor-pointer bg-white/20 hover:bg-white/50 border-solid border-[1px] border-white/60 hover:border-white rounded-md pt-1 pb-1 pl-2 pr-2"
             onClick={onRetry}
           >
             <Repeat2
               className="text-white"
-              size={14}
+              size={16}
             />
             <p className="font-sans text-white text-sm">
               Retry
             </p>
           </button>
           <button
-            className="flex flex-row items-center gap-x-2 text-white cursor-pointer bg-transparent hover:bg-white/30 border-solid border-[1px] border-white/60 hover:border-white rounded-md pt-1 pb-1 pl-2 pr-2"
+            className="flex flex-row items-center gap-x-2 text-white cursor-pointer bg-white/20 hover:bg-white/50 border-solid border-[1px] border-white/60 hover:border-white rounded-md pt-1 pb-1 pl-2 pr-2"
             onClick={onReport}
           >
             <Forward
               className="text-white"
-              size={14}
+              size={16}
             />
             <p className="font-sans text-white text-sm">
               Report
