@@ -383,12 +383,18 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
         if (error.name === 'AbortError') {
           return;
         }
-
-        _updateChat(chatId, {
-          state: 'error',
-          errorMessage: error.message,
-        });
       }
+
+      // Extract the error message. If the error is not an `Error` then it
+      // will most likely be the error message string from the stream.
+      const message = (error instanceof Error)
+        ? error.message
+        : `${error}`;
+
+      _updateChat(chatId, {
+        state: 'error',
+        errorMessage: message,
+      });
     }
   };
 

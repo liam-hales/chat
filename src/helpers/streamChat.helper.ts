@@ -69,11 +69,11 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
 
         case 'error': {
           if (part.error instanceof Error) {
-            const error = new Error(part.error.message);
+            const { message } = part.error;
 
             // Update the stream with the error
             // to stream it to the client
-            stream.error(error);
+            stream.error(message);
           }
 
           break;
