@@ -1,7 +1,19 @@
-# Chat
-Chat with AI, all in one place.
-
 <div>
+  <img src="public/cover.gif"/>
+  <h1>
+    Chat
+  </h1>
+  <p>
+    Chat is a web app that was created to converse with multiple different AI, all in one single place using the same user-friendly interface.
+  </p>
+  <a
+    href="https://chat.liamhales.dev"
+    target="_blank"
+  >
+    https://chat.liamhales.dev
+  </a>
+  <br/>
+  <br/>
   <br/>
   <a
     href="https://github.com/liam-hales/chat/deployments?environment=Production"
