@@ -27,7 +27,7 @@ const ChatMessage: FunctionComponent<Props> = ({ id, role, children }): ReactEle
       )
     : (
         <Markdown
-          className="w-full self-start [&>*]:ml-4 [&>*]:mr-4"
+          className="w-full self-start [&>*]:pl-4 [&>*]:pr-4"
           id={id}
         >
           {children}

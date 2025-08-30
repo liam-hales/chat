@@ -89,6 +89,13 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
             </em>
           );
         },
+        pre: ({ children }) => {
+          return (
+            <pre className="w-full">
+              {children}
+            </pre>
+          );
+        },
         code: ({ className, children }) => {
           const language = className?.replace('language-', '');
 
@@ -113,21 +120,24 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
                 </code>
               )
             : (
-                <CodeHighlighter language={language}>
+                <CodeHighlighter
+                  className="w-full mt-3 mb-3"
+                  language={language}
+                >
                   {children}
                 </CodeHighlighter>
               );
         },
         ol: ({ children }) => {
           return (
-            <ol className="list-decimal pl-8">
+            <ol className="list-decimal ml-8">
               {children}
             </ol>
           );
         },
         ul: ({ children }) => {
           return (
-            <ul className="list-disc pl-8">
+            <ul className="list-disc ml-8">
               {children}
             </ul>
           );
