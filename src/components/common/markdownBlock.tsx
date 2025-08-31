@@ -1,4 +1,4 @@
-import { FunctionComponent, memo, ReactElement } from 'react';
+import { FunctionComponent, memo, ReactElement, Fragment } from 'react';
 import { BaseProps } from '../../types';
 import { CodeHighlighter } from './';
 import ReactMarkdown from 'react-markdown';
@@ -102,7 +102,7 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           // If the children is empty
           // then render nothing
           if (children == null) {
-            return <></>;
+            return <Fragment />;
           }
 
           // If the children is not a string then it is

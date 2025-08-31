@@ -1,10 +1,10 @@
 'use client';
 
-import { FunctionComponent, ReactElement, ReactNode, useEffect } from 'react';
+import { FunctionComponent, ReactElement, ReactNode, useEffect, Fragment } from 'react';
 import { BaseProps } from '../types';
 import { useApp } from '../hooks';
 import { AppChat, Tab } from './';
-import { Plus } from "lucide-react";
+import { Plus } from 'lucide-react';
 
 /**
  * The `App` component props
@@ -27,7 +27,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
     getChat,
     createChat,
     setSelectedChat,
-    deleteChat
+    deleteChat,
   } = useApp();
 
   /**
@@ -50,7 +50,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
       // The keyboard focusing will trigger this scroll
       // event so only dismiss the keyboard if allowed
       if (allowDismiss === true) {
-        inputRef?.current?.blur();
+        inputRef.current?.blur();
       }
     };
 
@@ -72,9 +72,9 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
   // render the children to render the page
   if (hasMessages === false) {
     return (
-      <>
+      <Fragment>
         {children}
-      </>
+      </Fragment>
     );
   }
 
@@ -82,40 +82,40 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-full flex flex-col items-start">
         <div className="w-full h-14 flex flex-row items-center gap-3 no-scrollbar overflow-x-auto whitespace-nowrap p-2">
-            {
-              chats.map((chat, index) => {
-                const { id, title, state, modelDefinition } = getChat(chat.id);
+          {
+            chats.map((chat, index) => {
+              const { id, title, state, modelDefinition } = getChat(chat.id);
 
-                return (
-                  <Tab
-                    key={`tab-${modelDefinition.name}-${index}`}
-                    title={title ?? 'New chat'}
-                    modelDefinition={modelDefinition}
-                    isLoading={
-                      state === 'loading' ||
-                      state === 'streaming'
-                    }
-                    isSelected={(selectedChatId === id)}
-                    onSelect={() => setSelectedChat(id)}
-                    onDelete={() => deleteChat(id)}
-                  />
-                );
-              })
-            }
-            <button
-              className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-800 hover:border-zinc-500 rounded-lg"
-              onClick={createChat}
-            >
-              <Plus
-                className="text-white"
-                size={20}
-              />
-            </button>
+              return (
+                <Tab
+                  key={`tab-${modelDefinition.name}-${index}`}
+                  title={title ?? 'New chat'}
+                  modelDefinition={modelDefinition}
+                  isLoading={
+                    state === 'loading' ||
+                    state === 'streaming'
+                  }
+                  isSelected={(selectedChatId === id)}
+                  onSelect={() => setSelectedChat(id)}
+                  onDelete={() => deleteChat(id)}
+                />
+              );
+            })
+          }
+          <button
+            className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-800 hover:border-zinc-500 rounded-lg"
+            onClick={createChat}
+          >
+            <Plus
+              className="text-white"
+              size={20}
+            />
+          </button>
         </div>
       </div>
-      <AppChat id={selectedChatId}/>
+      <AppChat id={selectedChatId} />
     </div>
   );
-}
+};
 
 export default App;
