@@ -1,10 +1,11 @@
 'use client';
 
-import { FunctionComponent, ReactElement, ReactNode, useCallback, useRef, useState } from 'react';
+import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
 import { AppContext } from '../context';
 import { BaseProps, AppChat, FullAppChat, UpdateChatPayload, MakeRequestPayload } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
+import { useInput } from '../hooks';
 import { streamChat } from '../helpers';
 import { readStreamableValue } from '@ai-sdk/rsc';
 import dedent from 'dedent';
@@ -32,6 +33,8 @@ interface Props extends BaseProps {
  */
 const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
+  const { blurInput } = useInput();
+
   const defaultModel = aiModelDefinitions
     .find((definition) => definition.isDefault === true);
 
@@ -48,8 +51,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
 
   const [selectedChatId, setSelectedChatId] = useState<string>(defaultChatId);
   const [chats, setChats] = useState<AppChat[]>([defaultChat]);
-
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   /**
    * Used to get a specific chat via it's
@@ -195,6 +196,10 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     if (messages.length === 0) {
       void _generateChatTitle(chatId, trimmedValue);
     }
+
+    // Blur the input so
+    // it loses its focus
+    blurInput();
 
     // Set the input value state to clear
     // the input and set the chat state
@@ -498,7 +503,6 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   return (
     <AppContext.Provider value={
       {
-        inputRef: inputRef,
         selectedChatId: selectedChatId,
         chats: chats,
         getChat: getChat,

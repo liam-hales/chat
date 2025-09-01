@@ -1,8 +1,8 @@
 'use client';
 
-import { FunctionComponent, ReactElement, useEffect, useMemo } from 'react';
+import { FunctionComponent, ReactElement, useMemo } from 'react';
 import { ChatInput, ChatMessage, ChatError } from '.';
-import { useApp } from '../hooks';
+import { useApp, useInput } from '../hooks';
 import { BaseProps } from '../types';
 import { Error, Loader } from './common';
 
@@ -22,7 +22,16 @@ interface Props extends BaseProps {
  */
 const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
 
-  const { inputRef, getChat, setInputValue, setModelDefinition, sendMessage, abortRequest, retryRequest } = useApp();
+  const { ref } = useInput();
+  const {
+    getChat,
+    setInputValue,
+    setModelDefinition,
+    sendMessage,
+    abortRequest,
+    retryRequest,
+  } = useApp();
+
   const { inputValue, state, messages, modelDefinition, errorMessage } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
@@ -32,14 +41,6 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
     (messages.length + 1) >=
     (limits?.maxChatLength ?? Infinity)
   );
-
-  /**
-   * Used to focus the `ChatInput` whenever the
-   * user chat `id` or `state` changes
-   */
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [inputRef, id, state]);
 
   return (
     <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between">
@@ -87,7 +88,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           )
         }
         <ChatInput
-          ref={inputRef}
+          ref={ref}
           value={inputValue}
           modelDefinition={modelDefinition}
           isDisabled={chatLimitReached}

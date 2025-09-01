@@ -3,7 +3,7 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { Typewriter } from '../components/common';
 import { ChatInput } from '../components';
-import { useApp } from '../hooks';
+import { useApp, useInput } from '../hooks';
 
 /**
  * The entry point for the `/` app route,
@@ -13,16 +13,15 @@ import { useApp } from '../hooks';
  */
 const AppPage: FunctionComponent = (): ReactElement => {
 
-  const { inputRef, chats, getChat, setInputValue, setModelDefinition, sendMessage } = useApp();
+  const { ref, focusInput } = useInput();
+  const { chats, getChat, setInputValue, setModelDefinition, sendMessage } = useApp();
   const { id, inputValue, modelDefinition } = getChat(chats[0].id);
 
   /**
-   * Used to focus the `ChatInput`
+   * Used to focus the chat input
    * when the component is rendered
    */
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [inputRef]);
+  useEffect(() => focusInput(), [focusInput]);
 
   return (
     <div className="h-full flex flex-col items-center pb-4 md:pb-28 pl-2 pr-2">
@@ -84,7 +83,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
           />
         </div>
         <ChatInput
-          ref={inputRef}
+          ref={ref}
           value={inputValue}
           modelDefinition={modelDefinition}
           onChange={(value) => setInputValue(id, value)}

@@ -2,11 +2,37 @@ import { AppChat, FullAppChat } from '../types';
 import { RefObject } from 'react';
 
 /**
+ * Describes the input state which consists
+ * of all data stored in the `InputProvider`
+ */
+export interface InputState {
+  readonly ref: RefObject<HTMLTextAreaElement | null>;
+  readonly state: 'focused' | 'blurred';
+}
+
+/**
+ * Describes the different actions that
+ * the `InputProvider` can perform
+ */
+export interface InputActions {
+
+  /**
+   * Used to focus the input
+   */
+  readonly focusInput: () => void;
+
+  /**
+   * Used to blur the input
+   * to lose its focus
+   */
+  readonly blurInput: () => void;
+}
+
+/**
  * Describes the app state which consists of all
  * the app data which is stored in the `AppProvider`
  */
 export interface AppState {
-  readonly inputRef: RefObject<HTMLTextAreaElement | null>;
   readonly selectedChatId: string;
   readonly chats: AppChat[];
 }

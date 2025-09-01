@@ -5,7 +5,7 @@ import { BaseProps } from '../types';
 import { crimsonText, firaCode } from '../fonts';
 import { Analytics } from '@vercel/analytics/next';
 import { App } from '../components';
-import { AppProvider } from '../providers';
+import { InputProvider, AppProvider } from '../providers';
 import { viewport, generateMetadata } from './metadata';
 
 /**
@@ -30,11 +30,13 @@ const AppLayout: FunctionComponent<Props> = ({ children }): ReactElement<Props> 
     >
       <body className="h-full bg-black p-safe">
         <Analytics />
-        <AppProvider>
-          <App>
-            {children}
-          </App>
-        </AppProvider>
+        <InputProvider>
+          <AppProvider>
+            <App>
+              {children}
+            </App>
+          </AppProvider>
+        </InputProvider>
       </body>
     </html>
   );
