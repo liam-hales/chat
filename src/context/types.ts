@@ -29,19 +29,19 @@ export interface InputActions {
 }
 
 /**
- * Describes the app state which consists of all
- * the app data which is stored in the `AppProvider`
+ * Describes the chat state which consists of all
+ * the chat data which is stored in the `ChatProvider`
  */
-export interface AppState {
+export interface ChatState {
   readonly selectedChatId: string;
   readonly chats: AppChat[];
 }
 
 /**
- * Describes the app different actions that
- * the `AppProvider` can perform
+ * Describes the different actions that
+ * the `ChatProvider` can perform
  */
-export interface AppActions {
+export interface ChatActions {
 
   /**
    * Used to get a specific chat via it's

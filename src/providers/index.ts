@@ -1,7 +1,7 @@
 import InputProvider from './input.provider';
-import AppProvider from './app.provider';
+import ChatProvider from './chat.provider';
 
 export {
   InputProvider,
-  AppProvider,
+  ChatProvider,
 };

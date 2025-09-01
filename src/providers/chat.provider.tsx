@@ -1,7 +1,7 @@
 'use client';
 
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
-import { AppContext } from '../context';
+import { ChatContext } from '../context';
 import { BaseProps, AppChat, FullAppChat, UpdateChatPayload, MakeRequestPayload } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
@@ -11,27 +11,27 @@ import { readStreamableValue } from '@ai-sdk/rsc';
 import dedent from 'dedent';
 
 /**
- * The `AppProvider` component props
+ * The `ChatProvider` component props
  */
 interface Props extends BaseProps {
   readonly children: ReactNode;
 }
 
 /**
- * Used to provide the global app
- * state and actions
+ * Used to provide the global
+ * chat state and actions
  *
  * @param props The component props
- * @returns The `AppProvider` component
+ * @returns The `ChatProvider` component
  * @example
  *
  * return (
- *   <AppProvider>
+ *   <ChatProvider>
  *     { ... }
- *   </AppProvider>
+ *   </ChatProvider>
  * );
  */
-const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
+const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
 
   const { blurInput } = useInput();
 
@@ -501,7 +501,7 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
   };
 
   return (
-    <AppContext.Provider value={
+    <ChatContext.Provider value={
       {
         selectedChatId: selectedChatId,
         chats: chats,
@@ -518,8 +518,8 @@ const AppProvider: FunctionComponent<Props> = ({ children }): ReactElement<Props
     }
     >
       {children}
-    </AppContext.Provider>
+    </ChatContext.Provider>
   );
 };
 
-export default AppProvider;
+export default ChatProvider;

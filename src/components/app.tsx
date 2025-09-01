@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, ReactNode, Fragment } from 'react';
 import { BaseProps } from '../types';
-import { useApp } from '../hooks';
+import { useChat } from '../hooks';
 import { AppChat, Tab } from './';
 import { Plus } from 'lucide-react';
 
@@ -27,7 +27,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
     createChat,
     setSelectedChat,
     deleteChat,
-  } = useApp();
+  } = useChat();
 
   // Calculate if any of the
   // chats have messages

@@ -3,7 +3,7 @@
 import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { Typewriter } from '../components/common';
 import { ChatInput } from '../components';
-import { useApp, useInput } from '../hooks';
+import { useInput, useChat } from '../hooks';
 
 /**
  * The entry point for the `/` app route,
@@ -14,7 +14,7 @@ import { useApp, useInput } from '../hooks';
 const AppPage: FunctionComponent = (): ReactElement => {
 
   const { ref, focusInput } = useInput();
-  const { chats, getChat, setInputValue, setModelDefinition, sendMessage } = useApp();
+  const { chats, getChat, setInputValue, setModelDefinition, sendMessage } = useChat();
   const { id, inputValue, modelDefinition } = getChat(chats[0].id);
 
   /**

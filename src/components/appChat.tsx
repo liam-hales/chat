@@ -2,7 +2,7 @@
 
 import { FunctionComponent, ReactElement, useMemo } from 'react';
 import { ChatInput, ChatMessage, ChatError } from '.';
-import { useApp, useInput } from '../hooks';
+import { useInput, useChat } from '../hooks';
 import { BaseProps } from '../types';
 import { Error, Loader } from './common';
 
@@ -30,7 +30,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
     sendMessage,
     abortRequest,
     retryRequest,
-  } = useApp();
+  } = useChat();
 
   const { inputValue, state, messages, modelDefinition, errorMessage } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;

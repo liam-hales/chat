@@ -1,7 +1,7 @@
 import InputContext from './input.context';
-import AppContext from './app.context';
+import ChatContext from './chat.context';
 
 export {
   InputContext,
-  AppContext,
+  ChatContext,
 };
