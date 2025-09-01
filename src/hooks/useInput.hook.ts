@@ -3,10 +3,10 @@ import { InputContext } from '../context';
 import { InputState, InputActions } from '../context/types';
 
 /**
- * Used to access the global app state and
+ * Used to access the global input state and
  * actions provided by the `InputProvider`
  *
- * @returns The app context value
+ * @returns The input context value
  */
 const useInput = (): InputState & InputActions => {
 

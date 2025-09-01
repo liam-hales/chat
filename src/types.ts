@@ -35,7 +35,7 @@ export interface FullAppChat extends AppChat {
 
 /**
  * Describes the app chat data which
- * will be sorted in the app state
+ * will be sorted in the chat state
  */
 export interface AppChat {
   readonly id: string;
@@ -50,7 +50,7 @@ export interface AppChat {
 
 /**
  * Describes the chat message data which
- * will be stored in the app state
+ * will be stored in the chat state
  */
 export interface ChatMessage {
   readonly id: string;
