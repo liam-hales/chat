@@ -7,6 +7,6 @@ import { AppActions, AppState } from './types';
  *
  * _**WARNING:** This context does not store or hold any state_
  */
-const AppContext = createContext<AppState & AppActions | undefined>(undefined);
+const AppContext = createContext<(AppState & AppActions) | undefined>(undefined);
 
 export default AppContext;

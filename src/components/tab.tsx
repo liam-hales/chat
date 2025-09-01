@@ -35,7 +35,7 @@ const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
     onDelete,
   } = props;
 
-  const [isHovering, setIsHovering] = useState(false);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
 
   return (
     <div
