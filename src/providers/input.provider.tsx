@@ -83,7 +83,6 @@ const InputProvider: FunctionComponent<Props> = ({ children }): ReactElement<Pro
    * Used to focus the input
    */
   const focusInput = (): void => {
-    console.log('focusInput');
     ref.current?.focus();
   };
 
@@ -92,7 +91,6 @@ const InputProvider: FunctionComponent<Props> = ({ children }): ReactElement<Pro
    * to lose its focus
    */
   const blurInput = (): void => {
-    console.log('blurInput');
     ref.current?.blur();
   };
 
