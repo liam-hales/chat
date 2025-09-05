@@ -1,3 +1,5 @@
+'use client';
+
 import { FunctionComponent, ReactElement, ReactNode } from 'react';
 import { BaseProps } from '../types';
 import { useInput } from '../hooks';
