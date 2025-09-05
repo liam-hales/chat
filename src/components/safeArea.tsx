@@ -22,7 +22,7 @@ const SafeArea: FunctionComponent<Props> = ({ children }): ReactElement<Props> =
   const { state } = useInput();
   return (
     <div className={`
-      pt-safe pl-safe pr-safe
+      w-full h-full pt-safe pl-safe pr-safe
       ${(state === 'focused') ? 'pb-4' : 'pb-safe'}
     `}
     >
