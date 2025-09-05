@@ -4,7 +4,7 @@ import { FunctionComponent, ReactElement, ReactNode } from 'react';
 import { BaseProps } from '../types';
 import { crimsonText, firaCode } from '../fonts';
 import { Analytics } from '@vercel/analytics/next';
-import { App } from '../components';
+import { SafeArea, App } from '../components';
 import { InputProvider, ChatProvider } from '../providers';
 import { viewport, generateMetadata } from './metadata';
 
@@ -28,13 +28,15 @@ const AppLayout: FunctionComponent<Props> = ({ children }): ReactElement<Props> 
       lang="en"
       className={`h-full ${crimsonText.variable} ${firaCode.variable} overscroll-none`}
     >
-      <body className="h-full bg-black p-safe">
+      <body className="h-full bg-black">
         <Analytics />
         <InputProvider>
           <ChatProvider>
-            <App>
-              {children}
-            </App>
+            <SafeArea>
+              <App>
+                {children}
+              </App>
+            </SafeArea>
           </ChatProvider>
         </InputProvider>
       </body>
