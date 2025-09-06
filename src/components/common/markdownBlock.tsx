@@ -91,9 +91,9 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
         },
         pre: ({ children }) => {
           return (
-            <pre className="w-full">
+            <Fragment>
               {children}
-            </pre>
+            </Fragment>
           );
         },
         code: ({ className, children }) => {
@@ -121,7 +121,7 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
               )
             : (
                 <CodeHighlighter
-                  className="w-full mt-3 mb-3"
+                  className="w-full pt-3 pb-3"
                   language={language}
                 >
                   {children}
@@ -130,21 +130,25 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
         },
         ol: ({ children }) => {
           return (
-            <ol className="list-decimal ml-8">
-              {children}
-            </ol>
+            <div className="w-full">
+              <ol className="list-decimal flex flex-col gap-y-2 pl-6">
+                {children}
+              </ol>
+            </div>
           );
         },
         ul: ({ children }) => {
           return (
-            <ul className="list-disc ml-8">
-              {children}
-            </ul>
+            <div className="w-full">
+              <ul className="list-disc flex flex-col gap-y-2 pl-6">
+                {children}
+              </ul>
+            </div>
           );
         },
         li: ({ children }) => {
           return (
-            <li className="font-sans text-white text-md pt-1 pb-1 pl-2">
+            <li className="font-sans text-white text-md pl-1">
               {children}
             </li>
           );

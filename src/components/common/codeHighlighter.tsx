@@ -34,44 +34,46 @@ const CodeHighlighter: FunctionComponent<Props> = ({ className, language, childr
   };
 
   return (
-    <div className={`${className ?? ''} flex flex-col items-start gap-y-2 bg-zinc-950 border-solid border-[1px] border-zinc-800 rounded-xl`}>
-      <div className="w-full flex flex-row items-center justify-between pt-4 pl-4 pr-5">
-        <p className="font-mono text-xs text-white">
-          {language}
-        </p>
-        <button
-          className="flex flex-row items-center cursor-pointer"
-          onClick={_onCopy}
-        >
-          {
-            (hasCopied === true)
-              ? (
-                  <Check
-                    className="text-white mr-1"
-                    size={16}
-                  />
-                )
-              : (
-                  <Copy
-                    className="text-white mr-2"
-                    size={14}
-                  />
-                )
-          }
-          <span className="font-sans text-sm text-white">
+    <div className={className ?? ''}>
+      <div className="w-full flex flex-col items-start gap-y-2 bg-zinc-950 border-solid border-[1px] border-zinc-800 rounded-xl">
+        <div className="w-full flex flex-row items-center justify-between pt-4 pl-4 pr-5">
+          <p className="font-mono text-xs text-white">
+            {language}
+          </p>
+          <button
+            className="flex flex-row items-center cursor-pointer"
+            onClick={_onCopy}
+          >
             {
-              (hasCopied === true) ? 'Copied' : 'Copy'
+              (hasCopied === true)
+                ? (
+                    <Check
+                      className="text-white mr-1"
+                      size={16}
+                    />
+                  )
+                : (
+                    <Copy
+                      className="text-white mr-2"
+                      size={14}
+                    />
+                  )
             }
-          </span>
-        </button>
+            <span className="font-sans text-sm text-white">
+              {
+                (hasCopied === true) ? 'Copied' : 'Copy'
+              }
+            </span>
+          </button>
+        </div>
+        <SyntaxHighlighter
+          className="w-full font-mono text-xs !bg-transparent !m-0 !pt-2 !pb-4 !pl-4 !pr-4 no-scrollbar"
+          language={language}
+          style={darcula}
+        >
+          {children}
+        </SyntaxHighlighter>
       </div>
-      <SyntaxHighlighter
-        className="w-full font-mono text-xs !bg-transparent !m-0 !pt-2 !pb-4 !pl-4 !pr-4 no-scrollbar"
-        language={language}
-        style={darcula}
-      >
-        {children}
-      </SyntaxHighlighter>
     </div>
   );
 };
