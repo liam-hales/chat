@@ -23,7 +23,7 @@ const SafeArea: FunctionComponent<Props> = ({ children }): ReactElement<Props> =
   return (
     <div className={`
       w-full h-full pt-safe pl-safe pr-safe
-      ${(state === 'focused') ? 'pb-4' : 'pb-safe'}
+      ${(state === 'focused') ? 'pb-0' : 'pb-safe'}
     `}
     >
       {children}
