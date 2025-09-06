@@ -7,9 +7,19 @@ import { nanoid } from 'nanoid';
 export const aiModelDefinitions = [
   {
     id: nanoid(8),
+    name: 'gpt-oss-120b',
+    openRouterId: 'openai/gpt-oss-120b',
+    isDefault: true,
+    limits: {
+      maxMessageLength: 4096,
+      maxChatLength: 10,
+    },
+  },
+  {
+    id: nanoid(8),
     name: 'gpt-oss-20b',
     openRouterId: 'openai/gpt-oss-20b',
-    isDefault: true,
+    isDefault: false,
     limits: {
       maxMessageLength: 8192,
       maxChatLength: 10,
@@ -17,8 +27,8 @@ export const aiModelDefinitions = [
   },
   {
     id: nanoid(8),
-    name: 'gpt-oss-120b',
-    openRouterId: 'openai/gpt-oss-120b',
+    name: 'gpt-5',
+    openRouterId: 'openai/gpt-5',
     isDefault: false,
     limits: {
       maxMessageLength: 4096,
@@ -29,6 +39,16 @@ export const aiModelDefinitions = [
     id: nanoid(8),
     name: 'gpt-5-mini',
     openRouterId: 'openai/gpt-5-mini',
+    isDefault: false,
+    limits: {
+      maxMessageLength: 4096,
+      maxChatLength: 10,
+    },
+  },
+  {
+    id: nanoid(8),
+    name: 'gpt-4.1-mini',
+    openRouterId: 'openai/gpt-4.1-mini',
     isDefault: false,
     limits: {
       maxMessageLength: 4096,
