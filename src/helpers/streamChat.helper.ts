@@ -15,7 +15,7 @@ import dedent from 'dedent';
  * @param options The options
  * @returns The client streamable value
  */
-const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<StreamableValue<string>> => {
+const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<StreamableValue<string>> => {
 
   // As this is a server action, we need to
   // validate the options before using them
@@ -33,16 +33,19 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
     compatibility: 'strict',
   });
 
-  // If the `maxOutputLength` has been set then append a max character
-  // usage prompt to the system message for the LLM to comply with
-  const system = (maxOutputLength != null)
-    ? dedent`
-      ${systemMessage ?? ''}
-
-      Your response must never exceed ${maxOutputLength} characters.
-      If you need to use more characters then tell the user that you are limited due to costs.
-    `.trim()
-    : systemMessage;
+  const systemPrompt = [
+    systemMessage,
+    ...(maxOutputLength != null)
+      ? [
+          dedent`
+            Usage Limits:
+              - Your response must never exceed ${maxOutputLength} characters.
+              - If you need to use more characters then tell the user that you are limited due to costs.
+          `,
+        ]
+      : [],
+  ]
+    .join('\n\n');
 
   /**
    * Executes the request to the LLM and updates
@@ -51,7 +54,7 @@ const streamChat = async (options: z.infer<typeof streamChatSchema>): Promise<St
   const executeRequest = async (): Promise<void> => {
     const { fullStream } = streamText({
       model: provider.chat(modelId),
-      system: system,
+      system: systemPrompt,
       messages: messages,
     });
 

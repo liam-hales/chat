@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { aiModelDefinitions } from '../constants';
+import { defaultSystemPrompt, aiModelDefinitions } from '../constants';
 import { AIModelDefinition } from '../types';
 
 /**
@@ -49,15 +49,16 @@ const _buildSchema = (definition: AIModelDefinition) => {
         .string()
         .min(1)
         .max(1024)
-        .optional(),
+        .optional()
+        .default(defaultSystemPrompt),
       messages: messages,
       maxOutputLength: (limits != null)
         ? z
             .number()
             .min(1)
             .max(limits.maxMessageLength)
-            .default(limits.maxMessageLength)
             .optional()
+            .default(limits.maxMessageLength)
         : z
             .number()
             .min(1)
