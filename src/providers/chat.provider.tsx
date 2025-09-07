@@ -333,45 +333,63 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
 
       // process the client stream value
       // and process each part
-      for await (const value of readStreamableValue(streamValue)) {
+      for await (const part of readStreamableValue(streamValue)) {
         abortController.signal.throwIfAborted();
 
-        // If there is no text value
-        // then continue
-        if (value == null) {
+        // If there is no stream
+        // part then continue
+        if (part == null) {
           continue;
         }
 
-        // Update the chat state and set the text
-        // value to the message content
-        _updateChat(chatId, {
-          state: 'streaming',
-          messages: (previous) => {
-            const { id, role, content } = previous[previous.length - 1];
+        switch (part.type) {
 
-            // If the last message is a user message then we can just append the new message,
-            // however if it's an assistant message then we need to replace the message content
-            return (role === 'user')
-              ? [
-                  ...previous,
-                  {
-                    id: nanoid(8),
-                    chatId: chatId,
-                    role: 'assistant',
-                    content: value,
-                  },
-                ]
-              : [
-                  ...previous.slice(0, -1),
-                  {
-                    id: id,
-                    chatId: chatId,
-                    role: 'assistant',
-                    content: `${content}${value}`,
-                  },
-                ];
-          },
-        });
+          case 'reasoning': {
+            // Update the chat state and set the text
+            // value to the chat reasoning text
+            _updateChat(chatId, {
+              state: 'reasoning',
+              reasoningText: (previous) => `${previous ?? ''}${part.value}`,
+            });
+
+            break;
+          }
+
+          case 'text': {
+            // Update the chat state and set the text
+            // value to the message content
+            _updateChat(chatId, {
+              state: 'streaming',
+              messages: (previous) => {
+                const { id, role, content } = previous[previous.length - 1];
+
+                // If the last message is a user message then we can just append the new message,
+                // however if it's an assistant message then we need to replace the message content
+                return (role === 'user')
+                  ? [
+                      ...previous,
+                      {
+                        id: nanoid(8),
+                        chatId: chatId,
+                        role: 'assistant',
+                        content: part.value,
+                      },
+                    ]
+                  : [
+                      ...previous.slice(0, -1),
+                      {
+                        id: id,
+                        chatId: chatId,
+                        role: 'assistant',
+                        content: `${content}${part.value}`,
+                      },
+                    ];
+              },
+            });
+
+            break;
+          }
+        }
       }
 
       _updateChat(chatId, {
@@ -483,15 +501,15 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     try {
       // process the client stream value
       // and process each part
-      for await (const value of readStreamableValue(streamValue)) {
-        if (value == null) {
+      for await (const part of readStreamableValue(streamValue)) {
+        if (part == null) {
           continue;
         }
 
         // Update the chat title with the
         // value from the stream
         _updateChat(chatId, {
-          title: (title) => `${title ?? ''}${value}`,
+          title: (title) => `${title ?? ''}${part.value}`,
         });
       }
     }

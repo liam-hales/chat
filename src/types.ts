@@ -40,11 +40,12 @@ export interface FullAppChat extends AppChat {
 export interface AppChat {
   readonly id: string;
   readonly title?: string;
-  readonly state: 'idle' | 'loading' | 'streaming' | 'error';
+  readonly state: 'idle' | 'loading' | 'reasoning' | 'streaming' | 'error';
   readonly modelDefinitionId: string;
   readonly inputValue: string;
   readonly messages: ChatMessage[];
   readonly abortController?: AbortController;
+  readonly reasoningText?: string;
   readonly errorMessage?: string;
 }
 
@@ -84,3 +85,12 @@ export type UpdateChatPayload = UpdatePayload<Omit<AppChat, 'id'>>;
 export type UpdatePayload<T extends object> = {
   [K in keyof T]?: T[K] | ((previous: T[K]) => T[K]);
 };
+
+/**
+ * Describes the data passed
+ * down from the stream
+ */
+export interface StreamData {
+  readonly type: 'text' | 'reasoning';
+  readonly value: string;
+}

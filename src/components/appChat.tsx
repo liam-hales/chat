@@ -32,7 +32,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
     retryRequest,
   } = useChat();
 
-  const { inputValue, state, messages, modelDefinition, errorMessage } = useMemo(() => getChat(id), [id, getChat]);
+  const { inputValue, state, messages, modelDefinition, reasoningText, errorMessage } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
   // When calculating if the chat limit has been reached, +1 onto the messages length so as soon as the
@@ -70,6 +70,21 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           )
         }
         {
+          (state === 'reasoning') && (
+            <div className="flex flex-col self-start gap-y-2 pl-4 pr-4">
+              <Loader
+                appearance="dark"
+                text="Reasoning..."
+              />
+              <div className="max-w-[460px] flex flex-col items-end overflow-x-hidden">
+                <p className="font-mono text-zinc-700 text-xs whitespace-nowrap">
+                  {reasoningText}
+                </p>
+              </div>
+            </div>
+          )
+        }
+        {
           (state === 'error') && (
             <ChatError
               message={errorMessage}
@@ -104,7 +119,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
               : undefined
           }
           onAbort={
-            (state === 'loading' || state === 'streaming')
+            (state !== 'idle' && state === 'error')
               ? () => abortRequest(id, 'User aborted request')
               : undefined
           }

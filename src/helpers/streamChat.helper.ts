@@ -5,6 +5,7 @@ import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { streamText } from 'ai';
 import { z } from 'zod';
 import { streamChatSchema } from '../schemas';
+import { StreamData } from '../types';
 import getConfig from 'next/config';
 import dedent from 'dedent';
 
@@ -15,7 +16,7 @@ import dedent from 'dedent';
  * @param options The options
  * @returns The client streamable value
  */
-const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<StreamableValue<string>> => {
+const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<StreamableValue<StreamData>> => {
 
   // As this is a server action, we need to
   // validate the options before using them
@@ -27,7 +28,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
 
   // Create the stream used to send the text data to the client
   // Create the OpenAI provider with the API key
-  const stream = createStreamableValue<string>();
+  const stream = createStreamableValue<StreamData>();
   const provider = createOpenRouter({
     apiKey: openRouterApiKey,
     compatibility: 'strict',
@@ -61,12 +62,28 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
     // Loop through the async iterable text stream
     // and update the stream with said text
     for await (const part of fullStream) {
+
       switch (part.type) {
 
         case 'text-delta': {
           // Update the stream with the text
-          // to stream it to the client
-          stream.update(part.text);
+          // data to stream it to the client
+          stream.update({
+            type: 'text',
+            value: part.text,
+          });
+
+          break;
+        }
+
+        case 'reasoning-delta': {
+          // Update the stream with the reasoning
+          // data to stream it to the client
+          stream.update({
+            type: 'reasoning',
+            value: part.text,
+          });
+
           break;
         }
 
