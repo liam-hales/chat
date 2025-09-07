@@ -1,5 +1,4 @@
-import { FunctionComponent, ReactElement } from 'react';
-import { DynamicIcon, IconName } from 'lucide-react/dynamic';
+import { Fragment, FunctionComponent, ReactElement, ReactNode } from 'react';
 import { BaseProps } from '../../types';
 import { X } from 'lucide-react';
 
@@ -7,9 +6,9 @@ import { X } from 'lucide-react';
  * The `Info` component props
  */
 interface Props extends BaseProps {
-  readonly icon?: IconName;
-  readonly children: string;
+  readonly icon?: ReactNode;
   readonly onDismiss?: () => void;
+  readonly children: ReactNode;
 }
 
 /**
@@ -21,19 +20,23 @@ interface Props extends BaseProps {
  */
 const Info: FunctionComponent<Props> = ({ className, icon, children, onDismiss }): ReactElement<Props> => {
   return (
-    <div className={`${className ?? ''} w-full flex flex-row items-center gap-x-4 border-solid border-[1px] border-zinc-900 rounded-md p-4`}>
+    <div className={`${className ?? ''} flex flex-row items-center gap-x-4 border-solid border-[1px] border-zinc-900 rounded-md p-4`}>
       {
         (icon != null) && (
-          <DynamicIcon
-            className="text-white shrink-0"
-            name={icon}
-            size={18}
-          />
+          <Fragment>
+            {icon}
+          </Fragment>
         )
       }
-      <p className="w-full font-sans text-zinc-500 text-sm">
-        {children}
-      </p>
+      {
+        (typeof children === 'string')
+          ? (
+              <p className="font-sans text-white text-sm">
+                {children}
+              </p>
+            )
+          : children
+      }
       {
         (onDismiss != null) && (
           <X
