@@ -41,7 +41,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
               )}
               onDismiss={() => setIsLimitVisible(false)}
             >
-              The limited icon means the model incurs costs and therefore has usage limits, its responses and how much data you can send will be restricted.
+              The limited icon means the model incurs costs and therefore has usage limits, its response and how much data you can send will be restricted.
             </Info>
           )
         }
