@@ -32,7 +32,7 @@ const Markdown: FunctionComponent<Props> = ({ className, id, children }): ReactE
   }, [children]);
 
   return (
-    <div className={`${className ?? ''} flex flex-col items-start gap-y-6`}>
+    <div className={`${className ?? ''} flex flex-col items-start gap-y-4`}>
       {
         blocks.map((block, index) => {
           return (
