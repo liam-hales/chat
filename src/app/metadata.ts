@@ -24,7 +24,7 @@ export const generateMetadata = (): Metadata => {
   const { siteUrl } = serverRuntimeConfig;
 
   const title = 'Chat - Liam Hales';
-  const description = 'Chat with AI, all in one place.';
+  const description = 'Chat is a web app that was created to converse with multiple different AI, all in one single place using the same user-friendly interface.';
 
   return {
     metadataBase: new URL(siteUrl as string),
