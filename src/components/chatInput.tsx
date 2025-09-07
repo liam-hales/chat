@@ -1,12 +1,12 @@
 'use client';
 
-import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps } from '../types';
 import { withRef } from '../helpers';
 import { ArrowUp, X } from 'lucide-react';
 import { Model } from './';
-import { Error, Info, ModelMenu } from './common';
+import { Error, ModelMenu } from './common';
 
 /**
  * The `ChatInput` component props
@@ -40,8 +40,6 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     onAbort,
   } = props;
 
-  const [isLimitVisible, setIsLimitVisible] = useState<boolean>(true);
-
   const { limits } = modelDefinition;
 
   const limitReached = (
@@ -73,14 +71,6 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         onSend?.();
       }
     }
-  };
-
-  const _onModelChange = (definitionId: string): void => {
-    onModelChange?.(definitionId);
-
-    // Reset the limit visibility state
-    // when the user changes model
-    setIsLimitVisible(true);
   };
 
   return (
@@ -116,7 +106,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               (onModelChange != null) && (
                 <ModelMenu
                   modelDefinition={modelDefinition}
-                  onModelChange={_onModelChange}
+                  onModelChange={onModelChange}
                 />
               )
             }
@@ -157,17 +147,6 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
           </div>
         </div>
       </div>
-      {
-        (modelDefinition.limits != null && isLimitVisible === true) && (
-          <Info
-            className="mt-4"
-            icon="badge-pound-sterling"
-            onDismiss={() => setIsLimitVisible(false)}
-          >
-            The AI model you have selected incurs costs and therefore has usage limits, the models responses and how much you can send will be restricted.
-          </Info>
-        )
-      }
     </div>
   );
 };
