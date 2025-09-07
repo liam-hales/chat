@@ -99,11 +99,37 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
           break;
         }
 
-        case 'finish':
+        case 'finish': {
+          const { totalUsage } = part;
+          const {
+            inputTokens = 0,
+            outputTokens = 0,
+            reasoningTokens = 0,
+            totalTokens = 0,
+          } = totalUsage;
+
+          // Update the stream with the total usage tokens and mark the
+          // stream as finalized
+          stream
+            .update({
+              type: 'end',
+              tokenUsage: {
+                input: inputTokens,
+                output: outputTokens,
+                reasoning: reasoningTokens,
+                total: totalTokens,
+              },
+            })
+            .done();
+
+          break;
+        }
+
         case 'abort': {
-          // Once done, mark the stream
-          // value as finalized
+          // If aborted, mark the
+          // stream as finalized
           stream.done();
+          break;
         }
       }
     }

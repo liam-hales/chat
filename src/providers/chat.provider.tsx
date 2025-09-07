@@ -403,6 +403,27 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
 
             break;
           }
+
+          case 'end': {
+            // Reset the chat state and
+            // set the message metadata
+            _updateChat(chatId, {
+              state: {
+                id: 'idle',
+              },
+              messages: (previous) => {
+                return [
+                  ...previous.slice(0, -1),
+                  {
+                    ...previous[previous.length - 1],
+                    metadata: {
+                      tokenUsage: part.tokenUsage,
+                    },
+                  },
+                ];
+              },
+            });
+          }
         }
       }
 
@@ -521,6 +542,12 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       // and process each part
       for await (const part of readStreamableValue(streamValue)) {
         if (part == null) {
+          continue;
+        }
+
+        // For generating chat titles we only
+        // care about text stream parts
+        if (part.type !== 'text') {
           continue;
         }
 

@@ -80,11 +80,39 @@ export interface AppChatErrorState {
  * Describes the chat message data which
  * will be stored in the chat state
  */
-export interface ChatMessage {
+export type ChatMessage =
+  | ChatUserMessage
+  | ChatAssistantMessage;
+
+/**
+ * Describes the chat
+ * user message data
+ */
+export interface ChatUserMessage {
   readonly id: string;
   readonly chatId: string;
-  readonly role: 'user' | 'assistant';
+  readonly role: 'user';
   readonly content: string;
+}
+
+/**
+ * Describes the chat assistant
+ * message data
+ */
+export interface ChatAssistantMessage {
+  readonly id: string;
+  readonly chatId: string;
+  readonly role: 'assistant';
+  readonly content: string;
+  readonly metadata?: ChatMessageMetadata;
+}
+
+/**
+ * Used to describe the
+ * chat message metadata
+ */
+export interface ChatMessageMetadata {
+  readonly tokenUsage: TokenUsage;
 }
 
 /**
@@ -117,7 +145,35 @@ export type UpdatePayload<T extends object> = {
  * Describes the data passed
  * down from the stream
  */
-export interface StreamData {
+export type StreamData =
+  | StreamTextData
+  | StreamEndData;
+
+/**
+ * Describes the text stream data which
+ * contains data such as the text value
+ */
+export interface StreamTextData {
   readonly type: 'text' | 'reasoning';
   readonly value: string;
+}
+
+/**
+ * Describes the end stream data which
+ * contains data such as token usage
+ */
+export interface StreamEndData {
+  readonly type: 'end';
+  readonly tokenUsage: TokenUsage;
+}
+
+/**
+ * Describes the usage tokens
+ * for a particular request
+ */
+export interface TokenUsage {
+  readonly input: number;
+  readonly output: number;
+  readonly reasoning: number;
+  readonly total: number;
 }
