@@ -1,4 +1,4 @@
-import { FunctionComponent, memo, ReactElement, Fragment } from 'react';
+import { FunctionComponent, memo, ReactElement, isValidElement, HTMLAttributes } from 'react';
 import { BaseProps } from '../../types';
 import { CodeHighlighter } from './';
 import ReactMarkdown from 'react-markdown';
@@ -90,43 +90,41 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           );
         },
         pre: ({ children }) => {
+
+          // Make sure the `children` is a valid element
+          // If not then throw an error
+          if (isValidElement<HTMLAttributes<HTMLElement>>(children) === false) {
+            throw Error('Markdown "pre" does not have valid "children"');
+          }
+
+          const { props } = children;
+          const { className, children: code } = props;
+
+          // If the code is not a string then
+          // just render it as is
+          if (typeof code !== 'string') {
+            return children;
+          }
+
+          // Extract the language from the `className` and default
+          // to `text` for unknown languages
+          const language = className?.replace('language-', '') ?? 'text';
+
           return (
-            <Fragment>
-              {children}
-            </Fragment>
+            <CodeHighlighter
+              className="w-full pt-3 pb-3"
+              language={language}
+            >
+              {code}
+            </CodeHighlighter>
           );
         },
-        code: ({ className, children }) => {
-          const language = className?.replace('language-', '');
-
-          // If the children is empty
-          // then render nothing
-          if (children == null) {
-            return <Fragment />;
-          }
-
-          // If the children is not a string then it is
-          // unsupported and cannot be rendered
-          if (typeof children !== 'string') {
-            throw new Error(`Unsupported children type "${typeof children}" for "code" markdown`);
-          }
-
-          // If there was no language detected then the code is inline then render the
-          // code inline, otherwise render the code with full syntax highlighting
-          return (language == null)
-            ? (
-                <code className="font-mono text-white text-xs bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-md p-1 m-1">
-                  {children}
-                </code>
-              )
-            : (
-                <CodeHighlighter
-                  className="w-full pt-3 pb-3"
-                  language={language}
-                >
-                  {children}
-                </CodeHighlighter>
-              );
+        code: ({ children }) => {
+          return (
+            <code className="font-mono text-white text-xs bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-md p-1 m-1">
+              {children}
+            </code>
+          );
         },
         ol: ({ children }) => {
           return (
