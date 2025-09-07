@@ -2,7 +2,8 @@ import SafeArea from './safeArea';
 import App from './app';
 import AppChat from './appChat';
 import ChatInput from './chatInput';
-import ChatMessage from './chatMessage';
+import UserChatMessage from './userChatMessage';
+import AssistantChatMessage from './assistantChatMessage';
 import ChatError from './chatError';
 import Tab from './tab';
 import Model from './model';
@@ -12,7 +13,8 @@ export {
   App,
   AppChat,
   ChatInput,
-  ChatMessage,
+  UserChatMessage,
+  AssistantChatMessage,
   ChatError,
   Tab,
   Model,

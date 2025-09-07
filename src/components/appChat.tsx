@@ -1,7 +1,7 @@
 'use client';
 
 import { FunctionComponent, ReactElement, useMemo } from 'react';
-import { ChatInput, ChatMessage, ChatError } from '.';
+import { ChatInput, UserChatMessage, AssistantChatMessage, ChatError } from '.';
 import { useInput, useChat } from '../hooks';
 import { BaseProps } from '../types';
 import { Error, Loader } from './common';
@@ -49,15 +49,20 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
         {
           messages.map((message) => {
             const { id, role, content } = message;
-            return (
-              <ChatMessage
-                key={`${role}-message-${id}`}
-                id={id}
-                role={role}
-              >
-                {content}
-              </ChatMessage>
-            );
+            return (role === 'user')
+              ? (
+                  <UserChatMessage key={`user-message-${id}`}>
+                    {content}
+                  </UserChatMessage>
+                )
+              : (
+                  <AssistantChatMessage
+                    key={`assistant-message-${id}`}
+                    id={id}
+                  >
+                    {content}
+                  </AssistantChatMessage>
+                );
           })
         }
         {
