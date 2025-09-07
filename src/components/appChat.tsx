@@ -32,7 +32,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
     retryRequest,
   } = useChat();
 
-  const { inputValue, state, messages, modelDefinition, reasoningText, errorMessage } = useMemo(() => getChat(id), [id, getChat]);
+  const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
   // When calculating if the chat limit has been reached, +1 onto the messages length so as soon as the
@@ -61,7 +61,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           })
         }
         {
-          (state === 'loading') && (
+          (state.id === 'loading') && (
             <Loader
               className="self-start pl-4 pr-4"
               appearance="dark"
@@ -70,7 +70,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           )
         }
         {
-          (state === 'reasoning') && (
+          (state.id === 'reasoning') && (
             <div className="flex flex-col self-start gap-y-2 pl-4 pr-4">
               <Loader
                 appearance="dark"
@@ -78,16 +78,16 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
               />
               <div className="max-w-[460px] flex flex-col items-end overflow-x-hidden">
                 <p className="font-mono text-zinc-700 text-xs whitespace-nowrap">
-                  {reasoningText}
+                  {state.text}
                 </p>
               </div>
             </div>
           )
         }
         {
-          (state === 'error') && (
+          (state.id === 'error') && (
             <ChatError
-              message={errorMessage}
+              message={state.message}
               onRetry={() => retryRequest(id)}
               onReport={() => console.warn('Error reporting not implemented')}
             />
@@ -114,12 +114,12 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
               : undefined
           }
           onSend={
-            (state === 'idle')
+            (state.id === 'idle')
               ? () => sendMessage(id)
               : undefined
           }
           onAbort={
-            (state !== 'idle' && state === 'error')
+            (state.id !== 'idle' && state.id === 'error')
               ? () => abortRequest(id, 'User aborted request')
               : undefined
           }

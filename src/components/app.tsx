@@ -58,8 +58,8 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
                   title={title ?? 'New chat'}
                   modelDefinition={modelDefinition}
                   isLoading={
-                    state === 'loading' ||
-                    state === 'streaming'
+                    state.id !== 'idle' &&
+                    state.id !== 'error'
                   }
                   isSelected={(selectedChatId === id)}
                   onSelect={() => setSelectedChat(id)}

@@ -43,7 +43,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
   const defaultChatId = nanoid(8);
   const defaultChat: AppChat = {
     id: defaultChatId,
-    state: 'idle',
+    state: {
+      id: 'idle',
+    },
     modelDefinitionId: defaultModel?.id ?? '',
     inputValue: '',
     messages: [],
@@ -205,7 +207,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     // the input and set the chat state
     setInputValue(chatId, '');
     _updateChat(chatId, {
-      state: 'loading',
+      state: {
+        id: 'loading',
+      },
       messages: (previous) => {
         return [
           ...previous,
@@ -259,7 +263,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     abortController?.abort(error);
 
     _updateChat(chatId, {
-      state: 'idle',
+      state: {
+        id: 'idle',
+      },
     });
   };
 
@@ -274,7 +280,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     const { openRouterId } = modelDefinition;
 
     _updateChat(chatId, {
-      state: 'loading',
+      state: {
+        id: 'loading',
+      },
     });
 
     // Retry the request with the same
@@ -348,8 +356,12 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
             // Update the chat state and set the text
             // value to the chat reasoning text
             _updateChat(chatId, {
-              state: 'reasoning',
-              reasoningText: (previous) => `${previous ?? ''}${part.value}`,
+              state: (previous) => {
+                return {
+                  id: 'reasoning',
+                  text: `${(previous.id === 'reasoning') ? previous.text : ''}${part.value}`,
+                };
+              },
             });
 
             break;
@@ -359,7 +371,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
             // Update the chat state and set the text
             // value to the message content
             _updateChat(chatId, {
-              state: 'streaming',
+              state: {
+                id: 'streaming',
+              },
               messages: (previous) => {
                 const { id, role, content } = previous[previous.length - 1];
 
@@ -393,7 +407,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       }
 
       _updateChat(chatId, {
-        state: 'idle',
+        state: {
+          id: 'idle',
+        },
       });
     }
     catch (error) {
@@ -415,8 +431,10 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
         : `${error}`;
 
       _updateChat(chatId, {
-        state: 'error',
-        errorMessage: message,
+        state: {
+          id: 'error',
+          message: message,
+        },
       });
     }
   };

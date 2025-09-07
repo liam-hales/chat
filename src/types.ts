@@ -40,13 +40,40 @@ export interface FullAppChat extends AppChat {
 export interface AppChat {
   readonly id: string;
   readonly title?: string;
-  readonly state: 'idle' | 'loading' | 'reasoning' | 'streaming' | 'error';
+  readonly state: AppChatState;
   readonly modelDefinitionId: string;
   readonly inputValue: string;
   readonly messages: ChatMessage[];
   readonly abortController?: AbortController;
-  readonly reasoningText?: string;
-  readonly errorMessage?: string;
+}
+
+/**
+ * Describes the different
+ * app chat states
+ */
+export type AppChatState =
+  {
+    readonly id: 'idle' | 'loading' | 'streaming';
+  }
+  | AppChatReasoningState
+  | AppChatErrorState;
+
+/**
+ * Describes the chat
+ * reasoning state
+ */
+export interface AppChatReasoningState {
+  readonly id: 'reasoning';
+  readonly text: string;
+}
+
+/**
+ * Describes the chat
+ * error state
+ */
+export interface AppChatErrorState {
+  readonly id: 'error';
+  readonly message: string;
 }
 
 /**
