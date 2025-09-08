@@ -7,6 +7,7 @@ import AssistantChatMessage from './assistantChatMessage';
 import ChatError from './chatError';
 import Tab from './tab';
 import Model from './model';
+import MetadataPopover from './metadataPopover';
 
 export {
   SafeArea,
@@ -18,4 +19,5 @@ export {
   ChatError,
   Tab,
   Model,
+  MetadataPopover,
 };
