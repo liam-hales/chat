@@ -5,8 +5,8 @@ import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps } from '../types';
 import { withRef } from '../helpers';
 import { ArrowUp, X } from 'lucide-react';
-import { Model } from './';
-import { Error, ModelMenu } from './common';
+import { Model, ModelMenu } from './';
+import { Error } from './common';
 
 /**
  * The `ChatInput` component props

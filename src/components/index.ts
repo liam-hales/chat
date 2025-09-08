@@ -7,6 +7,7 @@ import AssistantChatMessage from './assistantChatMessage';
 import ChatError from './chatError';
 import Tab from './tab';
 import Model from './model';
+import ModelMenu from './modelMenu';
 import MetadataPopover from './metadataPopover';
 
 export {
@@ -19,5 +20,6 @@ export {
   ChatError,
   Tab,
   Model,
+  ModelMenu,
   MetadataPopover,
 };

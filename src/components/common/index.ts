@@ -5,7 +5,6 @@ import Error from './error';
 import Markdown from './markdown';
 import MarkdownBlock from './markdownBlock';
 import CodeHighlighter from './codeHighlighter';
-import ModelMenu from '../modelMenu';
 
 export {
   Typewriter,
@@ -15,5 +14,4 @@ export {
   Markdown,
   MarkdownBlock,
   CodeHighlighter,
-  ModelMenu,
 };
