@@ -112,6 +112,7 @@ export interface ChatAssistantMessage {
  * chat message metadata
  */
 export interface ChatMessageMetadata {
+  readonly reasonedFor: number;
   readonly tokenUsage: TokenUsage;
 }
 
@@ -164,6 +165,7 @@ export interface StreamTextData {
  */
 export interface StreamEndData {
   readonly type: 'end';
+  readonly reasonedFor: number;
   readonly tokenUsage: TokenUsage;
 }
 

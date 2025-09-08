@@ -59,11 +59,28 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
       messages: messages,
     });
 
+    let reasoningStart = 0;
+    let reasoningEnd = 0;
+
     // Loop through the async iterable text stream
     // and update the stream with said text
     for await (const part of fullStream) {
 
       switch (part.type) {
+
+        case 'reasoning-start': {
+          // Set the reasoning start time which will be used to
+          // calculate how long the model reasoned for
+          reasoningStart = performance.now();
+          break;
+        }
+
+        case 'reasoning-end': {
+          // Set the reasoning end time which will be used to
+          // calculate how long the model reasoned for
+          reasoningEnd = performance.now();
+          break;
+        }
 
         case 'text-delta': {
           // Update the stream with the text
@@ -108,11 +125,12 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
             totalTokens = 0,
           } = totalUsage;
 
-          // Update the stream with the total usage tokens and mark the
-          // stream as finalized
+          // Update the stream with the metadata
+          // and mark the stream as finalized
           stream
             .update({
               type: 'end',
+              reasonedFor: (reasoningEnd - reasoningStart),
               tokenUsage: {
                 input: inputTokens,
                 output: outputTokens,

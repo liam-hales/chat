@@ -417,6 +417,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
                   {
                     ...previous[previous.length - 1],
                     metadata: {
+                      reasonedFor: part.reasonedFor,
                       tokenUsage: part.tokenUsage,
                     },
                   },
