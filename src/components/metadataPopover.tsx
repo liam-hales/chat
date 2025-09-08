@@ -30,7 +30,7 @@ const MetadataPopover: FunctionComponent<Props> = ({ metadata }): ReactElement<P
       value: `${tokenUsage.output}`,
     },
     {
-      title: 'Token tokens',
+      title: 'Total tokens',
       value: `${tokenUsage.total}`,
     },
     {
@@ -68,7 +68,7 @@ const MetadataPopover: FunctionComponent<Props> = ({ metadata }): ReactElement<P
                   ${(split === true) ? 'pt-4' : 'pt-0'}
                 `}
               >
-                <p className="font-sans text-sm text-zinc-400">
+                <p className="font-sans text-sm text-zinc-500">
                   {title}
                 </p>
                 <p className="font-mono text-xs text-white">
