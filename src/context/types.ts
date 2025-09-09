@@ -113,6 +113,7 @@ export interface ChatActions {
    * for a specific chat
    *
    * @param chatId The chat ID
+   * @param fromMessageId The ID of the message to retry from
    */
-  readonly retryRequest: (chatId: string) => Promise<void>;
+  readonly retryRequest: (chatId: string, fromMessageId?: string) => Promise<void>;
 }

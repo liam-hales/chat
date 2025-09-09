@@ -274,14 +274,26 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    * for a specific chat
    *
    * @param chatId The chat ID
+   * @param fromMessageId The ID of the message to retry from
    */
-  const retryRequest = async (chatId: string): Promise<void> => {
+  const retryRequest = async (chatId: string, fromMessageId?: string): Promise<void> => {
     const { messages, modelDefinition } = getChat(chatId);
     const { openRouterId } = modelDefinition;
+
+    // If the `fromMessageId` has been set, we need to remove any messages that were created after
+    // the message with said ID by working out the index where the messages array needs to be split
+    const fromIndex = (fromMessageId != null)
+      ? messages.findIndex((message) => message.id === fromMessageId) + 1
+      : messages.length;
 
     _updateChat(chatId, {
       state: {
         id: 'loading',
+      },
+      // Only set the messages state if the `fromMessageId` has been
+      // set, otherwise the messages array does not need to change
+      ...(fromMessageId != null) && {
+        messages: (previous) => previous.slice(0, fromIndex),
       },
     });
 
@@ -293,12 +305,14 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       messages: [
         // Remove the unknown props
         // from each message
-        ...messages.map((message) => {
-          return {
-            role: message.role,
-            content: message.content,
-          };
-        }),
+        ...messages
+          .slice(0, fromIndex)
+          .map((message) => {
+            return {
+              role: message.role,
+              content: message.content,
+            };
+          }),
       ],
     });
   };
