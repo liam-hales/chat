@@ -1,12 +1,16 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { Markdown } from './common';
-import { BaseProps } from '../types';
+import { BaseProps, ChatMessageMetadata } from '../types';
+import { ChatMessageTools } from './index';
 
 /**
  * The `AssistantChatMessage` component props
  */
 interface Props extends BaseProps {
   readonly id: string;
+  readonly showTools?: boolean;
+  readonly metadata?: ChatMessageMetadata;
+  readonly onRetry: () => void;
   readonly children: string;
 }
 
@@ -17,14 +21,33 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `AssistantChatMessage` component
  */
-const AssistantChatMessage: FunctionComponent<Props> = ({ id, children }): ReactElement<Props> => {
+const AssistantChatMessage: FunctionComponent<Props> = (props): ReactElement<Props> => {
+  const {
+    id,
+    showTools = false,
+    metadata,
+    onRetry,
+    children,
+  } = props;
+
   return (
-    <Markdown
-      className="w-full self-start [&>*]:pl-4 [&>*]:pr-4"
-      id={id}
-    >
-      {children}
-    </Markdown>
+    <div className="w-full flex flex-col items-start gap-y-4">
+      <Markdown
+        className="w-full self-start [&>*]:pl-4 [&>*]:pr-4"
+        id={id}
+      >
+        {children}
+      </Markdown>
+      {
+        (showTools === true) && (
+          <ChatMessageTools
+            content={children}
+            metadata={metadata}
+            onRetry={onRetry}
+          />
+        )
+      }
+    </div>
   );
 };
 

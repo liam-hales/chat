@@ -47,20 +47,27 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
       <div className="absolute w-full h-10 bg-gradient-to-b from-black to-transparent" />
       <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto overflow-x-hidden pt-10 pb-10">
         {
-          messages.map((message) => {
-            const { id, role, content } = message;
-            return (role === 'user')
+          messages.map((message, index) => {
+            return (message.role === 'user')
               ? (
-                  <UserChatMessage key={`user-message-${id}`}>
-                    {content}
+                  <UserChatMessage key={`user-message-${message.id}`}>
+                    {message.content}
                   </UserChatMessage>
                 )
               : (
                   <AssistantChatMessage
-                    key={`assistant-message-${id}`}
+                    key={`assistant-message-${message.id}`}
                     id={id}
+                    // Only show the message tools if the message is not the latest or if the chat state is idle
+                    // This stops the tools from being shown for the latest message if the content is still being streamed
+                    showTools={
+                      ((index + 1) < messages.length) ||
+                      state.id === 'idle'
+                    }
+                    onRetry={() => retryRequest(id, messages[index - 1].id)}
+                    metadata={message.metadata}
                   >
-                    {content}
+                    {message.content}
                   </AssistantChatMessage>
                 );
           })
@@ -124,7 +131,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
               : undefined
           }
           onAbort={
-            (state.id !== 'idle' && state.id === 'error')
+            (state.id !== 'idle' && state.id !== 'error')
               ? () => abortRequest(id, 'User aborted request')
               : undefined
           }
