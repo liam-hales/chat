@@ -30,7 +30,7 @@ const CodeHighlighter: FunctionComponent<Props> = ({ className, language, childr
     // Set the has copied state and
     // reset it after 5 seconds
     setHasCopied(true);
-    setTimeout(() => setHasCopied(false), 5000);
+    setTimeout(() => setHasCopied(false), 2000);
   };
 
   return (
