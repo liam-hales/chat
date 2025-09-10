@@ -43,6 +43,7 @@ export interface AppChat {
   readonly state: AppChatState;
   readonly modelDefinitionId: string;
   readonly inputValue: string;
+  readonly options: ChatOptions;
   readonly messages: ChatMessage[];
   readonly abortController?: AbortController;
 }
@@ -83,6 +84,18 @@ export interface AppChatErrorState {
 export type ChatMessage =
   | ChatUserMessage
   | ChatAssistantMessage;
+
+/**
+ * Used to describes the
+ * different chat options
+ */
+export type ChatOption = 'reason';
+
+/**
+ * Used to describe the chat options that
+ * can either be enabled or disabled
+ */
+export type ChatOptions = Record<ChatOption, boolean>;
 
 /**
  * Describes the chat
