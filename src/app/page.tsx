@@ -14,8 +14,8 @@ import { useInput, useChat } from '../hooks';
 const AppPage: FunctionComponent = (): ReactElement => {
 
   const { ref, focusInput } = useInput();
-  const { chats, getChat, setInputValue, setModelDefinition, sendMessage } = useChat();
-  const { id, inputValue, modelDefinition } = getChat(chats[0].id);
+  const { chats, getChat, setInputValue, setModelDefinition, toggleChatOption, sendMessage } = useChat();
+  const { id, inputValue, options, modelDefinition } = getChat(chats[0].id);
 
   const [isLimitVisible, setIsLimitVisible] = useState<boolean>(true);
 
@@ -105,7 +105,9 @@ const AppPage: FunctionComponent = (): ReactElement => {
           ref={ref}
           value={inputValue}
           modelDefinition={modelDefinition}
-          onChange={(value) => setInputValue(id, value)}
+          options={options}
+          onValueChange={(value) => setInputValue(id, value)}
+          onOptionToggle={(option) => toggleChatOption(id, option)}
           onModelChange={(definitionId) => setModelDefinition(id, definitionId)}
           onSend={() => sendMessage(id)}
         />

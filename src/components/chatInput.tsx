@@ -2,9 +2,9 @@
 
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import TextArea from 'react-textarea-autosize';
-import { AIModelDefinition, BaseProps } from '../types';
+import { AIModelDefinition, BaseProps, ChatOption, ChatOptions } from '../types';
 import { withRef } from '../helpers';
-import { ArrowUp, X } from 'lucide-react';
+import { ArrowUp, Lightbulb, X } from 'lucide-react';
 import { Model, ModelMenu } from './';
 import { Error } from './common';
 
@@ -15,7 +15,9 @@ interface Props extends BaseProps<HTMLTextAreaElement> {
   readonly value: string;
   readonly modelDefinition: AIModelDefinition;
   readonly isDisabled?: boolean;
-  readonly onChange: (value: string) => void;
+  readonly options: ChatOptions;
+  readonly onValueChange: (value: string) => void;
+  readonly onOptionToggle: (option: ChatOption) => void;
   readonly onModelChange?: (definitionId: string) => void;
   readonly onSend?: () => void;
   readonly onAbort?: () => void;
@@ -34,27 +36,29 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     value,
     modelDefinition,
     isDisabled = false,
-    onChange,
+    options,
+    onValueChange,
+    onOptionToggle,
     onModelChange,
     onSend,
     onAbort,
   } = props;
 
-  const { limits } = modelDefinition;
+  const { limits, options: modelOptions } = modelDefinition;
 
   const limitReached = (
     value.length >
     (limits?.maxMessageLength ?? Infinity)
   );
 
-  const _onChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
+  const _onValueChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
 
     // Destructure the event and the event target
     // and pass its value to `onChange`
     const { target } = event;
     const { value } = target;
 
-    onChange(value);
+    onValueChange(value);
   };
 
   const _onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
@@ -90,26 +94,47 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             placeholder="Chat with AI, ask anything you like"
             value={value}
             disabled={isDisabled}
-            onChange={_onChange}
+            onChange={_onValueChange}
             onKeyDown={_onKeyDown}
           />
-          <div className="w-full flex row items-end justify-between gap-x-6 pt-8">
-            {
-              (onModelChange == null) && (
-                <Model
-                  definition={modelDefinition}
-                  appearance="dark"
-                />
-              )
-            }
-            {
-              (onModelChange != null) && (
-                <ModelMenu
-                  modelDefinition={modelDefinition}
-                  onModelChange={onModelChange}
-                />
-              )
-            }
+          <div className="w-full flex flex-row items-end justify-between gap-x-6 pt-8">
+            <div className="flex flex-row items-center gap-x-3">
+              {
+                (onModelChange != null)
+                  ? (
+                      <ModelMenu
+                        modelDefinition={modelDefinition}
+                        onModelChange={onModelChange}
+                      />
+                    )
+                  : (
+                      <Model
+                        definition={modelDefinition}
+                        appearance="dark"
+                      />
+                    )
+              }
+              <button
+                className={`
+                  h-8 flex flex-row items-center gap-x-2 text-white cursor-pointer border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-3 group
+
+                  ${(options.reason === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
+                  ${(options.reason === true) ? 'border-zinc-500' : 'border-zinc-800'}
+
+                  disabled:cursor-not-allowed
+                  disabled:text-zinc-600
+                  disabled:bg-zinc-900/60
+                  disabled:border-zinc-800/80
+                `}
+                disabled={modelOptions.reason === 'unavailable'}
+                onClick={() => onOptionToggle('reason')}
+              >
+                <Lightbulb size={14} />
+                <p className="font-sans text-sm ">
+                  Reason
+                </p>
+              </button>
+            </div>
             {
               (onSend != null) && (
                 <button

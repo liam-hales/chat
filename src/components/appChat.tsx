@@ -27,12 +27,13 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
     getChat,
     setInputValue,
     setModelDefinition,
+    toggleChatOption,
     sendMessage,
     abortRequest,
     retryRequest,
   } = useChat();
 
-  const { inputValue, state, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
+  const { state, inputValue, options, messages, modelDefinition } = useMemo(() => getChat(id), [id, getChat]);
   const { limits } = modelDefinition;
 
   // When calculating if the chat limit has been reached, +1 onto the messages length so as soon as the
@@ -119,7 +120,9 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           value={inputValue}
           modelDefinition={modelDefinition}
           isDisabled={chatLimitReached}
-          onChange={(value) => setInputValue(id, value)}
+          options={options}
+          onValueChange={(value) => setInputValue(id, value)}
+          onOptionToggle={(option) => toggleChatOption(id, option)}
           onModelChange={
             (messages.length === 0)
               ? (definitionId) => setModelDefinition(id, definitionId)

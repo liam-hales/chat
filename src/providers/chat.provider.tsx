@@ -2,7 +2,15 @@
 
 import { FunctionComponent, ReactElement, ReactNode, useCallback, useState } from 'react';
 import { ChatContext } from '../context';
-import { BaseProps, AppChat, FullAppChat, UpdateChatPayload, MakeRequestPayload } from '../types';
+import {
+  BaseProps,
+  AppChat,
+  FullAppChat,
+  UpdateChatPayload,
+  MakeRequestPayload,
+  ChatOption,
+  AIModelDefinition,
+} from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
 import { useInput } from '../hooks';
@@ -48,6 +56,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     },
     modelDefinitionId: defaultModel?.id ?? '',
     inputValue: '',
+    options: {
+      reason: false,
+    },
     messages: [],
   };
 
@@ -64,7 +75,6 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
   const getChat = useCallback(
     (id: string): FullAppChat => {
       const chat = chats.find((chat) => chat.id === id);
-      const modelDefinition = aiModelDefinitions.find((def) => def.id === chat?.modelDefinitionId);
 
       // If the chat does not exist
       // then throw an error
@@ -72,14 +82,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
         throw new Error(`No chat with ID "${id}" found`);
       }
 
-      // If the model definition does not
-      // exist then throw an error
-      if (modelDefinition == null) {
-        throw new Error(`No model definition with ID "${chat.modelDefinitionId}" found`);
-      }
-
       // Return the chat data with
       // the messages from state
+      const modelDefinition = _getModelDefinition(chat.modelDefinitionId);
       return {
         ...chat,
         modelDefinition: modelDefinition,
@@ -106,11 +111,18 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    * for a specific chat
    *
    * @param chatId The chat ID
-   * @param modelDefinitionId The model definition ID
+   * @param definitionId The model definition ID
    */
-  const setModelDefinition = (chatId: string, modelDefinitionId: string): void => {
+  const setModelDefinition = (chatId: string, definitionId: string): void => {
+    const { options } = _getModelDefinition(definitionId);
+
     _updateChat(chatId, {
-      modelDefinitionId: modelDefinitionId,
+      modelDefinitionId: definitionId,
+      // Also set the correct default
+      // options for the chat
+      options: {
+        reason: (options.reason === 'required'),
+      },
     });
   };
 
@@ -137,6 +149,24 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     });
 
     setSelectedChatId(id);
+  };
+
+  /**
+   * Used to toggle a chat option to
+   * either enable or disable it
+   *
+   * @param chatId The chat ID
+   * @param option The chat option to toggle
+   */
+  const toggleChatOption = (chatId: string, option: ChatOption): void => {
+    _updateChat(chatId, {
+      options: (previous) => {
+        return {
+          ...previous,
+          [option]: previous[option] === false,
+        };
+      },
+    });
   };
 
   /**
@@ -188,7 +218,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    * @param chatId The chat ID
    */
   const sendMessage = async (chatId: string): Promise<void> => {
-    const { inputValue, messages, modelDefinition } = getChat(chatId);
+    const { inputValue, options, messages, modelDefinition } = getChat(chatId);
     const { openRouterId } = modelDefinition;
 
     const trimmedValue = inputValue.trim();
@@ -228,6 +258,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     await _makeRequest({
       chatId: chatId,
       modelId: openRouterId,
+      options: options,
       messages: [
         // Remove the unknown props
         // from each message
@@ -277,7 +308,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    * @param fromMessageId The ID of the message to retry from
    */
   const retryRequest = async (chatId: string, fromMessageId?: string): Promise<void> => {
-    const { messages, modelDefinition } = getChat(chatId);
+    const { options, messages, modelDefinition } = getChat(chatId);
     const { openRouterId } = modelDefinition;
 
     // If the `fromMessageId` has been set, we need to remove any messages that were created after
@@ -302,6 +333,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     await _makeRequest({
       chatId: chatId,
       modelId: openRouterId,
+      options: options,
       messages: [
         // Remove the unknown props
         // from each message
@@ -329,6 +361,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     const {
       chatId,
       modelId,
+      options,
       messages,
     } = payload;
 
@@ -349,6 +382,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       const streamValue = await streamChat({
         modelId: modelId,
         messages: messages,
+        chatOptions: options,
       });
 
       abortController.signal.throwIfAborted();
@@ -524,6 +558,25 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
   };
 
   /**
+   * Used to get a specific model
+   * definition via it's `id`
+   *
+   * @param id The model definition ID
+   * @returns The model definition
+   */
+  const _getModelDefinition = (id: string): AIModelDefinition => {
+    const definition = aiModelDefinitions.find((def) => def.id === id);
+
+    // If the model definition does not
+    // exist then throw an error
+    if (definition == null) {
+      throw new Error(`No model definition with ID "${id}" found`);
+    }
+
+    return definition;
+  };
+
+  /**
    * Used to generate a chat title from a
    * given input using a low latency LLM
    *
@@ -588,6 +641,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
         setModelDefinition: setModelDefinition,
         createChat: createChat,
         setSelectedChat: setSelectedChatId,
+        toggleChatOption: toggleChatOption,
         deleteChat: deleteChat,
         sendMessage: sendMessage,
         abortRequest: abortRequest,

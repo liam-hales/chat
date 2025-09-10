@@ -136,6 +136,7 @@ export interface ChatMessageMetadata {
 export interface MakeRequestPayload {
   readonly chatId: string;
   readonly modelId: z.infer<typeof streamChatSchema>['modelId'];
+  readonly options: z.infer<typeof streamChatSchema>['chatOptions'];
   readonly messages: z.infer<typeof streamChatSchema>['messages'];
 }
 
