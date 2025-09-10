@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z, ZodType } from 'zod';
 import { defaultSystemPrompt, aiModelDefinitions } from '../constants';
-import { AIModelDefinition } from '../types';
+import { AIModelDefinition, ChatOption } from '../types';
 
 /**
  * Used to build the schema for a specific model
@@ -10,19 +10,19 @@ import { AIModelDefinition } from '../types';
  * @returns The schema
  */
 const _buildSchema = (definition: AIModelDefinition) => {
-  const { openRouterId, limits } = definition;
+  const { openRouterId, options, limits } = definition;
 
-  const content = z
+  const contentSchema = z
     .string()
     .min(1);
 
   // If the model has limits then set a
   // maximum character length for the content
   if (limits != null) {
-    content.max(limits.maxMessageLength);
+    contentSchema.max(limits.maxMessageLength);
   }
 
-  const messages = z
+  const messagesSchema = z
     .array(
       z
         .object({
@@ -30,7 +30,7 @@ const _buildSchema = (definition: AIModelDefinition) => {
             z.literal('user'),
             z.literal('assistant'),
           ]),
-          content: content,
+          content: contentSchema,
         })
         .strict(),
     )
@@ -39,8 +39,27 @@ const _buildSchema = (definition: AIModelDefinition) => {
   // If the model has limits then set a
   // maximum length for the messages array
   if (limits != null) {
-    messages.max(limits.maxChatLength);
+    messagesSchema.max(limits.maxChatLength);
   }
+
+  const chatOptionKeys = Object.keys(options) as ChatOption[];
+  const chatOptionsSchema = z
+    .object({
+      ...chatOptionKeys.reduce((map, key) => {
+        return {
+          ...map,
+          [key]: z
+            .boolean()
+            .optional()
+            .default(false),
+        };
+      }, {} as Record<ChatOption, ZodType<boolean>>),
+    })
+    .strict()
+    .optional()
+    .default({
+      reason: (options.reason === 'required'),
+    });
 
   return z
     .object({
@@ -51,7 +70,8 @@ const _buildSchema = (definition: AIModelDefinition) => {
         .max(1024)
         .optional()
         .default(defaultSystemPrompt),
-      messages: messages,
+      messages: messagesSchema,
+      chatOptions: chatOptionsSchema,
       maxOutputLength: (limits != null)
         ? z
             .number()

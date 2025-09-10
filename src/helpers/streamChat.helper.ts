@@ -17,11 +17,10 @@ import dedent from 'dedent';
  * @returns The client streamable value
  */
 const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<StreamableValue<StreamData>> => {
-
   // As this is a server action, we need to
   // validate the options before using them
   const validated = streamChatSchema.parse(options);
-  const { modelId, systemMessage, messages, maxOutputLength } = validated;
+  const { modelId, systemMessage, messages, chatOptions, maxOutputLength } = validated;
 
   const { serverRuntimeConfig } = getConfig();
   const { openRouterApiKey } = serverRuntimeConfig;
@@ -57,6 +56,19 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
       model: provider.chat(modelId),
       system: systemPrompt,
       messages: messages,
+      providerOptions: {
+        openrouter: {
+          reasoning: (chatOptions.reason === true)
+            ? {
+                enabled: true,
+                exclude: false,
+                effort: 'medium',
+              }
+            : {
+                enabled: false,
+              },
+        },
+      },
     });
 
     let reasoningStart = 0;
