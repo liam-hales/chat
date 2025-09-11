@@ -4,7 +4,7 @@ import AppChat from './appChat';
 import ChatInput from './chatInput';
 import UserChatMessage from './userChatMessage';
 import AssistantChatMessage from './assistantChatMessage';
-import ChatMessageTools from './chatMessageTools';
+import ChatMessageActions from './chatMessageActions';
 import ChatError from './chatError';
 import Tab from './tab';
 import Model from './model';
@@ -18,7 +18,7 @@ export {
   ChatInput,
   UserChatMessage,
   AssistantChatMessage,
-  ChatMessageTools,
+  ChatMessageActions,
   ChatError,
   Tab,
   Model,

@@ -6,7 +6,7 @@ import { Check, Copy, Repeat2 } from 'lucide-react';
 import { MetadataPopover } from './index';
 
 /**
- * The `ChatMessageTools` component props
+ * The `ChatMessageActions` component props
  */
 interface Props extends BaseProps {
   readonly content: string;
@@ -15,13 +15,13 @@ interface Props extends BaseProps {
 }
 
 /**
- * Used to render the tools for a chat message to show
- * message metadata and perform tasks such as copy and retry
+ * Used to render the actions for a chat message to allow the
+ * user to do things such as copy, retry and view metadata
  *
  * @param props The component props
- * @returns The `ChatMessageTools` component
+ * @returns The `ChatMessageActions` component
  */
-const ChatMessageTools: FunctionComponent<Props> = ({ content, metadata, onRetry }): ReactElement<Props> => {
+const ChatMessageActions: FunctionComponent<Props> = ({ content, metadata, onRetry }): ReactElement<Props> => {
   const [hasCopied, setHasCopied] = useState<boolean>(false);
 
   const _onCopy = async (): Promise<void> => {
@@ -75,4 +75,4 @@ const ChatMessageTools: FunctionComponent<Props> = ({ content, metadata, onRetry
   );
 };
 
-export default ChatMessageTools;
+export default ChatMessageActions;

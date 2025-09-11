@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactElement } from 'react';
 import { Markdown } from './common';
 import { BaseProps, ChatMessageMetadata } from '../types';
-import { ChatMessageTools } from './index';
+import { ChatMessageActions } from './';
 
 /**
  * The `AssistantChatMessage` component props
@@ -40,7 +40,7 @@ const AssistantChatMessage: FunctionComponent<Props> = (props): ReactElement<Pro
       </Markdown>
       {
         (showTools === true) && (
-          <ChatMessageTools
+          <ChatMessageActions
             content={children}
             metadata={metadata}
             onRetry={onRetry}
