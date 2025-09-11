@@ -2,9 +2,9 @@
 
 import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
 import TextArea from 'react-textarea-autosize';
-import { AIModelDefinition, BaseProps, ChatOption, ChatOptions } from '../types';
+import { AIModelDefinition, BaseProps, ChatOptions, UpdateChatOptionPayload } from '../types';
 import { withRef } from '../helpers';
-import { ArrowUp, Lightbulb, X } from 'lucide-react';
+import { ArrowUp, Lightbulb, Terminal, X } from 'lucide-react';
 import { Model, ModelMenu } from './';
 import { Error } from './common';
 
@@ -17,7 +17,7 @@ interface Props extends BaseProps<HTMLTextAreaElement> {
   readonly isDisabled?: boolean;
   readonly options: ChatOptions;
   readonly onValueChange: (value: string) => void;
-  readonly onOptionToggle: (option: ChatOption) => void;
+  readonly updateOption: <T extends keyof ChatOptions>(option: UpdateChatOptionPayload<T>) => void;
   readonly onModelChange?: (definitionId: string) => void;
   readonly onSend?: () => void;
   readonly onAbort?: () => void;
@@ -38,13 +38,14 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     isDisabled = false,
     options,
     onValueChange,
-    onOptionToggle,
+    updateOption,
     onModelChange,
     onSend,
     onAbort,
   } = props;
 
   const { limits, options: modelOptions } = modelDefinition;
+  const { reason } = options;
 
   const limitReached = (
     value.length >
@@ -77,11 +78,20 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     }
   };
 
+  const _toggleOption = (key: keyof ChatOptions): void => {
+    updateOption({
+      key: key,
+      data: {
+        isEnabled: (options[key].isEnabled === false),
+      },
+    });
+  };
+
   return (
-    <div className="w-full flex flex-col items-start">
+    <div className="w-full flex flex-col items-start gap-y-4">
       {
         (limitReached === true) && (
-          <Error className="mb-4">
+          <Error>
             You have reached the message character limit for this model.
           </Error>
         )
@@ -90,7 +100,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         <div className="w-full flex flex-col items-center pt-5 pb-5 pl-5 pr-5">
           <TextArea
             ref={internalRef}
-            className="w-full h-6 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none"
+            className="w-full max-h-40 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none"
             placeholder="Chat with AI, ask anything you like"
             value={value}
             disabled={isDisabled}
@@ -98,7 +108,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             onKeyDown={_onKeyDown}
           />
           <div className="w-full flex flex-row items-end justify-between gap-x-6 pt-8">
-            <div className="flex flex-row items-center gap-x-3">
+            <div className="flex flex-row items-center gap-x-2 sm:gap-x-3">
               {
                 (onModelChange != null)
                   ? (
@@ -116,10 +126,12 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               }
               <button
                 className={`
-                  h-8 flex flex-row items-center gap-x-2 text-white cursor-pointer border-solid border-[1px] rounded-md pt-1 pb-1 pl-2 pr-3 group
+                  flex flex-row items-center gap-x-2 text-white cursor-pointer border-solid border-[1px] rounded-md group p-[7px]
 
-                  ${(options.reason === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
-                  ${(options.reason === true) ? 'border-zinc-500' : 'border-zinc-800'}
+                  sm:pt-[5px] sm:pb-[5px] sm:pl-2 sm:pr-3
+
+                  ${(reason.isEnabled === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
+                  ${(reason.isEnabled === true) ? 'border-zinc-500' : 'border-zinc-800'}
 
                   disabled:cursor-not-allowed
                   disabled:text-zinc-600
@@ -127,10 +139,10 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                   disabled:border-zinc-800/80
                 `}
                 disabled={modelOptions.reason === 'unavailable'}
-                onClick={() => onOptionToggle('reason')}
+                onClick={() => _toggleOption('reason')}
               >
-                <Lightbulb size={14} />
-                <p className="font-sans text-sm ">
+                <Lightbulb size={16} />
+                <p className="font-sans text-sm hidden sm:block">
                   Reason
                 </p>
               </button>

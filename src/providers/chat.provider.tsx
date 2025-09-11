@@ -8,8 +8,9 @@ import {
   FullAppChat,
   UpdateChatPayload,
   MakeRequestPayload,
-  ChatOption,
   AIModelDefinition,
+  ChatOptions,
+  UpdateChatOptionPayload,
 } from '../types';
 import { nanoid } from 'nanoid';
 import { aiModelDefinitions } from '../constants';
@@ -57,7 +58,10 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     modelDefinitionId: defaultModel?.id ?? '',
     inputValue: '',
     options: {
-      reason: false,
+      reason: {
+        isEnabled: false,
+        effort: 'medium',
+      },
     },
     messages: [],
   };
@@ -121,7 +125,10 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       // Also set the correct default
       // options for the chat
       options: {
-        reason: (options.reason === 'required'),
+        reason: {
+          isEnabled: (options.reason === 'required'),
+          effort: 'medium',
+        },
       },
     });
   };
@@ -152,18 +159,23 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
   };
 
   /**
-   * Used to toggle a chat option to
-   * either enable or disable it
+   * Used to update a specific chat option using by
+   * merging it with the current option data
    *
    * @param chatId The chat ID
-   * @param option The chat option to toggle
+   * @param option The chat option to update
    */
-  const toggleChatOption = (chatId: string, option: ChatOption): void => {
+  const updateOption = <T extends keyof ChatOptions>(chatId: string, option: UpdateChatOptionPayload<T>): void => {
+    const { key, data } = option;
+
     _updateChat(chatId, {
       options: (previous) => {
         return {
           ...previous,
-          [option]: previous[option] === false,
+          [key]: {
+            ...previous[key],
+            ...data,
+          },
         };
       },
     });
@@ -382,7 +394,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       const streamValue = await streamChat({
         modelId: modelId,
         messages: messages,
-        chatOptions: options,
+        options: options,
       });
 
       abortController.signal.throwIfAborted();
@@ -511,7 +523,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
 
   /**
    * Used to update a specific chat via
-   * it's `id` with the provided `data`
+   * it's `id` with the provided `payload`
    *
    * @param chatId The chat ID
    * @param payload The payload containing the data or mutation functions
@@ -641,7 +653,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
         setModelDefinition: setModelDefinition,
         createChat: createChat,
         setSelectedChat: setSelectedChatId,
-        toggleChatOption: toggleChatOption,
+        updateOption: updateOption,
         deleteChat: deleteChat,
         sendMessage: sendMessage,
         abortRequest: abortRequest,

@@ -1,4 +1,4 @@
-import { AppChat, ChatOption, FullAppChat } from '../types';
+import { AppChat, ChatOptions, FullAppChat, UpdateChatOptionPayload } from '../types';
 import { RefObject } from 'react';
 
 /**
@@ -85,13 +85,13 @@ export interface ChatActions {
   readonly setSelectedChat: (chatId: string) => void;
 
   /**
-   * Used to toggle a chat option to
-   * either enable or disable it
+   * Used to update a specific chat option using by
+   * merging it with the current option data
    *
    * @param chatId The chat ID
-   * @param option The chat option to toggle
+   * @param option The chat option to update
    */
-  readonly toggleChatOption: (chatId: string, option: ChatOption) => void;
+  readonly updateOption: <T extends keyof ChatOptions>(chatId: string, option: UpdateChatOptionPayload<T>) => void;
 
   /**
    * Used to delete a specific chat

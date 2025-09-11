@@ -20,7 +20,15 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
   // As this is a server action, we need to
   // validate the options before using them
   const validated = streamChatSchema.parse(options);
-  const { modelId, systemMessage, messages, chatOptions, maxOutputLength } = validated;
+  const {
+    modelId,
+    systemMessage,
+    messages,
+    options: {
+      reason,
+    },
+    maxOutputLength,
+  } = validated;
 
   const { serverRuntimeConfig } = getConfig();
   const { openRouterApiKey } = serverRuntimeConfig;
@@ -58,11 +66,11 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
       messages: messages,
       providerOptions: {
         openrouter: {
-          reasoning: (chatOptions.reason === true)
+          reasoning: (reason.isEnabled === true)
             ? {
                 enabled: true,
                 exclude: false,
-                effort: 'medium',
+                effort: reason.effort,
               }
             : {
                 enabled: false,

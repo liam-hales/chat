@@ -1,6 +1,6 @@
-import { z, ZodType } from 'zod';
+import { z } from 'zod';
 import { defaultSystemPrompt, aiModelDefinitions } from '../constants';
-import { AIModelDefinition, ChatOption } from '../types';
+import { AIModelDefinition } from '../types';
 
 /**
  * Used to build the schema for a specific model
@@ -10,7 +10,7 @@ import { AIModelDefinition, ChatOption } from '../types';
  * @returns The schema
  */
 const _buildSchema = (definition: AIModelDefinition) => {
-  const { openRouterId, options, limits } = definition;
+  const { openRouterId, limits } = definition;
 
   const contentSchema = z
     .string()
@@ -42,23 +42,36 @@ const _buildSchema = (definition: AIModelDefinition) => {
     messagesSchema.max(limits.maxChatLength);
   }
 
-  const chatOptionKeys = Object.keys(options) as ChatOption[];
-  const chatOptionsSchema = z
+  const reasonOptionSchema = z
     .object({
-      ...chatOptionKeys.reduce((map, key) => {
-        return {
-          ...map,
-          [key]: z
-            .boolean()
-            .optional()
-            .default(false),
-        };
-      }, {} as Record<ChatOption, ZodType<boolean>>),
+      isEnabled: z.boolean(),
+      effort: z
+        .union([
+          z.literal('high'),
+          z.literal('medium'),
+          z.literal('low'),
+        ])
+        .optional()
+        .default('medium'),
     })
     .strict()
     .optional()
     .default({
-      reason: (options.reason === 'required'),
+      isEnabled: false,
+      effort: 'medium',
+    });
+
+  const optionsSchema = z
+    .object({
+      reason: reasonOptionSchema,
+    })
+    .strict()
+    .optional()
+    .default({
+      reason: {
+        isEnabled: false,
+        effort: 'medium',
+      },
     });
 
   return z
@@ -71,7 +84,7 @@ const _buildSchema = (definition: AIModelDefinition) => {
         .optional()
         .default(defaultSystemPrompt),
       messages: messagesSchema,
-      chatOptions: chatOptionsSchema,
+      options: optionsSchema,
       maxOutputLength: (limits != null)
         ? z
             .number()

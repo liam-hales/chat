@@ -86,16 +86,21 @@ export type ChatMessage =
   | ChatAssistantMessage;
 
 /**
- * Used to describes the
- * different chat options
+ * Describes the chat options and
+ * the supporting data for each one
  */
-export type ChatOption = 'reason';
+export interface ChatOptions {
+  readonly reason: ReasonChatOption;
+}
 
 /**
- * Used to describe the chat options that
- * can either be enabled or disabled
+ * Describes the reason
+ * chat option
  */
-export type ChatOptions = Record<ChatOption, boolean>;
+export interface ReasonChatOption {
+  readonly isEnabled: boolean;
+  readonly effort: 'high' | 'medium' | 'low';
+}
 
 /**
  * Describes the chat
@@ -136,8 +141,17 @@ export interface ChatMessageMetadata {
 export interface MakeRequestPayload {
   readonly chatId: string;
   readonly modelId: z.infer<typeof streamChatSchema>['modelId'];
-  readonly options: z.infer<typeof streamChatSchema>['chatOptions'];
+  readonly options: z.infer<typeof streamChatSchema>['options'];
   readonly messages: z.infer<typeof streamChatSchema>['messages'];
+}
+
+/**
+ * Used to describe the payload
+ * when updating a chat option
+ */
+export interface UpdateChatOptionPayload<T extends keyof ChatOptions> {
+  readonly key: T;
+  readonly data: Partial<ChatOptions[T]>;
 }
 
 /**
