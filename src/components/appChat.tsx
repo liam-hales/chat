@@ -122,7 +122,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
           isDisabled={chatLimitReached}
           options={options}
           onValueChange={(value) => setInputValue(id, value)}
-          updateOption={(option) => updateOption(id, option)}
+          updateOption={(payload) => updateOption(id, payload)}
           onModelChange={
             (messages.length === 0)
               ? (definitionId) => setModelDefinition(id, definitionId)

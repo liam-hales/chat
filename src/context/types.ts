@@ -89,9 +89,9 @@ export interface ChatActions {
    * merging it with the current option data
    *
    * @param chatId The chat ID
-   * @param option The chat option to update
+   * @param payload The update chat option payload
    */
-  readonly updateOption: <T extends keyof ChatOptions>(chatId: string, option: UpdateChatOptionPayload<T>) => void;
+  readonly updateOption: <T extends keyof ChatOptions>(chatId: string, payload: UpdateChatOptionPayload<T>) => void;
 
   /**
    * Used to delete a specific chat

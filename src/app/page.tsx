@@ -107,7 +107,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
           modelDefinition={modelDefinition}
           options={options}
           onValueChange={(value) => setInputValue(id, value)}
-          updateOption={(option) => updateOption(id, option)}
+          updateOption={(payload) => updateOption(id, payload)}
           onModelChange={(definitionId) => setModelDefinition(id, definitionId)}
           onSend={() => sendMessage(id)}
         />

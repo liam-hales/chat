@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement } from 'react';
+import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState } from 'react';
 import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps, ChatOptions, UpdateChatOptionPayload } from '../types';
 import { withRef } from '../helpers';
@@ -17,7 +17,7 @@ interface Props extends BaseProps<HTMLTextAreaElement> {
   readonly isDisabled?: boolean;
   readonly options: ChatOptions;
   readonly onValueChange: (value: string) => void;
-  readonly updateOption: <T extends keyof ChatOptions>(option: UpdateChatOptionPayload<T>) => void;
+  readonly updateOption: <T extends keyof ChatOptions>(payload: UpdateChatOptionPayload<T>) => void;
   readonly onModelChange?: (definitionId: string) => void;
   readonly onSend?: () => void;
   readonly onAbort?: () => void;

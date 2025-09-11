@@ -163,10 +163,10 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    * merging it with the current option data
    *
    * @param chatId The chat ID
-   * @param option The chat option to update
+   * @param payload The update chat option payload
    */
-  const updateOption = <T extends keyof ChatOptions>(chatId: string, option: UpdateChatOptionPayload<T>): void => {
-    const { key, data } = option;
+  const updateOption = <T extends keyof ChatOptions>(chatId: string, payload: UpdateChatOptionPayload<T>): void => {
+    const { key, data } = payload;
 
     _updateChat(chatId, {
       options: (previous) => {
