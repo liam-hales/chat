@@ -62,6 +62,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
         isEnabled: false,
         effort: 'medium',
       },
+      prompt: {
+        isEnabled: false,
+      },
     },
     messages: [],
   };

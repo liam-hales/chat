@@ -61,9 +61,25 @@ const _buildSchema = (definition: AIModelDefinition) => {
       effort: 'medium',
     });
 
+  const promptOptionSchema = z
+    .object({
+      isEnabled: z.boolean(),
+      value: z
+        .string()
+        .min(1)
+        .max(2048)
+        .optional(),
+    })
+    .strict()
+    .optional()
+    .default({
+      isEnabled: false,
+    });
+
   const optionsSchema = z
     .object({
       reason: reasonOptionSchema,
+      prompt: promptOptionSchema,
     })
     .strict()
     .optional()
@@ -71,6 +87,9 @@ const _buildSchema = (definition: AIModelDefinition) => {
       reason: {
         isEnabled: false,
         effort: 'medium',
+      },
+      prompt: {
+        isEnabled: false,
       },
     });
 

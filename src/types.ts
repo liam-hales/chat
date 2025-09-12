@@ -91,6 +91,7 @@ export type ChatMessage =
  */
 export interface ChatOptions {
   readonly reason: ReasonChatOption;
+  readonly prompt: PromptChatOption;
 }
 
 /**
@@ -100,6 +101,15 @@ export interface ChatOptions {
 export interface ReasonChatOption {
   readonly isEnabled: boolean;
   readonly effort: 'high' | 'medium' | 'low';
+}
+
+/**
+ * Describes the prompt
+ * chat option
+ */
+export interface PromptChatOption {
+  readonly isEnabled: boolean;
+  readonly value?: string;
 }
 
 /**
