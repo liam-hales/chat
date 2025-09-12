@@ -122,13 +122,16 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
 
     _updateChat(chatId, {
       modelDefinitionId: definitionId,
-      // Also set the correct default
-      // options for the chat
-      options: {
-        reason: {
-          isEnabled: (options.reason === 'required'),
-          effort: 'medium',
-        },
+      // Also enable or disable reasoning
+      // based on the new model definition
+      options: (previous) => {
+        return {
+          ...previous,
+          reason: {
+            ...previous.reason,
+            isEnabled: (options.reason === 'required'),
+          },
+        };
       },
     });
   };
