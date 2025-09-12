@@ -33,9 +33,9 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
       className={`
         ${className ?? ''}
 
-        border-solid border-[1px] pt-1 pb-1 pl-2
+        border-solid border-[1px] pl-2
 
-        ${(form === 'standard') ? 'h-8' : 'h-auto'}
+        ${(form === 'standard') ? 'h-8' : 'h-auto pt-1 pb-1'}
         ${(form === 'standard') ? 'rounded-md' : 'rounded-sm'}
         ${(form === 'standard' && limits != null) ? 'pr-1' : 'pr-2'}
 
