@@ -4,8 +4,8 @@ import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState }
 import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps, ChatOptions, UpdateChatOptionPayload } from '../types';
 import { withRef } from '../helpers';
-import { ArrowUp, Lightbulb, Terminal, X } from 'lucide-react';
-import { Model, ModelMenu } from './';
+import { ArrowUp, X } from 'lucide-react';
+import { Model, ModelMenu, ChatOptionButton } from './';
 import { Error } from './common';
 
 /**
@@ -163,49 +163,21 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                       />
                     )
               }
-              <button
-                className={`
-                  flex flex-row items-center gap-x-2 text-white cursor-pointer border-solid border-[1px] rounded-md group p-[7px]
-
-                  sm:pt-[5px] sm:pb-[5px] sm:pl-2 sm:pr-3
-
-                  ${(reason.isEnabled === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
-                  ${(reason.isEnabled === true) ? 'border-zinc-500' : 'border-zinc-800'}
-
-                  disabled:cursor-not-allowed
-                  disabled:text-zinc-600
-                  disabled:bg-zinc-900/60
-                  disabled:border-zinc-800/80
-                `}
-                disabled={modelOptions.reason === 'unavailable'}
+              <ChatOptionButton
+                icon="lightbulb"
+                isSelected={reason.isEnabled}
+                isDisabled={modelOptions.reason === 'unavailable'}
                 onClick={() => _toggleOption('reason')}
               >
-                <Lightbulb size={16} />
-                <p className="font-sans text-sm hidden sm:block">
-                  Reason
-                </p>
-              </button>
-              <button
-                className={`
-                  flex flex-row items-center gap-x-2 text-white cursor-pointer border-solid border-[1px] rounded-md group p-[7px]
-
-                  sm:pt-[5px] sm:pb-[5px] sm:pl-2 sm:pr-3
-
-                  ${(prompt.isEnabled === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
-                  ${(prompt.isEnabled === true) ? 'border-zinc-500' : 'border-zinc-800'}
-
-                  disabled:cursor-not-allowed
-                  disabled:text-zinc-600
-                  disabled:bg-zinc-900/60
-                  disabled:border-zinc-800/80
-                `}
+                Reason
+              </ChatOptionButton>
+              <ChatOptionButton
+                icon="terminal"
+                isSelected={prompt.isEnabled}
                 onClick={() => _toggleOption('prompt')}
               >
-                <Terminal size={16} />
-                <p className="font-sans text-sm hidden sm:block">
-                  Prompt
-                </p>
-              </button>
+                Prompt
+              </ChatOptionButton>
             </div>
             {
               (onSend != null) && (
