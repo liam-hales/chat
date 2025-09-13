@@ -4,6 +4,7 @@ import AppChat from './appChat';
 import ChatInput from './chatInput';
 import UserChatMessage from './userChatMessage';
 import AssistantChatMessage from './assistantChatMessage';
+import ChatOptionButton from './chatOptionButton';
 import ChatMessageActions from './chatMessageActions';
 import ChatError from './chatError';
 import Tab from './tab';
@@ -18,6 +19,7 @@ export {
   ChatInput,
   UserChatMessage,
   AssistantChatMessage,
+  ChatOptionButton,
   ChatMessageActions,
   ChatError,
   Tab,
