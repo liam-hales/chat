@@ -109,7 +109,7 @@ export const aiModelDefinitions = [
       reason: 'available',
     },
     limits: {
-      maxMessageLength: 4096,
+      maxMessageLength: 8192,
       maxChatLength: 10,
     },
   },
@@ -151,8 +151,8 @@ export const aiModelDefinitions = [
   },
   {
     id: nanoid(8),
-    name: 'deepseek-v3',
-    openRouterId: 'deepseek/deepseek-chat-v3-0324:free',
+    name: 'deepseek-chat-v3.1',
+    openRouterId: 'deepseek/deepseek-chat-v3.1:free',
     isDefault: false,
     options: {
       reason: 'available',
@@ -171,8 +171,8 @@ export const aiModelDefinitions = [
   },
   {
     id: nanoid(8),
-    name: 'gemma-3n-4b',
-    openRouterId: 'google/gemma-3n-e4b-it:free',
+    name: 'sonoma-sky-alpha',
+    openRouterId: 'openrouter/sonoma-sky-alpha',
     isDefault: false,
     options: {
       reason: 'available',
@@ -181,11 +181,11 @@ export const aiModelDefinitions = [
   },
   {
     id: nanoid(8),
-    name: 'qwen3-4b',
-    openRouterId: 'qwen/qwen3-4b:free',
+    name: 'sonoma-dusk-alpha',
+    openRouterId: 'openrouter/sonoma-dusk-alpha',
     isDefault: false,
     options: {
-      reason: 'unavailable',
+      reason: 'available',
     },
     limits: null,
   },
@@ -193,16 +193,6 @@ export const aiModelDefinitions = [
     id: nanoid(8),
     name: 'qwen3-235b',
     openRouterId: 'qwen/qwen3-235b-a22b:free',
-    isDefault: false,
-    options: {
-      reason: 'unavailable',
-    },
-    limits: null,
-  },
-  {
-    id: nanoid(8),
-    name: 'qwen3-30b',
-    openRouterId: 'qwen/qwen3-30b-a3b:free',
     isDefault: false,
     options: {
       reason: 'unavailable',
