@@ -31,7 +31,7 @@ const ChatError: FunctionComponent<Props> = ({ message, onRetry, onReport }): Re
                   <p className="font-sans text-white text-sm">
                     Sorry, an internal error occurred while talking to the AI model.
                   </p>
-                  <p className="font-sans italic text-white text-sm pl-2">
+                  <p className="font-mono italic text-white text-[11px] pl-2">
                     {`- "${message}"`}
                   </p>
                 </div>
