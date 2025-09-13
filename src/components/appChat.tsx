@@ -46,7 +46,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
   return (
     <div className="w-full h-[calc(100%-56px)] max-w-[910px] relative flex flex-col items-center justify-between">
       <div className="absolute w-full h-10 bg-gradient-to-b from-black to-transparent" />
-      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto overflow-x-hidden pt-10 pb-10">
+      <div className="w-full flex flex-col items-center gap-y-5 no-scrollbar overflow-y-auto overflow-x-hidden pt-10 pb-10 touch-pan-y">
         {
           messages.map((message, index) => {
             return (message.role === 'user')
@@ -89,7 +89,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                 appearance="dark"
                 text="Reasoning..."
               />
-              <div className="max-w-[460px] flex flex-col items-end overflow-x-hidden">
+              <div className="max-w-[460px] flex flex-col items-end overflow-x-hidden touch-none">
                 <p className="font-mono text-zinc-700 text-xs whitespace-nowrap">
                   {state.text}
                 </p>

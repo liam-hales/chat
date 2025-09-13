@@ -152,7 +152,7 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           );
         },
         table: ({ children }) => (
-          <div className="w-full mt-3 mb-3 !ml-0 !mr-0 overflow-x-auto no-scrollbar">
+          <div className="w-full mt-3 mb-3 !ml-0 !mr-0 overflow-x-auto no-scrollbar touch-pan-x touch-pan-y">
             <table className="table table-auto">
               {children}
             </table>

@@ -47,7 +47,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-full flex flex-col items-start">
-        <div className="w-full h-14 flex flex-row items-center gap-3 no-scrollbar overflow-x-auto whitespace-nowrap p-2">
+        <div className="w-full h-14 flex flex-row items-center gap-3 no-scrollbar overflow-x-auto whitespace-nowrap p-2 touch-pan-x">
           {
             chats.map((chat, index) => {
               const { id, title, state, modelDefinition } = getChat(chat.id);

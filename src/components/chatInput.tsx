@@ -122,7 +122,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         (showPromptInput === true) && (
           <div className="w-full flex flex-row items-center gap-x-2 border-solid border-[1px] rounded-lg border-zinc-900 p-5">
             <TextArea
-              className="w-full max-h-40 text-white placeholder-zinc-600 font-mono text-sm bg-transparent outline-none pl-1 caret-white resize-none"
+              className="w-full max-h-40 text-white placeholder-zinc-600 font-mono text-sm bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
               placeholder=">_ system prompt"
               value={prompt.value}
               onChange={_onPromptValueChange}
@@ -139,7 +139,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
         <div className="w-full flex flex-col items-center p-5">
           <TextArea
             ref={internalRef}
-            className="w-full max-h-40 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none"
+            className="w-full max-h-40 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
             placeholder="Chat with AI, ask anything you like"
             value={value}
             disabled={isDisabled}
