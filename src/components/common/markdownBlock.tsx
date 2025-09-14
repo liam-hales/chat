@@ -182,6 +182,20 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
             </span>
           </td>
         ),
+        a: ({ href, children }) => {
+          return (
+            <a
+              className="font-sans font-bold text-sm underline underline-offset-2 text-blue-300 pl-1 pr-1"
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {
+                children
+              }
+            </a>
+          );
+        },
       }}
     >
       {children}
