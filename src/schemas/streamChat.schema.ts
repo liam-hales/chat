@@ -42,25 +42,6 @@ const _buildSchema = (definition: AIModelDefinition) => {
     messagesSchema.max(limits.maxChatLength);
   }
 
-  const reasonOptionSchema = z
-    .object({
-      isEnabled: z.boolean(),
-      effort: z
-        .union([
-          z.literal('high'),
-          z.literal('medium'),
-          z.literal('low'),
-        ])
-        .optional()
-        .default('medium'),
-    })
-    .strict()
-    .optional()
-    .default({
-      isEnabled: false,
-      effort: 'medium',
-    });
-
   const promptOptionSchema = z
     .object({
       isEnabled: z.boolean(),
@@ -78,16 +59,11 @@ const _buildSchema = (definition: AIModelDefinition) => {
 
   const optionsSchema = z
     .object({
-      reason: reasonOptionSchema,
       prompt: promptOptionSchema,
     })
     .strict()
     .optional()
     .default({
-      reason: {
-        isEnabled: false,
-        effort: 'medium',
-      },
       prompt: {
         isEnabled: false,
       },

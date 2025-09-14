@@ -25,7 +25,6 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
     systemMessage,
     messages,
     options: {
-      reason,
       prompt,
     },
     maxOutputLength,
@@ -91,15 +90,11 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
       messages: messages,
       providerOptions: {
         openrouter: {
-          reasoning: (reason.isEnabled === true)
-            ? {
-                enabled: true,
-                exclude: false,
-                effort: reason.effort,
-              }
-            : {
-                enabled: false,
-              },
+          reasoning: {
+            enabled: true,
+            exclude: false,
+            effort: 'medium',
+          },
         },
       },
     });
@@ -110,7 +105,6 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
     // Loop through the async iterable text stream
     // and update the stream with said text
     for await (const part of fullStream) {
-
       switch (part.type) {
 
         case 'reasoning-start': {

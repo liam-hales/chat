@@ -90,17 +90,7 @@ export type ChatMessage =
  * the supporting data for each one
  */
 export interface ChatOptions {
-  readonly reason: ReasonChatOption;
   readonly prompt: PromptChatOption;
-}
-
-/**
- * Describes the reason
- * chat option
- */
-export interface ReasonChatOption {
-  readonly isEnabled: boolean;
-  readonly effort: 'high' | 'medium' | 'low';
 }
 
 /**

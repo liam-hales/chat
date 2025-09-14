@@ -58,10 +58,6 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     modelDefinitionId: defaultModel?.id ?? '',
     inputValue: '',
     options: {
-      reason: {
-        isEnabled: false,
-        effort: 'medium',
-      },
       prompt: {
         isEnabled: false,
       },
@@ -121,21 +117,11 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    * @param definitionId The model definition ID
    */
   const setModelDefinition = (chatId: string, definitionId: string): void => {
-    const { options } = _getModelDefinition(definitionId);
-
     _updateChat(chatId, {
       modelDefinitionId: definitionId,
-      // Also enable or disable reasoning
-      // based on the new model definition
-      options: (previous) => {
-        return {
-          ...previous,
-          reason: {
-            ...previous.reason,
-            isEnabled: (options.reason === 'required'),
-          },
-        };
-      },
+      // TODO: Update logic to set default options
+      //  for selected model definition
+      options: (previous) => previous,
     });
   };
 

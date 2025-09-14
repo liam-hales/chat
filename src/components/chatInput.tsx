@@ -44,8 +44,8 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     onAbort,
   } = props;
 
-  const { limits, options: modelOptions } = modelDefinition;
-  const { reason, prompt } = options;
+  const { limits } = modelDefinition;
+  const { prompt } = options;
 
   const [showPromptInput, setShowPromptInput] = useState<boolean>(false);
 
@@ -163,14 +163,6 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                       />
                     )
               }
-              <ChatOptionButton
-                icon="lightbulb"
-                isSelected={reason.isEnabled}
-                isDisabled={modelOptions.reason === 'unavailable'}
-                onClick={() => _toggleOption('reason')}
-              >
-                Reason
-              </ChatOptionButton>
               <ChatOptionButton
                 icon="terminal"
                 isSelected={prompt.isEnabled}
