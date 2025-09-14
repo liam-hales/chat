@@ -122,9 +122,6 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
   const setModelDefinition = (chatId: string, definitionId: string): void => {
     _updateChat(chatId, {
       modelDefinitionId: definitionId,
-      // TODO: Update logic to set default options
-      //  for selected model definition
-      options: (previous) => previous,
     });
   };
 
