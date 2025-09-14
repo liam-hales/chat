@@ -25,6 +25,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
     systemMessage,
     messages,
     options: {
+      search,
       prompt,
     },
     maxOutputLength,
@@ -94,6 +95,15 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
             enabled: true,
             exclude: false,
             effort: 'medium',
+          },
+          ...(search.isEnabled === true) && {
+            plugins: [
+              {
+                id: 'web',
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                max_results: search.maxResults,
+              },
+            ],
           },
         },
       },

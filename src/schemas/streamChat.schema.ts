@@ -42,6 +42,23 @@ const _buildSchema = (definition: AIModelDefinition) => {
     messagesSchema.max(limits.maxChatLength);
   }
 
+  const searchOptionSchema = z
+    .object({
+      isEnabled: z.boolean(),
+      maxResults: z
+        .number()
+        .min(1)
+        .max(5)
+        .optional()
+        .default(5),
+    })
+    .strict()
+    .optional()
+    .default({
+      isEnabled: false,
+      maxResults: 1,
+    });
+
   const promptOptionSchema = z
     .object({
       isEnabled: z.boolean(),
@@ -59,11 +76,16 @@ const _buildSchema = (definition: AIModelDefinition) => {
 
   const optionsSchema = z
     .object({
+      search: searchOptionSchema,
       prompt: promptOptionSchema,
     })
     .strict()
     .optional()
     .default({
+      search: {
+        isEnabled: false,
+        maxResults: 1,
+      },
       prompt: {
         isEnabled: false,
       },

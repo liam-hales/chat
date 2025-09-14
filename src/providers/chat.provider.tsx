@@ -58,6 +58,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
     modelDefinitionId: defaultModel?.id ?? '',
     inputValue: '',
     options: {
+      search: {
+        isEnabled: false,
+      },
       prompt: {
         isEnabled: false,
       },

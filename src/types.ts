@@ -90,7 +90,16 @@ export type ChatMessage =
  * the supporting data for each one
  */
 export interface ChatOptions {
+  readonly search: SearchChatOption;
   readonly prompt: PromptChatOption;
+}
+
+/**
+ * Describes the web search
+ * chat option
+ */
+export interface SearchChatOption {
+  readonly isEnabled: boolean;
 }
 
 /**
@@ -140,9 +149,9 @@ export interface ChatMessageMetadata {
  */
 export interface MakeRequestPayload {
   readonly chatId: string;
-  readonly modelId: z.infer<typeof streamChatSchema>['modelId'];
-  readonly options: z.infer<typeof streamChatSchema>['options'];
-  readonly messages: z.infer<typeof streamChatSchema>['messages'];
+  readonly modelId: z.input<typeof streamChatSchema>['modelId'];
+  readonly options: z.input<typeof streamChatSchema>['options'];
+  readonly messages: z.input<typeof streamChatSchema>['messages'];
 }
 
 /**

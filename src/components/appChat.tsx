@@ -78,7 +78,11 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
             <Loader
               className="self-start pl-4 pr-4"
               appearance="dark"
-              text="Thinking..."
+              text={
+                (options.search.isEnabled === true)
+                  ? 'Searching the web...'
+                  : 'Thinking...'
+              }
             />
           )
         }

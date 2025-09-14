@@ -45,7 +45,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   } = props;
 
   const { limits } = modelDefinition;
-  const { prompt } = options;
+  const { search, prompt } = options;
 
   const [showPromptInput, setShowPromptInput] = useState<boolean>(false);
 
@@ -163,6 +163,13 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                       />
                     )
               }
+              <ChatOptionButton
+                icon="globe"
+                isSelected={search.isEnabled}
+                onClick={() => _toggleOption('search')}
+              >
+                Search
+              </ChatOptionButton>
               <ChatOptionButton
                 icon="terminal"
                 isSelected={prompt.isEnabled}
