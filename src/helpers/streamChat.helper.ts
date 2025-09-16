@@ -100,6 +100,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
             plugins: [
               {
                 id: 'web',
+                engine: 'exa',
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 max_results: search.maxResults,
               },
