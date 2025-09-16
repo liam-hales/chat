@@ -94,7 +94,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
           reasoning: {
             enabled: true,
             exclude: false,
-            effort: 'medium',
+            effort: 'low',
           },
           ...(search.isEnabled === true) && {
             plugins: [
