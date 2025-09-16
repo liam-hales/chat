@@ -30,7 +30,6 @@ export const aiModelDefinitions = [
     name: 'gpt-oss-120b',
     openRouterId: 'openai/gpt-oss-120b',
     isDefault: true,
-    options: {},
     limits: {
       maxMessageLength: 4096,
       maxChatLength: 10,
@@ -41,7 +40,6 @@ export const aiModelDefinitions = [
     name: 'gpt-oss-20b',
     openRouterId: 'openai/gpt-oss-20b',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 8192,
       maxChatLength: 10,
@@ -52,7 +50,6 @@ export const aiModelDefinitions = [
     name: 'gpt-5',
     openRouterId: 'openai/gpt-5',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 4096,
       maxChatLength: 10,
@@ -63,7 +60,6 @@ export const aiModelDefinitions = [
     name: 'gpt-5-mini',
     openRouterId: 'openai/gpt-5-mini',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 4096,
       maxChatLength: 10,
@@ -74,7 +70,6 @@ export const aiModelDefinitions = [
     name: 'gpt-4.1-mini',
     openRouterId: 'openai/gpt-4.1-mini',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 4096,
       maxChatLength: 10,
@@ -85,7 +80,6 @@ export const aiModelDefinitions = [
     name: 'gemini-2.0-flash',
     openRouterId: 'google/gemini-2.0-flash-exp:free',
     isDefault: false,
-    options: {},
     limits: null,
   },
   {
@@ -93,7 +87,6 @@ export const aiModelDefinitions = [
     name: 'grok-3-mini',
     openRouterId: 'x-ai/grok-3-mini',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 8192,
       maxChatLength: 10,
@@ -104,7 +97,6 @@ export const aiModelDefinitions = [
     name: 'grok-code-fast-1',
     openRouterId: 'x-ai/grok-code-fast-1',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 4096,
       maxChatLength: 10,
@@ -115,7 +107,6 @@ export const aiModelDefinitions = [
     name: 'claude-3-haiku',
     openRouterId: 'anthropic/claude-3-haiku',
     isDefault: false,
-    options: {},
     limits: {
       maxMessageLength: 4096,
       maxChatLength: 10,
@@ -126,7 +117,6 @@ export const aiModelDefinitions = [
     name: 'deepseek-r1',
     openRouterId: 'deepseek/deepseek-r1-0528:free',
     isDefault: false,
-    options: {},
     limits: null,
   },
   {
@@ -134,7 +124,6 @@ export const aiModelDefinitions = [
     name: 'deepseek-chat-v3.1',
     openRouterId: 'deepseek/deepseek-chat-v3.1:free',
     isDefault: false,
-    options: {},
     limits: null,
   },
   {
@@ -142,7 +131,6 @@ export const aiModelDefinitions = [
     name: 'gemma-3-27b',
     openRouterId: 'google/gemma-3-27b-it:free',
     isDefault: false,
-    options: {},
     limits: null,
   },
   {
@@ -150,7 +138,6 @@ export const aiModelDefinitions = [
     name: 'sonoma-sky-alpha',
     openRouterId: 'openrouter/sonoma-sky-alpha',
     isDefault: false,
-    options: {},
     limits: null,
   },
   {
@@ -158,7 +145,6 @@ export const aiModelDefinitions = [
     name: 'sonoma-dusk-alpha',
     openRouterId: 'openrouter/sonoma-dusk-alpha',
     isDefault: false,
-    options: {},
     limits: null,
   },
   {
@@ -166,7 +152,6 @@ export const aiModelDefinitions = [
     name: 'qwen3-235b',
     openRouterId: 'qwen/qwen3-235b-a22b:free',
     isDefault: false,
-    options: {},
     limits: null,
   },
 ] as const;
