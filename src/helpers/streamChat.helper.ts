@@ -109,6 +109,8 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
       },
     });
 
+    const sourceUrls: string[] = [];
+
     let reasoningStart = 0;
     let reasoningEnd = 0;
 
@@ -153,6 +155,20 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
           break;
         }
 
+        case 'source': {
+          // Only URL source types are
+          // currently supported
+          if (part.sourceType !== 'url') {
+            break;
+          }
+
+          // Add the source URL to the source URLs array which will
+          // be streamed to the client once the request has finished
+          sourceUrls.push(part.url);
+
+          break;
+        }
+
         case 'error': {
           if (part.error instanceof Error) {
             const { message } = part.error;
@@ -180,6 +196,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
             .update({
               type: 'end',
               reasonedFor: (reasoningEnd - reasoningStart),
+              sourceUrls: sourceUrls,
               tokenUsage: {
                 input: inputTokens,
                 output: outputTokens,

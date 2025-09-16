@@ -131,6 +131,7 @@ export interface ChatAssistantMessage {
   readonly chatId: string;
   readonly role: 'assistant';
   readonly content: string;
+  readonly sourceUrls: string[];
   readonly metadata?: ChatMessageMetadata;
 }
 
@@ -203,6 +204,7 @@ export interface StreamTextData {
 export interface StreamEndData {
   readonly type: 'end';
   readonly reasonedFor: number;
+  readonly sourceUrls: string[];
   readonly tokenUsage: TokenUsage;
 }
 

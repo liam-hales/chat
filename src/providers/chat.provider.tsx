@@ -439,6 +439,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
                         chatId: chatId,
                         role: 'assistant',
                         content: part.value,
+                        sourceUrls: [],
                       },
                     ]
                   : [
@@ -448,6 +449,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
                         chatId: chatId,
                         role: 'assistant',
                         content: `${content}${part.value}`,
+                        sourceUrls: [],
                       },
                     ];
               },
@@ -468,6 +470,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
                   ...previous.slice(0, -1),
                   {
                     ...previous[previous.length - 1],
+                    sourceUrls: part.sourceUrls,
                     metadata: {
                       reasonedFor: part.reasonedFor,
                       tokenUsage: part.tokenUsage,
