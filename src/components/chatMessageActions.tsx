@@ -34,7 +34,7 @@ const ChatMessageActions: FunctionComponent<Props> = ({ content, metadata, onRet
   };
 
   return (
-    <div className="bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900 p-3 ml-4 mr-4">
+    <div className="bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900 p-3">
       <div className="flex flex-row items-center gap-x-4">
         <button
           className="cursor-pointer"
