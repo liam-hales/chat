@@ -27,21 +27,11 @@ export const defaultSystemPrompt = dedent`
 export const aiModelDefinitions = [
   {
     id: nanoid(8),
-    name: 'gpt-oss-120b',
+    name: 'gpt-oss',
     openRouterId: 'openai/gpt-oss-120b',
     isDefault: true,
     limits: {
       maxMessageLength: 4096,
-      maxChatLength: 10,
-    },
-  },
-  {
-    id: nanoid(8),
-    name: 'gpt-oss-20b',
-    openRouterId: 'openai/gpt-oss-20b',
-    isDefault: false,
-    limits: {
-      maxMessageLength: 8192,
       maxChatLength: 10,
     },
   },
