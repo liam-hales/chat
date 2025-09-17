@@ -121,7 +121,7 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
         },
         code: ({ children }) => {
           return (
-            <code className="font-mono text-white text-xs bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-md p-1 m-1">
+            <code className="font-mono text-white text-xs bg-neutral-900 border-solid border-[1px] border-neutral-800 rounded-md p-1 m-1">
               {children}
             </code>
           );
@@ -169,14 +169,14 @@ const MarkdownBlock: FunctionComponent<Props> = ({ children }): ReactElement<Pro
           </tr>
         ),
         th: ({ children }) => (
-          <th className="border-solid border-1 border-zinc-800 text-start pt-3 pb-3 pl-4 pr-4">
+          <th className="border-solid border-1 border-neutral-800 text-start pt-3 pb-3 pl-4 pr-4">
             <span className="font-sans text-md font-bold text-white">
               {children}
             </span>
           </th>
         ),
         td: ({ children }) => (
-          <td className="border-solid border-1 border-zinc-800 text-start pt-3 pb-3 pl-4 pr-4">
+          <td className="border-solid border-1 border-neutral-800 text-start pt-3 pb-3 pl-4 pr-4">
             <span className="font-sans text-sm text-white">
               {children}
             </span>

@@ -53,7 +53,7 @@ const MetadataPopover: FunctionComponent<Props> = ({ metadata }): ReactElement<P
         />
       </PopoverButton>
       <PopoverPanel
-        className="w-52 flex flex-col items-start bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900 [--anchor-gap:--spacing(2)] pt-3 pb-3 pl-5 pr-5 outline-none"
+        className="w-52 flex flex-col items-start bg-neutral-950 border-solid border-[1px] rounded-lg border-neutral-900 [--anchor-gap:--spacing(2)] pt-3 pb-3 pl-5 pr-5 outline-none"
         anchor="bottom start"
         transition={true}
       >
@@ -68,7 +68,7 @@ const MetadataPopover: FunctionComponent<Props> = ({ metadata }): ReactElement<P
                   ${(split === true) ? 'pt-4' : 'pt-0'}
                 `}
               >
-                <p className="font-sans text-sm text-zinc-500">
+                <p className="font-sans text-sm text-neutral-500">
                   {title}
                 </p>
                 <p className="font-mono text-xs text-white">

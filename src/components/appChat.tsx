@@ -95,7 +95,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                 text="Reasoning..."
               />
               <div className="max-w-[460px] flex flex-col items-end overflow-x-hidden touch-none">
-                <p className="font-mono text-zinc-700 text-xs whitespace-nowrap">
+                <p className="font-mono text-neutral-700 text-xs whitespace-nowrap">
                   {state.text}
                 </p>
               </div>

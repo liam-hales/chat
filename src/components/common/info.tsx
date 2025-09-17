@@ -20,7 +20,7 @@ interface Props extends BaseProps {
  */
 const Info: FunctionComponent<Props> = ({ className, icon, children, onDismiss }): ReactElement<Props> => {
   return (
-    <div className={`${className ?? ''} flex flex-row items-center gap-x-4 border-solid border-[1px] border-zinc-900 rounded-md p-4`}>
+    <div className={`${className ?? ''} flex flex-row items-center gap-x-4 border-solid border-[1px] border-neutral-900 rounded-md p-4`}>
       {
         (icon != null) && (
           <Fragment>

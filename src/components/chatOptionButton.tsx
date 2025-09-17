@@ -36,13 +36,13 @@ const ChatOptionButton: FunctionComponent<Props> = (props): ReactElement<Props> 
 
         sm:pt-[5px] sm:pb-[5px] sm:pl-2 sm:pr-3
 
-        ${(isSelected === true) ? 'bg-zinc-700' : 'bg-zinc-900'}
-        ${(isSelected === true) ? 'border-zinc-500' : 'border-zinc-800'}
+        ${(isSelected === true) ? 'bg-neutral-700' : 'bg-neutral-900'}
+        ${(isSelected === true) ? 'border-neutral-500' : 'border-neutral-800'}
 
         disabled:cursor-not-allowed
-        disabled:text-zinc-600
-        disabled:bg-zinc-900/60
-        disabled:border-zinc-800/80
+        disabled:text-neutral-600
+        disabled:bg-neutral-900/60
+        disabled:border-neutral-800/80
       `}
       disabled={isDisabled}
       onClick={onClick}

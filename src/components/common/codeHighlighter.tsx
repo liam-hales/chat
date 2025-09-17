@@ -35,7 +35,7 @@ const CodeHighlighter: FunctionComponent<Props> = ({ className, language, childr
 
   return (
     <div className={className ?? ''}>
-      <div className="w-full flex flex-col items-start gap-y-2 bg-zinc-950 border-solid border-[1px] border-zinc-800 rounded-xl">
+      <div className="w-full flex flex-col items-start gap-y-2 bg-neutral-950 border-solid border-[1px] border-neutral-800 rounded-xl">
         <div className="w-full flex flex-row items-center justify-between pt-4 pl-4 pr-5">
           <p className="font-mono text-xs text-white">
             {language}

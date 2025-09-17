@@ -29,7 +29,7 @@ const ModelMenu: FunctionComponent<Props> = ({ modelDefinition, onModelChange })
         />
       </MenuButton>
       <MenuItems
-        className="h-[420px] flex flex-col gap-y-1 w-68 border-solid border-[1px] bg-zinc-900 border-zinc-800 rounded-md  [--anchor-gap:--spacing(3)] p-1 outline-none no-scrollbar"
+        className="h-[420px] flex flex-col gap-y-1 w-68 border-solid border-[1px] bg-neutral-900 border-neutral-800 rounded-md  [--anchor-gap:--spacing(3)] p-1 outline-none no-scrollbar"
         transition={true}
         anchor="top start"
       >
@@ -39,7 +39,7 @@ const ModelMenu: FunctionComponent<Props> = ({ modelDefinition, onModelChange })
             return (
               <MenuItem key={`model-${id}`}>
                 <button
-                  className="flex flex-row items-center justify-between gap-x-2 cursor-pointer rounded-sm hover:bg-zinc-700 pt-2 pb-2 pl-4 pr-2 group"
+                  className="flex flex-row items-center justify-between gap-x-2 cursor-pointer rounded-sm hover:bg-neutral-700 pt-2 pb-2 pl-4 pr-2 group"
                   onClick={() => onModelChange(id)}
                 >
                   <p className="font-mono text-white text-xs">
@@ -51,7 +51,7 @@ const ModelMenu: FunctionComponent<Props> = ({ modelDefinition, onModelChange })
                   </p>
                   {
                     (limits != null) && (
-                      <div className="border-solid border-[1px] bg-zinc-800 border-zinc-700 rounded-sm pt-1 pb-1 pl-2 pr-2 group-hover:bg-zinc-600 group-hover:border-zinc-500">
+                      <div className="border-solid border-[1px] bg-neutral-800 border-neutral-700 rounded-sm pt-1 pb-1 pl-2 pr-2 group-hover:bg-neutral-600 group-hover:border-neutral-500">
                         <p className="font-mono text-white text-[8px]">
                           Limited
                         </p>

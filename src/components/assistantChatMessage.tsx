@@ -53,7 +53,7 @@ const AssistantChatMessage: FunctionComponent<Props> = (props): ReactElement<Pro
         }
         {
           (sourceUrls.length > 0) && (
-            <div className="flex flex-row items-center gap-x-3 bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900 pt-2 pb-2 pl-4 pr-2">
+            <div className="flex flex-row items-center gap-x-3 bg-neutral-950 border-solid border-[1px] rounded-lg border-neutral-900 pt-2 pb-2 pl-4 pr-2">
               <p className="font-sans text-sm text-white">
                 Sources
               </p>
@@ -66,7 +66,7 @@ const AssistantChatMessage: FunctionComponent<Props> = (props): ReactElement<Pro
                       return (
                         <div
                           key={`icon-${hostname}`}
-                          className="border-solid border-[1px] border-zinc-900 rounded-md overflow-hidden p-1"
+                          className="border-solid border-[1px] border-neutral-900 rounded-md overflow-hidden p-1"
                         >
                           <Image
                             src={`https://www.google.com/s2/favicons?sz=128&domain=${hostname}`}

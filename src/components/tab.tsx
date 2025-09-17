@@ -42,8 +42,8 @@ const Tab: FunctionComponent<Props> = (props): ReactElement<Props> => {
       className={`
         h-full flex flex-row items-center cursor-pointer border-solid border-[1px] rounded-lg pl-2 pr-2
 
-        ${(isSelected === true) ? 'bg-zinc-700' : 'bg-zinc-950'}
-        ${(isSelected === true) ? 'border-zinc-500' : 'border-zinc-800'}
+        ${(isSelected === true) ? 'bg-neutral-700' : 'bg-neutral-950'}
+        ${(isSelected === true) ? 'border-neutral-500' : 'border-neutral-800'}
       `}
       role="button"
       tabIndex={0}

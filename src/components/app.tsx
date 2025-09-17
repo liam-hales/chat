@@ -69,7 +69,7 @@ const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | Reac
             })
           }
           <button
-            className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-zinc-950 border-solid border-[1px] border-zinc-800 hover:border-zinc-500 rounded-lg"
+            className="w-8 h-8 shrink-0 flex flex-col items-center justify-center cursor-pointer bg-neutral-950 border-solid border-[1px] border-neutral-800 hover:border-neutral-500 rounded-lg"
             onClick={createChat}
           >
             <Plus

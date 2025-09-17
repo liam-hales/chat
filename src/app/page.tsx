@@ -33,7 +33,7 @@ const AppPage: FunctionComponent = (): ReactElement => {
             <Info
               className="w-full md:max-w-[580px]"
               icon={(
-                <div className="border-solid border-[1px] bg-zinc-800 border-zinc-700 rounded-sm pt-1 pb-1 pl-2 pr-2">
+                <div className="border-solid border-[1px] bg-neutral-800 border-neutral-700 rounded-sm pt-1 pb-1 pl-2 pr-2">
                   <p className="font-mono text-white text-[10px]">
                     Limited
                   </p>

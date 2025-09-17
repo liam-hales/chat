@@ -26,7 +26,7 @@ const Loader: FunctionComponent<Props> = ({ className, appearance = 'dark', text
         <div className={`
           w-6 h-6 rounded-full border-t-solid border-4
 
-          ${(appearance === 'light' ? 'border-zinc-500' : 'border-zinc-800')}
+          ${(appearance === 'light' ? 'border-neutral-500' : 'border-neutral-800')}
         `}
         />
       </div>

@@ -120,9 +120,9 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
       }
       {
         (showPromptInput === true) && (
-          <div className="w-full flex flex-row items-center gap-x-2 border-solid border-[1px] rounded-lg border-zinc-900 p-5">
+          <div className="w-full flex flex-row items-center gap-x-2 border-solid border-[1px] rounded-lg border-neutral-900 p-5">
             <TextArea
-              className="w-full max-h-40 text-white placeholder-zinc-600 font-mono text-sm bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
+              className="w-full max-h-40 text-white placeholder-neutral-600 font-mono text-sm bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
               placeholder=">_ system prompt"
               value={prompt.value}
               onChange={_onPromptValueChange}
@@ -135,11 +135,11 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
           </div>
         )
       }
-      <div className="w-full bg-zinc-950 border-solid border-[1px] rounded-lg border-zinc-900">
+      <div className="w-full bg-neutral-950 border-solid border-[1px] rounded-lg border-neutral-900">
         <div className="w-full flex flex-col items-center p-5">
           <TextArea
             ref={internalRef}
-            className="w-full max-h-40 text-white placeholder-zinc-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
+            className="w-full max-h-40 text-white placeholder-neutral-600 font-sans text-lg bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
             placeholder="Chat with AI, ask anything you like"
             value={value}
             disabled={isDisabled}
@@ -182,12 +182,12 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
               (onSend != null) && (
                 <button
                   className={`
-                    text-white cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2
+                    text-white cursor-pointer bg-neutral-800 border-solid border-[1px] border-neutral-600 hover:border-neutral-400 rounded-lg p-2
 
                     disabled:cursor-not-allowed
-                    disabled:text-zinc-600
-                    disabled:bg-zinc-900
-                    disabled:border-zinc-800
+                    disabled:text-neutral-600
+                    disabled:bg-neutral-900
+                    disabled:border-neutral-800
                   `}
                   onClick={onSend}
                   disabled={
@@ -202,7 +202,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             {
               (onAbort != null) && (
                 <button
-                  className="cursor-pointer bg-zinc-800 border-solid border-[1px] border-zinc-600 hover:border-zinc-400 rounded-lg p-2"
+                  className="cursor-pointer bg-neutral-800 border-solid border-[1px] border-neutral-600 hover:border-neutral-400 rounded-lg p-2"
                   onClick={onAbort}
                 >
                   <X

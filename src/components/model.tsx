@@ -39,8 +39,8 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
         ${(form === 'standard') ? 'rounded-md' : 'rounded-sm'}
         ${(form === 'standard' && limits != null) ? 'pr-1' : 'pr-2'}
 
-        ${(appearance === 'light') ? 'bg-zinc-500' : 'bg-zinc-900'}
-        ${(appearance === 'light') ? 'border-zinc-400' : 'border-zinc-800'}
+        ${(appearance === 'light') ? 'bg-neutral-500' : 'bg-neutral-900'}
+        ${(appearance === 'light') ? 'border-neutral-400' : 'border-neutral-800'}
 
         ${(onClick != null) && 'cursor-pointer'}
       `}
@@ -59,7 +59,7 @@ const Model: FunctionComponent<Props> = (props): ReactElement<Props> => {
         </p>
         {
           (form === 'standard' && limits != null) && (
-            <div className="border-solid border-[1px] bg-zinc-800 border-zinc-700 rounded-sm pt-1 pb-1 pl-2 pr-2">
+            <div className="border-solid border-[1px] bg-neutral-800 border-neutral-700 rounded-sm pt-1 pb-1 pl-2 pr-2">
               <p className="font-mono text-white text-[8px]">
                 Limited
               </p>

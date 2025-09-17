@@ -17,7 +17,7 @@ interface Props extends BaseProps {
  */
 const UserChatMessage: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
   return (
-    <div className="max-w-[380px] sm:max-w-[600px] self-end bg-zinc-900 border-solid border-[1px] border-zinc-800 rounded-2xl pt-2 pb-2 pl-4 pr-4 ml-4 mr-4">
+    <div className="max-w-[380px] sm:max-w-[600px] self-end bg-neutral-900 border-solid border-[1px] border-neutral-800 rounded-2xl pt-2 pb-2 pl-4 pr-4 ml-4 mr-4">
       <p className="font-sans text-white text-md">
         {children}
       </p>
