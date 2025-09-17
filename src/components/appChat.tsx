@@ -66,6 +66,7 @@ const AppChat: FunctionComponent<Props> = ({ id }): ReactElement<Props> => {
                       state.id === 'idle'
                     }
                     onRetry={() => retryRequest(id, messages[index - 1].id)}
+                    sourceUrls={message.sourceUrls}
                     metadata={message.metadata}
                   >
                     {message.content}
