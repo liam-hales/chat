@@ -59,6 +59,16 @@ const _buildSchema = (definition: AIModelDefinition) => {
       maxResults: 1,
     });
 
+  const deepThinkOptionSchema = z
+    .object({
+      isEnabled: z.boolean(),
+    })
+    .strict()
+    .optional()
+    .default({
+      isEnabled: false,
+    });
+
   const promptOptionSchema = z
     .object({
       isEnabled: z.boolean(),
@@ -77,6 +87,7 @@ const _buildSchema = (definition: AIModelDefinition) => {
   const optionsSchema = z
     .object({
       search: searchOptionSchema,
+      deepThink: deepThinkOptionSchema,
       prompt: promptOptionSchema,
     })
     .strict()
@@ -85,6 +96,9 @@ const _buildSchema = (definition: AIModelDefinition) => {
       search: {
         isEnabled: false,
         maxResults: 1,
+      },
+      deepThink: {
+        isEnabled: false,
       },
       prompt: {
         isEnabled: false,

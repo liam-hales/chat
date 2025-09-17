@@ -91,6 +91,7 @@ export type ChatMessage =
  */
 export interface ChatOptions {
   readonly search: SearchChatOption;
+  readonly deepThink: DeepThinkOption;
   readonly prompt: PromptChatOption;
 }
 
@@ -99,6 +100,14 @@ export interface ChatOptions {
  * chat option
  */
 export interface SearchChatOption {
+  readonly isEnabled: boolean;
+}
+
+/**
+ * Describes the deep think
+ * chat option
+ */
+export interface DeepThinkOption {
   readonly isEnabled: boolean;
 }
 

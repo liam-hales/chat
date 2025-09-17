@@ -61,6 +61,9 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
       search: {
         isEnabled: false,
       },
+      deepThink: {
+        isEnabled: false,
+      },
       prompt: {
         isEnabled: false,
       },

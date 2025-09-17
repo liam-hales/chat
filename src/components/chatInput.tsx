@@ -45,7 +45,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
   } = props;
 
   const { limits } = modelDefinition;
-  const { search, prompt } = options;
+  const { search, deepThink, prompt } = options;
 
   const [showPromptInput, setShowPromptInput] = useState<boolean>(false);
 
@@ -169,6 +169,13 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
                 onClick={() => _toggleOption('search')}
               >
                 Search
+              </ChatOptionButton>
+              <ChatOptionButton
+                icon="lightbulb"
+                isSelected={deepThink.isEnabled}
+                onClick={() => _toggleOption('deepThink')}
+              >
+                Deep Think
               </ChatOptionButton>
               <ChatOptionButton
                 icon="terminal"

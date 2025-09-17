@@ -26,6 +26,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
     messages,
     options: {
       search,
+      deepThink,
       prompt,
     },
     maxOutputLength,
@@ -94,7 +95,7 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
           reasoning: {
             enabled: true,
             exclude: false,
-            effort: 'low',
+            effort: (deepThink.isEnabled === true) ? 'high' : 'low',
           },
           ...(search.isEnabled === true) && {
             plugins: [
