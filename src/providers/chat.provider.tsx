@@ -81,6 +81,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
   const getChat = useCallback(
     (id: string): FullAppChat => {
       const chat = chats.find((chat) => chat.id === id);
+      const definition = aiModelDefinitions.find((def) => def.id === chat?.modelDefinitionId);
 
       // If the chat does not exist
       // then throw an error
@@ -88,12 +89,17 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
         throw new Error(`No chat with ID "${id}" found`);
       }
 
+      // If the model definition does not
+      // exist then throw an error
+      if (definition == null) {
+        throw new Error(`No model definition with ID "${chat.modelDefinitionId}" found`);
+      }
+
       // Return the chat data with
-      // the messages from state
-      const modelDefinition = _getModelDefinition(chat.modelDefinitionId);
+      // the model definition
       return {
         ...chat,
-        modelDefinition: modelDefinition,
+        modelDefinition: definition,
       };
     },
     [chats],
@@ -562,25 +568,6 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
           : chat;
       });
     });
-  };
-
-  /**
-   * Used to get a specific model
-   * definition via it's `id`
-   *
-   * @param id The model definition ID
-   * @returns The model definition
-   */
-  const _getModelDefinition = (id: string): AIModelDefinition => {
-    const definition = aiModelDefinitions.find((def) => def.id === id);
-
-    // If the model definition does not
-    // exist then throw an error
-    if (definition == null) {
-      throw new Error(`No model definition with ID "${id}" found`);
-    }
-
-    return definition;
   };
 
   /**
