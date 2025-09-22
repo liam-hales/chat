@@ -8,7 +8,6 @@ import {
   FullAppChat,
   UpdateChatPayload,
   MakeRequestPayload,
-  AIModelDefinition,
   ChatOptions,
   UpdateChatOptionPayload,
 } from '../types';
