@@ -68,14 +68,16 @@ const InputProvider: FunctionComponent<Props> = ({ children }): ReactElement<Pro
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
     window.addEventListener('focusin', handleFocusIn);
     window.addEventListener('focusout', handleFocusOut);
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    });
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('focusin', handleFocusIn);
       window.removeEventListener('focusout', handleFocusOut);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [ref, allowDismiss]);
 
