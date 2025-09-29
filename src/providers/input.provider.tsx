@@ -30,7 +30,6 @@ const InputProvider: FunctionComponent<Props> = ({ children }): ReactElement<Pro
   const ref = useRef<HTMLTextAreaElement | null>(null);
 
   const [state, setState] = useState<'focused' | 'blurred'>('blurred');
-  const [allowDismiss, setAllowDismiss] = useState<boolean>(false);
 
   /**
    * Used to handle the `scroll`, `focusin` and `focusout` events
@@ -39,16 +38,11 @@ const InputProvider: FunctionComponent<Props> = ({ children }): ReactElement<Pro
   useEffect(() => {
 
     const handleFocusIn = (): void => {
-      setAllowDismiss(false);
       setState(
         (ref.current === document.activeElement)
           ? 'focused'
           : 'blurred',
       );
-
-      // Do not allow the keyboard to dismiss until a delay of `300` milliseconds
-      // This allows the keyboard to focus without immediately being dismissed
-      setTimeout(() => setAllowDismiss(true), 300);
     };
 
     const handleFocusOut = (): void => {
@@ -59,27 +53,14 @@ const InputProvider: FunctionComponent<Props> = ({ children }): ReactElement<Pro
       );
     };
 
-    const handleScroll = (): void => {
-
-      // The keyboard focusing will trigger this scroll
-      // event so only dismiss the keyboard if allowed
-      if (allowDismiss === true) {
-        ref.current?.blur();
-      }
-    };
-
     window.addEventListener('focusin', handleFocusIn);
     window.addEventListener('focusout', handleFocusOut);
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    });
 
     return () => {
       window.removeEventListener('focusin', handleFocusIn);
       window.removeEventListener('focusout', handleFocusOut);
-      window.removeEventListener('scroll', handleScroll);
     };
-  }, [ref, allowDismiss]);
+  }, []);
 
   /**
    * Used to focus the input
