@@ -16,20 +16,20 @@
 
   --animate-cursor: cursor 800ms ease infinite;
   --animate-spinner: spinner 500ms linear infinite;
+}
 
-  @keyframes cursor {
-    from,
-    to {
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
+@keyframes cursor {
+  from,
+  to {
+    opacity: 0;
   }
+  50% {
+    opacity: 1;
+  }
+}
 
-  @keyframes spinner {
-    to {
-      transform: rotate(360deg);
-    }
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
   }
 }
