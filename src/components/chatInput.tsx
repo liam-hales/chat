@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FunctionComponent, KeyboardEvent, ReactElement, useEffect, useState } from 'react';
 import TextArea from 'react-textarea-autosize';
 import { AIModelDefinition, BaseProps, ChatOptions, UpdateChatOptionPayload } from '../types';
 import { withRef } from '../helpers';
@@ -53,6 +53,14 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
     value.length >
     (limits?.maxMessageLength ?? Infinity)
   );
+
+  /**
+   * Used to set the show prompt input state when the user switches
+   * tabs. The prompt input is only shown if the option is enabled
+   */
+  useEffect(() => {
+    setShowPromptInput(prompt.isEnabled);
+  }, [prompt]);
 
   const _onValueChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
 
@@ -124,7 +132,7 @@ const ChatInput: FunctionComponent<Props> = (props): ReactElement<Props> => {
             <TextArea
               className="w-full max-h-40 text-white placeholder-neutral-600 font-mono text-sm bg-transparent outline-none pl-1 caret-white resize-none touch-pan-y"
               placeholder=">_ system prompt"
-              value={prompt.value}
+              value={prompt.value ?? ''}
               onChange={_onPromptValueChange}
             />
             <X
