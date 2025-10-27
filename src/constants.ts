@@ -67,27 +67,23 @@ export const aiModelDefinitions = [
   },
   {
     id: nanoid(8),
-    name: 'gpt-4.1-mini',
-    openRouterId: 'openai/gpt-4.1-mini',
+    name: 'gemini-2.0-flash',
+    openRouterId: 'google/gemini-2.0-flash-001',
     isDefault: false,
     limits: {
-      maxMessageLength: 4096,
+      maxMessageLength: 8192,
       maxChatLength: 10,
     },
   },
   {
     id: nanoid(8),
-    name: 'gemini-2.0-flash',
-    openRouterId: 'google/gemini-2.0-flash-exp:free',
-    isDefault: false,
-    limits: null,
-  },
-  {
-    id: nanoid(8),
     name: 'grok-4-fast',
-    openRouterId: 'x-ai/grok-4-fast:free',
+    openRouterId: 'x-ai/grok-4-fast',
     isDefault: false,
-    limits: null,
+    limits: {
+      maxMessageLength: 8192,
+      maxChatLength: 10,
+    },
   },
   {
     id: nanoid(8),
@@ -129,7 +125,17 @@ export const aiModelDefinitions = [
   {
     id: nanoid(8),
     name: 'deepseek-chat-v3.1',
-    openRouterId: 'deepseek/deepseek-chat-v3.1:free',
+    openRouterId: 'deepseek/deepseek-chat-v3.1',
+    isDefault: false,
+    limits: {
+      maxMessageLength: 8192,
+      maxChatLength: 10,
+    },
+  },
+  {
+    id: nanoid(8),
+    name: 'minimax-m2',
+    openRouterId: 'minimax/minimax-m2:free',
     isDefault: false,
     limits: null,
   },
