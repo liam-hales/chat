@@ -581,7 +581,7 @@ const ChatProvider: FunctionComponent<Props> = ({ children }): ReactElement<Prop
    */
   const _generateChatTitle = async (chatId: string, inputValue: string): Promise<void> => {
     const streamValue = await streamChat({
-      modelId: 'deepseek/deepseek-chat-v3.1:free',
+      modelId: 'deepseek/deepseek-chat-v3.1',
       systemMessage: dedent`
         Generate a short chat title which describes the chat based off the users first message.
         This will be used to easily identify each chat.
