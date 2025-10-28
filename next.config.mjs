@@ -18,10 +18,6 @@ const withAnalyser = bundleAnalyser({
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: true,
-  serverRuntimeConfig: {
-    siteUrl: process.env.SITE_URL,
-    openRouterApiKey: process.env.OPEN_ROUTER_API_KEY,
-  },
 };
 
 export default withAnalyser(nextConfig);
