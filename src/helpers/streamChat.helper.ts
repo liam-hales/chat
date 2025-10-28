@@ -6,7 +6,6 @@ import { streamText } from 'ai';
 import { z } from 'zod';
 import { streamChatSchema } from '../schemas';
 import { StreamData } from '../types';
-import getConfig from 'next/config';
 import dedent from 'dedent';
 
 /**
@@ -17,6 +16,14 @@ import dedent from 'dedent';
  * @returns The client streamable value
  */
 const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<StreamableValue<StreamData>> => {
+  const openRouterApiKey = process.env.OPEN_ROUTER_API_KEY;
+
+  // Make sure the `OPEN_ROUTER_API_KEY`
+  // environment variable has been set
+  if (openRouterApiKey == null) {
+    throw new Error('The "OPEN_ROUTER_API_KEY" environment variable is required');
+  }
+
   // As this is a server action, we need to
   // validate the options before using them
   const validated = streamChatSchema.parse(options);
@@ -31,9 +38,6 @@ const streamChat = async (options: z.input<typeof streamChatSchema>): Promise<St
     },
     maxOutputLength,
   } = validated;
-
-  const { serverRuntimeConfig } = getConfig();
-  const { openRouterApiKey } = serverRuntimeConfig;
 
   // Create the stream used to send the text data to the client
   // Create the OpenAI provider with the API key

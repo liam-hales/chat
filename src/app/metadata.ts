@@ -1,5 +1,4 @@
 import { Metadata, Viewport } from 'next';
-import getConfig from 'next/config';
 
 /**
  * Describes the app viewport metadata that is
@@ -21,15 +20,19 @@ export const viewport: Viewport = {
  * @returns The app metadata
  */
 export const generateMetadata = (): Metadata => {
+  const siteUrl = process.env.SITE_URL;
 
-  const { serverRuntimeConfig } = getConfig();
-  const { siteUrl } = serverRuntimeConfig;
+  // Make sure the `SITE_URL` environment
+  // variable has been set
+  if (siteUrl == null) {
+    throw new Error('The "SITE_URL" environment variable is required');
+  }
 
   const title = 'Chat - Liam Hales';
   const description = 'Chat is a web app that was created to converse with multiple different AI, all in one single place using the same user-friendly interface.';
 
   return {
-    metadataBase: new URL(siteUrl as string),
+    metadataBase: new URL(siteUrl),
     title: title,
     description: description,
     icons: {
