@@ -19,7 +19,7 @@ interface Props extends BaseProps {
  * @param props The component props
  * @returns The `App` component
  */
-const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> | ReactNode => {
+const App: FunctionComponent<Props> = ({ children }): ReactElement<Props> => {
   const {
     selectedChatId,
     chats,
