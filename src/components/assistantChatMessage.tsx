@@ -10,7 +10,7 @@ import Image from 'next/image';
 interface Props extends BaseProps {
   readonly id: string;
   readonly showTools?: boolean;
-  readonly sourceUrls: string[];
+  readonly sourceUrls?: string[];
   readonly metadata?: ChatMessageMetadata;
   readonly onRetry: () => void;
   readonly children: string;
