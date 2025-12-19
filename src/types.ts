@@ -167,6 +167,8 @@ export interface MakeRequestPayload {
 /**
  * Used to describe the payload
  * when updating a chat option
+ *
+ * - Generic type `T` for the chat options key
  */
 export interface UpdateChatOptionPayload<T extends keyof ChatOptions> {
   readonly key: T;
@@ -183,7 +185,7 @@ export type UpdateChatPayload = UpdatePayload<Omit<AppChat, 'id'>>;
  * Used to build an update payload type where for each key
  * contains either the raw value or a mutation function
  *
- * Generic type `T` for the object
+ * - Generic type `T` for the object
  */
 export type UpdatePayload<T extends object> = {
   [K in keyof T]?: T[K] | ((previous: T[K]) => T[K]);
