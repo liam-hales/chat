@@ -12,7 +12,7 @@ const buildManifest = (): MetadataRoute.Manifest => {
   return {
     name: 'Chat',
     short_name: 'Chat',
-    description: 'Chat with AI, all in one place.',
+    description: 'Chat with a range of different AI, all in one convenient unified place.',
     start_url: '/',
     display: 'standalone',
     background_color: '#000000',
