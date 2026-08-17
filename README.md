@@ -1,3 +1,7 @@
+> ⚠️ _**Warning** - This project is no longer active and has been deprioritized due to a shift in focus on other projects._
+
+<br/>
+
 <div>
   <img src="public/cover.gif"/>
   <h1>
